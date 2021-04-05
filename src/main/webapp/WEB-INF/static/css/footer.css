@@ -1,0 +1,166 @@
+.grid-footer {
+	position: relative;
+	width: 100%;
+	bottom: 0px;
+	height: 40px;
+	margin-top: 30px;
+	margin-bottom: 0;
+	font-size: 14px;
+	background-color: #393D49;
+	font-weight: 500;
+	overflow: hidden;
+	border-top: 1px solid #404553;
+	/* padding: 10px 0 0 0; */
+/* 	margin-top: 30px;
+	background-color: #212220;
+	color: #919290;
+	font-size: 14px;
+	padding: 20px 0 0 0;
+	position: relative;
+	clear: both;
+	line-height: 50px;
+	overflow: hidden;
+	width: 100% */
+}
+
+.copyright {
+	padding: 10px 0 10px 0
+}
+
+.copyright .info {
+	position: relative;
+	text-align: center
+}
+
+.copyright p {
+	color: #565755;
+	font-size: 13px
+}
+
+.copyright .contact a {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background-color: rgba(255, 255, 255, .2);
+	text-align: center;
+	line-height: 30px;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
+	font-size: 14px;
+	margin-left: 15px;
+	margin-right: 0;
+	border-radius: 100%;
+	text-decoration: none;
+	color: rgba(255, 255, 255, .5);
+	-webkit-transition: all .3s;
+	transition: all .3s
+}
+
+.copyright .contact a:hover {
+	color: #fff
+}
+
+.copyright .contact .github:hover {
+	background-color: #b952c5
+}
+
+.copyright .contact .layui-icon-email:hover {
+	background-color: #668f20
+}
+
+@-webkit-keyframes bounceInDown {
+
+	0%,
+	60%,
+	75%,
+	90%,
+	to {
+		transition-timing-function: cubic-bezier(.215, .61, .355, 1)
+	}
+
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(0, -3000px, 0);
+		transform: translate3d(0, -3000px, 0)
+	}
+
+	60% {
+		opacity: 1;
+		-webkit-transform: translate3d(0, 25px, 0);
+		transform: translate3d(0, 25px, 0)
+	}
+
+	75% {
+		-webkit-transform: translate3d(0, -10px, 0);
+		transform: translate3d(0, -10px, 0)
+	}
+
+	90% {
+		-webkit-transform: translate3d(0, 5px, 0);
+		transform: translate3d(0, 5px, 0)
+	}
+
+	to {
+		-webkit-transform: none;
+		transform: none
+	}
+}
+
+@keyframes bounceInDown {
+
+	0%,
+	60%,
+	75%,
+	90%,
+	to {
+		transition-timing-function: cubic-bezier(.215, .61, .355, 1)
+	}
+
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(0, -3000px, 0);
+		transform: translate3d(0, -3000px, 0)
+	}
+
+	60% {
+		opacity: 1;
+		-webkit-transform: translate3d(0, 25px, 0);
+		transform: translate3d(0, 25px, 0)
+	}
+
+	75% {
+		-webkit-transform: translate3d(0, -10px, 0);
+		transform: translate3d(0, -10px, 0)
+	}
+
+	90% {
+		-webkit-transform: translate3d(0, 5px, 0);
+		transform: translate3d(0, 5px, 0)
+	}
+
+	to {
+		-webkit-transform: none;
+		transform: none
+	}
+}
+
+@-webkit-keyframes drop {
+	0% {
+		-webkit-transform: translate3d(0, -600px, 0)
+	}
+
+	60% {
+		-webkit-transform: translate3d(0, 25px, 0)
+	}
+
+	75% {
+		-webkit-transform: translate3d(0, -10px, 0)
+	}
+
+	90% {
+		-webkit-transform: translate3d(0, 5px, 0)
+	}
+
+	100% {
+		-webkit-transform: translate3d(0, 0, 0)
+	}
+}

@@ -1,0 +1,17 @@
+package com.ugly.blog.service;
+
+import com.ugly.blog.entity.Tag;
+
+import java.util.List;
+
+/**
+ * @author JwZheng
+ * @date 2021/4/5 14:42
+ */
+public interface TagService {
+    /**
+     * 获取标签列表
+     * @return
+     */
+    List<Tag> getTagList();
+}

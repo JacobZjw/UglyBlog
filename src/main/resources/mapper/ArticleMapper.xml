@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ugly.blog.mapper.ArticleMapper">
+
+    <resultMap id="articleMap" type="com.ugly.blog.entity.Article">
+        <id property="articleId" javaType="Integer" column="article_id"/>
+        <result property="articleUserId" javaType="Integer" column="article_user_id"/>
+        <result property="articleTitle" javaType="String" column="article_title"/>
+        <result property="articleViewCount" javaType="Integer" column="article_view_count"/>
+        <result property="articleCommentCount" javaType="Integer" column="article_comment_count"/>
+        <result property="articleLikeCount" javaType="Integer" column="article_like_count"/>
+        <result property="articleCreateTime" javaType="Date" column="article_create_time"/>
+        <result property="articleUpdateTime" javaType="Date" column="article_update_time"/>
+        <result property="articleOrder" javaType="Integer" column="article_order"/>
+        <result property="articleContent" javaType="String" column="article_content"/>
+        <result property="articleSummary" javaType="String" column="article_summary"/>
+        <result property="articleIsReprint" javaType="Integer" column="article_is_reprint"/>
+
+        <association property="user" column="article_user_id" javaType="com.ugly.blog.entity.User"
+                     select="com.ugly.blog.mapper.UserMapper.getUserById">
+        </association>
+        <collection property="tagList" column="" ofType="com.ugly.blog.entity.Tag">
+
+        </collection>
+        <collection property="categoryList" column="" ofType="com.ugly.blog.entity.Category">
+
+        </collection>
+
+    </resultMap>
+
+
+    <select id="getPageByTagList" resultMap="articleMap" parameterType="list">
+        SELECT a.*
+        FROM article_tag_ref at
+        INNER JOIN article a ON at.article_id = a.article_id
+        WHERE tag_id IN
+        <foreach collection="tags" open="(" item="tag" separator="," close=")">
+            #{tag.tagId}
+        </foreach>
+        LIMIT #{begin},#{pageSize};
+    </select>
+
+    <select id="getCountByTagList" resultType="java.lang.Integer" parameterType="list">
+        SELECT COUNT(*)
+        FROM article_tag_ref at
+        INNER JOIN article a ON at.article_id = a.article_id
+        WHERE tag_id IN
+        <foreach collection="tags" open="(" item="tag" separator="," close=")">
+            #{tag.tagId}
+        </foreach>
+        GROUP BY a.article_id;
+    </select>
+
+
+</mapper>

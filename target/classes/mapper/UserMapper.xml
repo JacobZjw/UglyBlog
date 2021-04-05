@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ugly.blog.mapper.UserMapper">
+
+    <insert id="insert" parameterType="com.ugly.blog.entity.User" useGeneratedKeys="true" keyProperty="userId"
+            keyColumn="user_id">
+        insert into user(user_id, user_name, user_pwd,
+                         user_nickname, user_email,
+                         user_avatar, user_last_login_ip, user_register_time,
+                         user_last_login_time, user_status, user_role)
+        values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
+                #{userNickname,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR},
+                #{userAvatar,jdbcType=VARCHAR}, #{userLastLoginIp,jdbcType=VARCHAR},
+                #{userRegisterTime,jdbcType=TIMESTAMP}, #{userLastLoginTime,jdbcType=TIMESTAMP},
+                #{userStatus,jdbcType=INTEGER}, #{userRole,jdbcType=VARCHAR})
+    </insert>
+    <update id="update" parameterType="com.ugly.blog.entity.User">
+        update user
+        <set>
+            <if test="userName != null">user_name=#{userName,jdbcType=VARCHAR}</if>
+            <if test="userPwd != null">,user_pwd = #{userPwd,jdbcType=VARCHAR}</if>
+            <if test="userNickname != null">,user_nickname = #{userNickname,jdbcType=VARCHAR}</if>
+            <if test="userEmail != null">,user_email = #{userEmail,jdbcType=VARCHAR}</if>
+            <if test="userAvatar != null">,user_avatar = #{userAvatar,jdbcType=VARCHAR}</if>
+            <if test="userLastLoginIp != null">,user_last_login_ip = #{userLastLoginIp,jdbcType=VARCHAR}</if>
+            <if test="userRegisterTime != null">,user_register_time = #{userRegisterTime,jdbcType=TIMESTAMP}</if>
+            <if test="userLastLoginTime != null">,user_last_login_time = #{userLastLoginTime,jdbcType=TIMESTAMP}</if>
+            <if test="userStatus != null">,user_status = #{userStatus,jdbcType=INTEGER}</if>
+            <if test="userRole != null">,user_role = #{userRole,jdbcType=VARCHAR}</if>
+        </set>
+        <where>user_id=#{userId,javaType=INTEGER}</where>
+    </update>
+
+
+
+</mapper>
