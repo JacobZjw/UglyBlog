@@ -52,6 +52,16 @@
                     }
                 });
             });
+
+            layui.use(['element'], function() {
+                var element = layui.element;
+                element.init();
+                element.on('nav(demo)', function(elem) {
+                    //console.log(elem)
+                    layer.msg(elem.text());
+                });
+                element.render();
+            });
         });
     </script>
 
@@ -60,6 +70,16 @@
 <jsp:include page="global/header.jsp"/>
 
 <div class="layui-container">
+    <div class="layui-row breadcrumb">
+        <div class="layui-row" style="margin-bottom: 20px;"></div>
+        <div class="layui-row">
+					<span class="layui-breadcrumb" lay-separator=">">
+						<a href="">首页</a>
+						<a href="">Srping</a>
+						<a><cite>正文</cite></a>
+					</span>
+        </div>
+    </div>
     <div class="layui-row">
         <div class="layui-col-md8">
             <div class="blog-list layui-row">

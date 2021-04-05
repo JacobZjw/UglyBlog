@@ -17,7 +17,7 @@
         <div class="header-inner" style="float: right;">
             <ul class="layui-nav">
                 <li class="layui-nav-item">
-                    <a href="${pageContext.request.contextPath}">首页</a>
+                    <a href="<c:url value="/index"/>">首页</a>
                 </li>
                 <li class="layui-nav-item layui-this">
                     <a href="javascript:">博客</a>

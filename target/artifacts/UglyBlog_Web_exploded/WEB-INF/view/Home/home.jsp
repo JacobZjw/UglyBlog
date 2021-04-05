@@ -52,9 +52,17 @@
                     }
                 });
             });
-        })
 
-
+            layui.use(['element'], function() {
+                var element = layui.element;
+                element.init();
+                element.on('nav(demo)', function(elem) {
+                    //console.log(elem)
+                    layer.msg(elem.text());
+                });
+                element.render();
+            });
+        });
     </script>
 
 </head>
@@ -62,6 +70,16 @@
 <jsp:include page="global/header.jsp"/>
 
 <div class="layui-container">
+    <div class="layui-row breadcrumb">
+        <div class="layui-row" style="margin-bottom: 20px;"></div>
+        <div class="layui-row">
+					<span class="layui-breadcrumb" lay-separator=">">
+						<a href="">首页</a>
+						<a href="">Srping</a>
+						<a><cite>正文</cite></a>
+					</span>
+        </div>
+    </div>
     <div class="layui-row">
         <div class="layui-col-md8">
             <div class="blog-list layui-row">
@@ -79,7 +97,7 @@
                                 <c:if test="${article.articleIsReprint != 1}">
                                     <span class="fc-blue">【原创】</span>
                                 </c:if>
-                                <a href="/blogs/${article.articleId}">${article.articleTitle}</a>
+                                <a href="/article/${article.articleId}">${article.articleTitle}</a>
                             </h5>
                             <div class="time">
                                 <span class="day">${day}</span>
@@ -89,7 +107,7 @@
                             </div>
                             <div class="content">${article.articleSummary}</div>
                             <div class="read-more">
-                                <a href="/blogs/${article.articleId}" class="fc-black f-fwb">继续阅读</a>
+                                <a href="/article/${article.articleId}" class="fc-black f-fwb">继续阅读</a>
                             </div>
 
                             <aside class="f-oh footer">
