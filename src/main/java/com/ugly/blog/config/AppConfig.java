@@ -12,8 +12,9 @@ import org.springframework.stereotype.Controller;
 @Configuration
 @ComponentScan(basePackages = "com.ugly.blog", excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Controller.class))
 public class AppConfig {
-    public static final Integer DEFAULT_PAGE_INDEX = 1;
-    public static final Integer DEFAULT_PAGE_SIZE = 10;
+    public static final String DEFAULT_PAGE_INDEX = "1";
+    public static final String DEFAULT_PAGE_SIZE = "2";
+
     public static final Integer SIDEBAR_CATEGORY_NUM = 4;
     public static final Integer SIDEBAR_HOT_ARTICLE_NUM = 5;
 }

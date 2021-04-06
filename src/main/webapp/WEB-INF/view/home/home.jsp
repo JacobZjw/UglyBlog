@@ -28,9 +28,8 @@
         <div class="layui-row" style="margin-bottom: 20px;"></div>
         <div class="layui-row">
 					<span class="layui-breadcrumb" lay-separator=">">
-						<a href="">首页</a>
-						<a href="">所有文章</a>
-						<a><cite>正文</cite></a>
+						<a href="/index">首页</a>
+						<a><cite>所有文章</cite></a>
 					</span>
         </div>
     </div>
@@ -51,7 +50,7 @@
 </body>
 </html>
 
-<script src="layui/layui.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
 <script src="/js/sidebar.js" type="text/javascript"></script>
 <script>

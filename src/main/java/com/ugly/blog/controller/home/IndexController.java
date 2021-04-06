@@ -42,8 +42,8 @@ public class IndexController {
     }
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
-    public String index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-                        @RequestParam(required = false, defaultValue = "10") Integer pageSize, Model model) {
+    public String index(@RequestParam(required = false, defaultValue = AppConfig.DEFAULT_PAGE_INDEX) Integer pageIndex,
+                        @RequestParam(required = false, defaultValue = AppConfig.DEFAULT_PAGE_SIZE) Integer pageSize, Model model) {
         Page<Article> page = pageService.getDefaultPage(pageIndex, pageSize);
         model.addAttribute("articlePage", page);
 

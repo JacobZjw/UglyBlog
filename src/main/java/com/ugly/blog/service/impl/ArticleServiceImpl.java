@@ -14,8 +14,38 @@ import java.util.List;
  */
 @Service
 public class ArticleServiceImpl implements ArticleService {
+
+    private final ArticleMapper articleMapper;
+
     @Autowired
-    private ArticleMapper articleMapper;
+    public ArticleServiceImpl(ArticleMapper articleMapper) {
+        this.articleMapper = articleMapper;
+    }
+
+    @Override
+    public int insertArticle(Article article) {
+        return articleMapper.insertArticle(article);
+    }
+
+    @Override
+    public int updateArticle(Article article) {
+        return articleMapper.updateArticle(article);
+    }
+
+    @Override
+    public int deleteArticle(Integer articleId) {
+        return articleMapper.deleteArticle(articleId);
+    }
+
+    @Override
+    public int addViewCount(Integer articleId) {
+        return articleMapper.addViewCount(articleId);
+    }
+
+    @Override
+    public int addLikeCount(Integer articleId) {
+        return articleMapper.addLikeCount(articleId);
+    }
 
     @Override
     public Article getArticleById(int articleId) {

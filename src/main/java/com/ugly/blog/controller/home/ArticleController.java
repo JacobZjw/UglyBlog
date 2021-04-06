@@ -41,6 +41,8 @@ public class ArticleController {
     @RequestMapping(value = "/article/{articleId}", method = RequestMethod.GET)
     public String getArticle(@PathVariable("articleId") Integer articleId, Model model) {
         Article article = articleService.getArticleById(articleId);
+        //TODO:may by can use aop
+        articleService.addViewCount(articleId);
         model.addAttribute("article", article);
 
         List<Category> categoryList = categoryService.getTopNumsCategoryList(AppConfig.SIDEBAR_CATEGORY_NUM);
@@ -78,4 +80,6 @@ public class ArticleController {
         }
         return prevAndNextArticle;
     }
+
+
 }

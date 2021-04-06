@@ -58,4 +58,11 @@
         </c:forEach>
     </article>
 </div>
-<div class="layui-row layui-laypage" id="laypage"></div>
+<c:if test="${articlePage.totalCount > 0}">
+    <div class="layui-row layui-laypage" id="laypage"></div>
+</c:if>
+
+<c:if test="${articlePage.totalCount == 0}">
+    <div class="layui-row" style="font-size: 20px;margin-top: 30px;text-align: center;color: cornflowerblue;"><h1>
+        暂时还没有文章</h1></div>
+</c:if>

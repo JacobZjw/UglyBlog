@@ -38,7 +38,7 @@ public interface ArticleCategoryRefMapper {
      */
     @Select("SELECT a.article_id,a.article_title,a.article_view_count,\n " +
             "a.article_comment_count,a.article_create_time,\n " +
-            "a.article_summary,a.article_user_id \n " +
+            "a.article_summary,a.article_user_id, a.article_is_reprint \n " +
             "FROM article_category_ref ac INNER JOIN article a ON ac.article_id = a.article_id \n" +
             "WHERE ac.category_id = #{categoryId} LIMIT #{begin},#{pageSize}")
     @ResultMap("com.ugly.blog.mapper.ArticleMapper.articleMap")

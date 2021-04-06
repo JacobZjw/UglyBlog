@@ -29,4 +29,38 @@
         </collection>
 
     </resultMap>
+    <insert id="insertArticle" useGeneratedKeys="true" parameterType="com.ugly.blog.entity.Article"
+            keyColumn="article_id" keyProperty="articleId">
+        <selectKey keyProperty="articleId" keyColumn="article_id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO article(article_user_id, article_title, article_content, article_view_count,
+        article_comment_count, article_like_count, article_status, article_order,
+        article_update_time, article_create_time, article_summary, article_is_reprint)
+        VALUES (#{articleUserId}, #{articleTitle}, #{articleContent}, #{articleViewCount}, #{articleCommentCount},
+        #{articleLikeCount}, #{articleStatus}, #{articleOrder}, #{articleUpdateTime}, #{articleCreateTime},
+        #{articleSummary}, #{articleIsReprint})
+    </insert>
+
+    <update id="updateArticle" parameterType="com.ugly.blog.entity.Article">
+        UPDATE article
+        <set>
+            <if test="articleUserId != null">article_user_id=#{articleUserId}</if>
+            <if test="articleTitle != null">article_title=#{articleTitle}</if>
+            <if test="articleContent != null">article_content=#{articleContent}</if>
+            <if test="articleViewCount != null">article_view_count=#{articleViewCount}</if>
+            <if test="articleCommentCount != null">article_comment_count=#{articleCommentCount}</if>
+            <if test="articleLikeCount != null">article_like_count=#{articleLikeCount}</if>
+            <if test="articleStatus != null">article_status=#{articleStatus}</if>
+            <if test="articleOrder != null">article_order=#{articleOrder}</if>
+            <if test="articleUpdateTime != null">article_update_time=#{articleUpdateTime}</if>
+            <if test="articleCreateTime != null">article_create_time=#{articleCreateTime}</if>
+            <if test="articleSummary != null">article_summary=#{articleSummary}</if>
+            <if test="articleIsReprint != null">article_is_reprint=#{articleIsReprint}</if>
+        </set>
+        WHERE article_id = #{articleId};
+    </update>
+
+
 </mapper>

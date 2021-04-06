@@ -57,6 +57,12 @@
                 });
                 element.render();
             });
+
+            $.getJSON("/category/categoryName/${categoryId}", function (result) {
+                if (result.code === 200) {
+                    $(".layui-breadcrumb > a:eq(2) > cite").text(result.data);
+                }
+            });
         });
     </script>
 </head>
@@ -69,8 +75,8 @@
         <div class="layui-row" style="margin-bottom: 20px;"></div>
         <div class="layui-row">
 					<span class="layui-breadcrumb" lay-separator=">">
-						<a href="">首页</a>
-						<a href="">分类</a>
+						<a href="/index">首页</a>
+						<a href="/category/all">分类</a>
 						<a><cite>分类名</cite></a>
 					</span>
         </div>

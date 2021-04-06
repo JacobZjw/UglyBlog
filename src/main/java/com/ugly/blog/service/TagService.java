@@ -11,7 +11,10 @@ import java.util.List;
 public interface TagService {
     /**
      * 获取标签列表
+     *
      * @return
      */
     List<Tag> getTagList();
+
+    Tag getTagById(Integer tagId);
 }

@@ -64,6 +64,12 @@
                 });
                 element.render();
             });
+
+            $.getJSON("/tag/tagName/${tagId}", function (result) {
+                if (result.code === 200) {
+                    $(".layui-breadcrumb > a:eq(2) > cite").text(result.data);
+                }
+            });
         });
     </script>
 </head>
@@ -76,8 +82,8 @@
         <div class="layui-row" style="margin-bottom: 20px;"></div>
         <div class="layui-row">
 					<span class="layui-breadcrumb" lay-separator=">">
-						<a href="">首页</a>
-						<a href="">标签</a>
+						<a href="/index">首页</a>
+						<a href="/tag/all">标签</a>
 						<a><cite>标签名</cite></a>
 					</span>
         </div>

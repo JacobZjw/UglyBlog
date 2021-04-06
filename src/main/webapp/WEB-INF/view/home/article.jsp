@@ -58,8 +58,8 @@
         <div class="layui-row" style="margin-bottom: 20px;"></div>
         <div class="layui-row">
 					<span class="layui-breadcrumb" lay-separator=">">
-						<a href="">首页</a>
-						<a href="">Srping</a>
+						<a href="<c:url value="/index"/>">首页</a>
+						<a href="<c:url value="/article/${articleId}"/>">${article.articleTitle}</a>
 						<a><cite>正文</cite></a>
 					</span>
         </div>

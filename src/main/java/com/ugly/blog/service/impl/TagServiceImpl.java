@@ -14,11 +14,21 @@ import java.util.List;
  */
 @Service
 public class TagServiceImpl implements TagService {
+
+    private final TagMapper tagMapper;
+
     @Autowired
-    private TagMapper tagMapper;
+    public TagServiceImpl(TagMapper tagMapper) {
+        this.tagMapper = tagMapper;
+    }
 
     @Override
     public List<Tag> getTagList() {
         return tagMapper.getAllTagList();
+    }
+
+    @Override
+    public Tag getTagById(Integer tagId) {
+        return tagMapper.getTagById(tagId);
     }
 }
