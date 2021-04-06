@@ -23,7 +23,7 @@
 
         <div class="layui-card-body category-card-body">
             <ul class="category" id="category">
-                <li><a href="/category/all">全部文章</a></li>
+                <li><a href="<c:url value="/index"/>">全部文章</a></li>
                 <c:forEach items="${categoryList}" var="category">
                     <li>
                         <a href="<c:url value="/category/${category.categoryId}/"/>">${category.categoryName}</a>

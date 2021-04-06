@@ -24,12 +24,21 @@ public interface PageService {
 
     /**
      * 根据标签获取分页
-     * @param PageNo 页号
+     * @param pageNo 页号
      * @param pageSize 每页显示的条数
      * @param tags 标签列表
      * @return
      */
     Page<Article> getPageByTags(int pageNo, int pageSize, List<Tag> tags);
+
+    /**
+     * 根据一个标签获取分页
+     * @param pageNo 页号
+     * @param pageSize 每页显示的条数
+     * @param tagId 标签id
+     * @return article page
+     */
+    Page<Article> getPageByTagId(int pageNo, int pageSize, int tagId);
 
 
     /**

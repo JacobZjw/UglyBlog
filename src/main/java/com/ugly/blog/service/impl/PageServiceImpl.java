@@ -45,6 +45,15 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
+    public Page<Article> getPageByTagId(int pageNo, int pageSize, int tagId) {
+        int totalCount = articleMapper.getCountByTagId(tagId);
+        Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
+        int begin = (page.getPageNo() - 1) * pageSize;
+        page.setItems(articleMapper.getPageByTagId(begin, pageSize, tagId));
+        return page;
+    }
+
+    @Override
     public Page<Article> getPageByCategory(int pageNo, int pageSize, int categoryId) {
         int totalCount = articleMapper.getCountByCategory(categoryId);
         Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
@@ -56,7 +65,7 @@ public class PageServiceImpl implements PageService {
     private Page<Article> addDataToPage(int pageNo, int pageSize, int totalCount) {
         Page<Article> page = new Page<>();
         int totalPage = totalCount / pageSize;
-        if (totalCount % pageSize != 0) {
+        if (totalCount % pageSize != 0 || totalPage == 0) {
             ++totalPage;
         }
         pageNo = Math.max(1, pageNo);

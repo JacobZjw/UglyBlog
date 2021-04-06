@@ -16,6 +16,28 @@
 	z-index: 99;
 }
 
+.header-logo h1 {
+	font-size: 2.5rem;
+	font-weight: bold;
+	font-family: monospace;
+
+	width: 20px;
+	padding: 2px 0 2px 20px;
+	width: 20px;
+	height: 4rem;
+	/* width: 6ch; */
+	overflow: hidden;
+	animation: 4s typing steps(13, jump-none) forwards infinite;
+}
+@keyframes typing {
+	from {
+		width: 1ch;
+	}
+	to {
+		width: 13ch;
+	}
+}
+
 .layui-fluid {
 	margin-top: 59px;
 	flex: 1;
@@ -24,28 +46,4 @@
 	margin-top: 59px;
 	flex: 1;
 	background-color: #393D49;
-}
-
-.header-logo h1 {
-	font-size: 3rem;
-	font-weight: bold;
-	font-family: monospace;
-
-	width: 20px;
-	padding: 2px 0 2px 20px;
-	width: 20px;
-	height: 4rem;
-	width: 6ch;
-	overflow: hidden;
-	animation: 4s typing steps(13, jump-none) forwards infinite;
-}
-
-@keyframes typing {
-	from {
-		width: 1ch;
-	}
-
-	to {
-		width: 13ch;
-	}
 }

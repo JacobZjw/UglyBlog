@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
@@ -43,12 +43,7 @@
 
                         //首次不执行
                         if (!first) {
-                            location.href = "${pageContext.request.contextPath}?pageIndex=" + obj.curr;
-                            <%--$.getJSON("${pageContext.request.contextPath}/" + (obj.curr + 1), null, function (data) {--%>
-                            <%--    if (data != null) {--%>
-                            <%--       --%>
-                            <%--    }--%>
-                            <%--});--%>
+                            location.href = "${pageContext.request.contextPath}/category/${categoryId}?pageIndex=" + obj.curr + "&pageSize=" + obj.limit;
                         }
                     }
                 });
@@ -58,7 +53,6 @@
                 var element = layui.element;
                 element.init();
                 element.on('nav(demo)', function (elem) {
-                    //console.log(elem)
                     layer.msg(elem.text());
                 });
                 element.render();
@@ -76,7 +70,7 @@
         <div class="layui-row">
 					<span class="layui-breadcrumb" lay-separator=">">
 						<a href="">首页</a>
-						<a href="">Srping</a>
+						<a href="">${categoryId}</a>
 						<a><cite>正文</cite></a>
 					</span>
         </div>

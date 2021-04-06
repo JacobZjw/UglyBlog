@@ -32,7 +32,8 @@
 
 
     <select id="getPageByTagList" resultMap="articleMap" parameterType="list">
-        SELECT a.*
+        SELECT a.article_id,a.article_title,a.article_view_count,a.article_comment_count,a.article_create_time,
+               a.article_summary,a.article_user_id
         FROM article_tag_ref at
         INNER JOIN article a ON at.article_id = a.article_id
         WHERE tag_id IN
