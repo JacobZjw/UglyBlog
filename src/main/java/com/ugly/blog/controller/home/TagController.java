@@ -37,7 +37,7 @@ public class TagController {
         List<Tag> tagList = tagService.getTagList();
         model.addAttribute("tagList", tagList);
 
-        return "Home/articlesByTag";
+        return "home/articlesByTag";
     }
 
 }

@@ -57,4 +57,26 @@ public interface ArticleMapper {
             "article_summary,article_user_id FROM article LIMIT #{begin},#{pageSize}")
     @ResultMap("articleMap")
     List<Article> getPage(@Param("begin") int begin, @Param("pageSize") int pageSize);
+
+
+    /**
+     * 获取下一篇文章的id和标题
+     *
+     * @param articleId 当前文章的id
+     * @return article id and title OR null
+     */
+    @Select("SELECT article_id,article_title FROM article WHERE article_id > #{articleId} ORDER BY article_id LIMIT 1;")
+    @ResultMap("articleMap")
+    Article getNextArticle(Integer articleId);
+
+
+    /**
+     * 获取上一篇文章的id和标题
+     *
+     * @param articleId 当前文章的id
+     * @return article id and title OR null
+     */
+    @Select("SELECT article_id,article_title FROM article WHERE article_id < #{articleId} ORDER BY article_id DESC LIMIT 1;")
+    @ResultMap("articleMap")
+    Article getPrevArticle(Integer articleId);
 }

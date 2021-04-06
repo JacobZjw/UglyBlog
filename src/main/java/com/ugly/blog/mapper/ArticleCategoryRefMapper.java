@@ -41,7 +41,7 @@ public interface ArticleCategoryRefMapper {
             "a.article_summary,a.article_user_id \n " +
             "FROM article_category_ref ac INNER JOIN article a ON ac.article_id = a.article_id \n" +
             "WHERE ac.category_id = #{categoryId} LIMIT #{begin},#{pageSize}")
-    @ResultMap("articleMap")
+    @ResultMap("com.ugly.blog.mapper.ArticleMapper.articleMap")
     List<Article> getPageByCategory(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("categoryId") int categoryId);
 
 }

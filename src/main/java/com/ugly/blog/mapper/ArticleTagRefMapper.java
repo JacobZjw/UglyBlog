@@ -58,7 +58,7 @@ public interface ArticleTagRefMapper {
             "a.article_summary,a.article_user_id \n " +
             "FROM article_tag_ref at INNER JOIN article a ON at.article_id = a.article_id \n" +
             "WHERE at.tag_id = #{tagId} LIMIT #{begin},#{pageSize}")
-    @ResultMap("articleMap")
+    @ResultMap("com.ugly.blog.mapper.ArticleMapper.articleMap")
     List<Article> getArticleListByTagId(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("tagId") int tagId);
 
 }

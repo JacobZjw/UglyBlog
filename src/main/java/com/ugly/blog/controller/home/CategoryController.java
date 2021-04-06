@@ -4,11 +4,8 @@ import com.ugly.blog.config.AppConfig;
 import com.ugly.blog.dto.Page;
 import com.ugly.blog.entity.Article;
 import com.ugly.blog.entity.Category;
-import com.ugly.blog.entity.Tag;
-import com.ugly.blog.service.ArticleService;
 import com.ugly.blog.service.CategoryService;
 import com.ugly.blog.service.PageService;
-import com.ugly.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +37,7 @@ public class CategoryController {
         List<Category> categoryList = categoryService.getAllCategoryList();
         model.addAttribute("categoryList", categoryList);
 
-        return "Home/articlesByCategory";
+        return "home/articlesByCategory";
     }
 
 //    @RequestMapping(value = "category/{categoryId}", method = RequestMethod.GET)

@@ -20,7 +20,7 @@
     <link rel="stylesheet" type="text/css" href="/css/global.css"/>
 
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
-    <script src="layui/layui.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
     <script src="/js/sidebar.js" type="text/javascript"></script>
 
     <script>
@@ -33,6 +33,16 @@
                     layer.msg(elem.text());
                 });
                 element.render();
+            });
+            $.getJSON("/article/${articleId}/prevAndNext", function (data) {
+                if (data.prevArticleTitle == null) {
+                    $("#prevArticle").text("当前是第一篇")
+                }
+                if (data.nextArticleTitle == null) {
+                    $("#nextArticle").text("当前是最后一篇")
+                }
+                $("#prevArticle > a").text(data.prevArticleTitle).attr("href", "/article/" + data.prevArticleId);
+                $("#nextArticle > a").text(data.nextArticleTitle).attr("href", "/article/" + data.nextArticleId);
             });
         });
     </script>
@@ -119,12 +129,15 @@
     <div class="layui-row layui-col-space30">
         <div class="layui-col-md6">
             <div class="layui-panel">
-                <div style="padding: 30px; text-align: center;"><a href="#">SpringMVC中使用Interceptor拦截器</a> 上一篇</div>
+                <div style="padding: 30px; text-align: center;" id="prevArticle"><a
+                        href="#">SpringMVC中使用Interceptor拦截器</a> 上一篇
+                </div>
             </div>
         </div>
         <div class="layui-col-md6">
             <div class="layui-panel">
-                <div style="padding: 30px; text-align: center;">下一篇 <a href="#">SpringBoot + mongodb 整合,
+                <div style="padding: 30px; text-align: center;" id="nextArticle">下一篇 <a href="#">SpringBoot + mongodb
+                    整合,
                     记录网站操作日志，常用查询操作</a>
                 </div>
             </div>

@@ -31,4 +31,14 @@ public class ArticleServiceImpl implements ArticleService {
     public int getCount() {
         return articleMapper.getCount();
     }
+
+    @Override
+    public Article getNextArticle(Integer articleId) {
+        return articleMapper.getNextArticle(articleId);
+    }
+
+    @Override
+    public Article getPrevArticle(Integer articleId) {
+        return articleMapper.getPrevArticle(articleId);
+    }
 }

@@ -1,7 +1,6 @@
 package com.ugly.blog.service;
 
 import com.ugly.blog.entity.Article;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -35,4 +34,21 @@ public interface ArticleService {
      * @return 文章总数
      */
     int getCount();
+
+    /**
+     * 获取下一篇文章的id和标题
+     *
+     * @param articleId 当前文章的id
+     * @return article id and title
+     */
+    Article getNextArticle(Integer articleId);
+
+
+    /**
+     * 获取上一篇文章的id和标题
+     *
+     * @param articleId 当前文章的id
+     * @return article id and title
+     */
+    Article getPrevArticle(Integer articleId);
 }

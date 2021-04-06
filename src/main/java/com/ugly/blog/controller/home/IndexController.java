@@ -2,6 +2,7 @@ package com.ugly.blog.controller.home;
 
 
 import cn.hutool.json.JSONObject;
+import com.ugly.blog.config.AppConfig;
 import com.ugly.blog.dto.Page;
 import com.ugly.blog.entity.Article;
 import com.ugly.blog.entity.Category;
@@ -24,18 +25,21 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-    @Autowired
-    private PageService pageService;
+    private final PageService pageService;
+
+    private final ArticleService articleService;
+
+    private final CategoryService categoryService;
+
+    private final TagService tagService;
 
     @Autowired
-    private ArticleService articleService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private TagService tagService;
-
+    public IndexController(PageService pageService, ArticleService articleService, CategoryService categoryService, TagService tagService) {
+        this.pageService = pageService;
+        this.articleService = articleService;
+        this.categoryService = categoryService;
+        this.tagService = tagService;
+    }
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
@@ -43,16 +47,16 @@ public class IndexController {
         Page<Article> page = pageService.getDefaultPage(pageIndex, pageSize);
         model.addAttribute("articlePage", page);
 
-        List<Category> categoryList = categoryService.getTopNumsCategoryList(4);
+        List<Category> categoryList = categoryService.getTopNumsCategoryList(AppConfig.SIDEBAR_CATEGORY_NUM);
         model.addAttribute("categoryList", categoryList);
 
-        List<Article> hotArticles = articleService.getTopHotArticle(5);
-        model.addAttribute("hotArticles",hotArticles);
+        List<Article> hotArticles = articleService.getTopHotArticle(AppConfig.SIDEBAR_HOT_ARTICLE_NUM);
+        model.addAttribute("hotArticles", hotArticles);
 
 
         List<Tag> tagList = tagService.getTagList();
-        model.addAttribute("tagList",tagList);
-        return "Home/home";
+        model.addAttribute("tagList", tagList);
+        return "home/home";
     }
 
     @RequestMapping(value = "/page/{pageIndex}", produces = "application/json;charset=utf-8")

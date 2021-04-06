@@ -29,7 +29,7 @@
         <div class="layui-row">
 					<span class="layui-breadcrumb" lay-separator=">">
 						<a href="">首页</a>
-						<a href="">Srping</a>
+						<a href="">所有文章</a>
 						<a><cite>正文</cite></a>
 					</span>
         </div>

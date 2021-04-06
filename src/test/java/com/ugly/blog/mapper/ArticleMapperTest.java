@@ -48,7 +48,8 @@ public class ArticleMapperTest extends BaseTest {
 
     @Test
     public void getPageByTag() {
-
+        System.out.println(articleMapper.getPrevArticle(1));
+        System.out.println(articleMapper.getNextArticle(2));
     }
 
     @Test
