@@ -53,7 +53,6 @@ public class ArticleMapperTest extends BaseTest {
 
     @Test
     public void getPageByCategory() {
-        articleMapper.getPageByCategory(1, 10, 6).forEach(System.out::println);
     }
 
     @Test
@@ -82,12 +81,10 @@ public class ArticleMapperTest extends BaseTest {
 
     @Test
     public void getCountByTagId() {
-        System.out.println(articleMapper.getCountByTagId(1));
     }
 
     @Test
     public void getPageByTagId() {
-        articleMapper.getPageByTagId(1,10,5).forEach(System.out::println);
     }
 
     @Test

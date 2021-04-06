@@ -19,7 +19,7 @@
                 <li class="layui-nav-item">
                     <a href="<c:url value="/index"/>">首页</a>
                 </li>
-                <li class="layui-nav-item layui-this">
+                <li class="layui-nav-item">
                     <a href="javascript:">博客</a>
                 </li>
                 <li class="layui-nav-item">

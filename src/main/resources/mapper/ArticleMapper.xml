@@ -29,30 +29,4 @@
         </collection>
 
     </resultMap>
-
-
-    <select id="getPageByTagList" resultMap="articleMap" parameterType="list">
-        SELECT a.article_id,a.article_title,a.article_view_count,a.article_comment_count,a.article_create_time,
-               a.article_summary,a.article_user_id
-        FROM article_tag_ref at
-        INNER JOIN article a ON at.article_id = a.article_id
-        WHERE tag_id IN
-        <foreach collection="tags" open="(" item="tag" separator="," close=")">
-            #{tag.tagId}
-        </foreach>
-        LIMIT #{begin},#{pageSize};
-    </select>
-
-    <select id="getCountByTagList" resultType="java.lang.Integer" parameterType="list">
-        SELECT COUNT(*)
-        FROM article_tag_ref at
-        INNER JOIN article a ON at.article_id = a.article_id
-        WHERE tag_id IN
-        <foreach collection="tags" open="(" item="tag" separator="," close=")">
-            #{tag.tagId}
-        </foreach>
-        GROUP BY a.article_id;
-    </select>
-
-
 </mapper>

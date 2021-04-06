@@ -1,7 +1,6 @@
 package com.ugly.blog.mapper;
 
 import com.ugly.blog.entity.Article;
-import com.ugly.blog.entity.Tag;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
@@ -58,83 +57,4 @@ public interface ArticleMapper {
             "article_summary,article_user_id FROM article LIMIT #{begin},#{pageSize}")
     @ResultMap("articleMap")
     List<Article> getPage(@Param("begin") int begin, @Param("pageSize") int pageSize);
-
-
-    /**
-     * 获取标签列表的文章总数
-     *
-     * @param tags
-     * @return
-     */
-    int getCountByTagList(List<Tag> tags);
-
-
-    /**
-     * 通过标签获取分页
-     *
-     * @param begin    起始索引
-     * @param pageSize 页面大小
-     * @param tags     标签列表
-     * @return
-     */
-    List<Article> getPageByTagList(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("tags") List<Tag> tags);
-
-
-    /**
-     * 获取标签文章总数
-     *
-     * @param tagId
-     * @return
-     */
-    @Select("SELECT COUNT(*) FROM article_tag_ref at \n" +
-            "INNER JOIN article a ON at.article_id = a.article_id \n" +
-            "WHERE at.tag_id = #{tagId};")
-    int getCountByTagId(int tagId);
-
-
-    /**
-     * 通过标签Id获取分页
-     *
-     * @param begin    起始索引
-     * @param pageSize 页面大小
-     * @param tagId    分类id
-     * @return
-     */
-    @Select("SELECT a.article_id,a.article_title,a.article_view_count,\n " +
-            "a.article_comment_count,a.article_create_time,\n " +
-            "a.article_summary,a.article_user_id \n " +
-            "FROM article_tag_ref at INNER JOIN article a ON at.article_id = a.article_id \n" +
-            "WHERE at.tag_id = #{tagId} LIMIT #{begin},#{pageSize}")
-    @ResultMap("articleMap")
-    List<Article> getPageByTagId(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("tagId") int tagId);
-
-
-    /**
-     * 获取分类文章总数
-     *
-     * @param categoryId
-     * @return
-     */
-    @Select("SELECT COUNT(*) FROM article_category_ref ac \n" +
-            "INNER JOIN article a ON ac.article_id = a.article_id \n" +
-            "WHERE ac.category_id = #{categoryId}")
-    int getCountByCategory(int categoryId);
-
-
-    /**
-     * 通过分类获取分页
-     *
-     * @param begin      起始索引
-     * @param pageSize   页面大小
-     * @param categoryId 分类id
-     * @return
-     */
-    @Select("SELECT a.article_id,a.article_title,a.article_view_count,\n " +
-            "a.article_comment_count,a.article_create_time,\n " +
-            "a.article_summary,a.article_user_id \n " +
-            "FROM article_category_ref ac INNER JOIN article a ON ac.article_id = a.article_id \n" +
-            "WHERE ac.category_id = #{categoryId} LIMIT #{begin},#{pageSize}")
-    @ResultMap("articleMap")
-    List<Article> getPageByCategory(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("categoryId") int categoryId);
-
 }

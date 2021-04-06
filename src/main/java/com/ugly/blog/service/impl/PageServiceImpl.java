@@ -2,8 +2,9 @@ package com.ugly.blog.service.impl;
 
 import com.ugly.blog.dto.Page;
 import com.ugly.blog.entity.Article;
-import com.ugly.blog.entity.Tag;
+import com.ugly.blog.mapper.ArticleCategoryRefMapper;
 import com.ugly.blog.mapper.ArticleMapper;
+import com.ugly.blog.mapper.ArticleTagRefMapper;
 import com.ugly.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,18 @@ import java.util.List;
  */
 @Service
 public class PageServiceImpl implements PageService {
+
     private final ArticleMapper articleMapper;
 
+    private final ArticleTagRefMapper articleTagRefMapper;
+    private final ArticleCategoryRefMapper articleCategoryRefMapper;
 
     @Autowired
-    public PageServiceImpl(ArticleMapper articleMapper) {
+    public PageServiceImpl(ArticleMapper articleMapper, ArticleTagRefMapper articleTagRefMapper, ArticleCategoryRefMapper articleCategoryRefMapper) {
         this.articleMapper = articleMapper;
+        this.articleTagRefMapper = articleTagRefMapper;
+        this.articleCategoryRefMapper = articleCategoryRefMapper;
     }
-
 
     @Override
     public Page<Article> getDefaultPage(int pageNo, int pageSize) {
@@ -36,29 +41,29 @@ public class PageServiceImpl implements PageService {
 
 
     @Override
-    public Page<Article> getPageByTags(int pageNo, int pageSize, List<Tag> tags) {
-        int totalCount = articleMapper.getCountByTagList(tags);
+    public Page<Article> getPageByTags(int pageNo, int pageSize, List<Integer> tags) {
+        int totalCount = articleTagRefMapper.getCountByTagList(tags);
         Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
         int begin = (page.getPageNo() - 1) * pageSize;
-        page.setItems(articleMapper.getPageByTagList(begin, pageSize, tags));
+        page.setItems(articleTagRefMapper.getArticleListByTagList(begin, pageSize, tags));
         return page;
     }
 
     @Override
     public Page<Article> getPageByTagId(int pageNo, int pageSize, int tagId) {
-        int totalCount = articleMapper.getCountByTagId(tagId);
+        int totalCount = articleTagRefMapper.getCountByTagId(tagId);
         Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
         int begin = (page.getPageNo() - 1) * pageSize;
-        page.setItems(articleMapper.getPageByTagId(begin, pageSize, tagId));
+        page.setItems(articleTagRefMapper.getArticleListByTagId(begin, pageSize, tagId));
         return page;
     }
 
     @Override
     public Page<Article> getPageByCategory(int pageNo, int pageSize, int categoryId) {
-        int totalCount = articleMapper.getCountByCategory(categoryId);
+        int totalCount = articleCategoryRefMapper.getCountByCategory(categoryId);
         Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
         int begin = (page.getPageNo() - 1) * pageSize;
-        page.setItems(articleMapper.getPageByCategory(begin, pageSize, categoryId));
+        page.setItems(articleCategoryRefMapper.getPageByCategory(begin, pageSize, categoryId));
         return page;
     }
 
