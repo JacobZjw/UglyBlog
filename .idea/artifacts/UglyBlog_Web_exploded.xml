@@ -37,6 +37,7 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.1" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.1" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1" />
+          <element id="library" level="project" name="Maven: com.github.penggle:kaptcha:2.3.2" />
         </element>
       </element>
     </root>

@@ -1,8 +1,6 @@
 package com.ugly.blog.service;
 
-import com.ugly.blog.entity.User;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Service;
+import com.ugly.blog.domain.User;
 
 /**
  * @author JwZheng

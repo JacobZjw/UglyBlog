@@ -1,7 +1,7 @@
 package com.ugly.blog.controller.admin;
 
 import cn.hutool.json.JSONObject;
-import com.ugly.blog.entity.User;
+import com.ugly.blog.domain.User;
 import com.ugly.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ugly.blog.mapper.UserMapper">
 
-    <insert id="insert" parameterType="com.ugly.blog.entity.User" useGeneratedKeys="true" keyProperty="userId"
+    <insert id="insert" parameterType="com.ugly.blog.domain.User" useGeneratedKeys="true" keyProperty="userId"
             keyColumn="user_id">
         insert into user(user_id, user_name, user_pwd,
                          user_nickname, user_email,
@@ -16,7 +16,7 @@
                 #{userRegisterTime,jdbcType=TIMESTAMP}, #{userLastLoginTime,jdbcType=TIMESTAMP},
                 #{userStatus,jdbcType=INTEGER}, #{userRole,jdbcType=VARCHAR})
     </insert>
-    <update id="update" parameterType="com.ugly.blog.entity.User">
+    <update id="update" parameterType="com.ugly.blog.domain.User">
         update user
         <set>
             <if test="userName != null">user_name=#{userName,jdbcType=VARCHAR}</if>

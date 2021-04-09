@@ -1,6 +1,6 @@
 package com.ugly.blog.service.impl;
 
-import com.ugly.blog.entity.User;
+import com.ugly.blog.domain.User;
 import com.ugly.blog.mapper.UserMapper;
 import com.ugly.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

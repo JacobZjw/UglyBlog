@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ugly.blog.mapper.TagMapper">
+
+    <resultMap id="tagMap" type="com.ugly.blog.domain.Tag">
+        <id column="tag_id" property="tagId"/>
+        <result column="tag_name" property="tagName"/>
+    </resultMap>
+
+    <insert id="insertTag" parameterType="string">
+        INSERT tag(
+        <if test="tagName != null and tagName != '' ">tag_name</if>
+        )
+        VALUES (
+        <if test="tagName != null and tagName != '' ">#{tagName}</if>
+        )
+    </insert>
+
+
+    <delete id="deleteTagById" parameterType="integer">
+        DELETE
+        FROM tag
+        WHERE tag_id = #{tagId}
+    </delete>
+
+
+    <update id="updateTag" parameterType="com.ugly.blog.domain.Tag">
+        UPDATE tag
+        SET tag_name=#{tagName}
+        WHERE tag_id = #{tagId}
+    </update>
+
+
+    <select id="getTagById" resultMap="tagMap" parameterType="integer">
+        SELECT *
+        FROM tag
+        WHERE tag_id = #{tagId}
+    </select>
+
+
+    <select id="getAllTagList" resultMap="tagMap">
+        SELECT *
+        FROM tag
+    </select>
+
+
+</mapper>

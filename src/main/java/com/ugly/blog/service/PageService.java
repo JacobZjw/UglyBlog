@@ -1,7 +1,7 @@
 package com.ugly.blog.service;
 
+import com.ugly.blog.domain.Article;
 import com.ugly.blog.dto.Page;
-import com.ugly.blog.entity.Article;
 
 import java.util.List;
 

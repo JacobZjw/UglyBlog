@@ -1,7 +1,7 @@
 package com.ugly.blog.service.impl;
 
+import com.ugly.blog.domain.Article;
 import com.ugly.blog.dto.Page;
-import com.ugly.blog.entity.Article;
 import com.ugly.blog.mapper.ArticleCategoryRefMapper;
 import com.ugly.blog.mapper.ArticleMapper;
 import com.ugly.blog.mapper.ArticleTagRefMapper;

@@ -1,9 +1,7 @@
 package com.ugly.blog.mapper;
 
-import com.ugly.blog.entity.Article;
+import com.ugly.blog.domain.Article;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -14,21 +12,21 @@ import java.util.List;
 public interface ArticleTagRefMapper {
 
     /**
-     * 获取标签列表的文章总数
+     * 查询属于标签列表的所有文章总数
      *
-     * @param tagIds tagId list
+     * @param tagIds 标签ID列表
      * @return 文章总数
      */
     int getCountByTagList(List<Integer> tagIds);
 
 
     /**
-     * 通过标签获取分页
+     * 查询属于标签列表的所有文章
      *
      * @param begin    起始索引
      * @param pageSize 页面大小
-     * @param tagIds   tagId list
-     * @return article list
+     * @param tagIds   标签ID列表
+     * @return 文章对象列表
      */
     List<Article> getArticleListByTagList(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("tagIds") List<Integer> tagIds);
 
@@ -36,29 +34,20 @@ public interface ArticleTagRefMapper {
     /**
      * 获取某一标签文章总数
      *
-     * @param tagId 标签id
+     * @param tagId 标签ID
      * @return 文章总数
      */
-    @Select("SELECT COUNT(*) FROM article_tag_ref at \n" +
-            "INNER JOIN article a ON at.article_id = a.article_id \n" +
-            "WHERE at.tag_id = #{tagId};")
     int getCountByTagId(int tagId);
 
 
     /**
-     * 通过标签Id获取分页
+     * 查询属于某一标签的所有文章
      *
      * @param begin    起始索引
      * @param pageSize 页面大小
-     * @param tagId    分类id
-     * @return article list
+     * @param tagId    标签ID
+     * @return 文章对象列表
      */
-    @Select("SELECT a.article_id,a.article_title,a.article_view_count,\n " +
-            "a.article_comment_count,a.article_create_time,\n " +
-            "a.article_summary,a.article_user_id, a.article_is_reprint \n " +
-            "FROM article_tag_ref at INNER JOIN article a ON at.article_id = a.article_id \n" +
-            "WHERE at.tag_id = #{tagId} LIMIT #{begin},#{pageSize}")
-    @ResultMap("com.ugly.blog.mapper.ArticleMapper.articleMap")
     List<Article> getArticleListByTagId(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("tagId") int tagId);
 
 }

@@ -3,10 +3,10 @@ package com.ugly.blog.controller.home;
 
 import cn.hutool.json.JSONObject;
 import com.ugly.blog.config.AppConfig;
+import com.ugly.blog.domain.Article;
+import com.ugly.blog.domain.Category;
+import com.ugly.blog.domain.Tag;
 import com.ugly.blog.dto.Page;
-import com.ugly.blog.entity.Article;
-import com.ugly.blog.entity.Category;
-import com.ugly.blog.entity.Tag;
 import com.ugly.blog.service.ArticleService;
 import com.ugly.blog.service.CategoryService;
 import com.ugly.blog.service.PageService;

@@ -1,6 +1,6 @@
 package com.ugly.blog.service.impl;
 
-import com.ugly.blog.entity.Tag;
+import com.ugly.blog.domain.Tag;
 import com.ugly.blog.mapper.TagMapper;
 import com.ugly.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;

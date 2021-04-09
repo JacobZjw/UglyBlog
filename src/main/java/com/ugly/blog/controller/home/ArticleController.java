@@ -1,10 +1,10 @@
 package com.ugly.blog.controller.home;
 
 import com.ugly.blog.config.AppConfig;
+import com.ugly.blog.domain.Article;
+import com.ugly.blog.domain.Category;
+import com.ugly.blog.domain.Tag;
 import com.ugly.blog.dto.PrevAndNextArticle;
-import com.ugly.blog.entity.Article;
-import com.ugly.blog.entity.Category;
-import com.ugly.blog.entity.Tag;
 import com.ugly.blog.service.ArticleService;
 import com.ugly.blog.service.CategoryService;
 import com.ugly.blog.service.TagService;
@@ -72,11 +72,11 @@ public class ArticleController {
         PrevAndNextArticle prevAndNextArticle = new PrevAndNextArticle();
         if (nextArticle != null) {
             prevAndNextArticle.setNextArticleId(nextArticle.getArticleId());
-            prevAndNextArticle.setNextArticleTitle(nextArticle.getArticleTitle());
+            prevAndNextArticle.setNextArticleTitle(nextArticle.getTitle());
         }
         if (prevArticle != null) {
             prevAndNextArticle.setPrevArticleId(prevArticle.getArticleId());
-            prevAndNextArticle.setPrevArticleTitle(prevArticle.getArticleTitle());
+            prevAndNextArticle.setPrevArticleTitle(prevArticle.getTitle());
         }
         return prevAndNextArticle;
     }

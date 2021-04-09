@@ -1,6 +1,6 @@
 package com.ugly.blog.mapper;
 
-import com.ugly.blog.entity.User;
+import com.ugly.blog.domain.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

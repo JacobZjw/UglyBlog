@@ -4,60 +4,157 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ugly.blog.mapper.ArticleMapper">
 
-    <resultMap id="articleMap" type="com.ugly.blog.entity.Article">
+    <resultMap id="articleMap" type="com.ugly.blog.domain.Article">
         <id property="articleId" javaType="Integer" column="article_id"/>
-        <result property="articleUserId" javaType="Integer" column="article_user_id"/>
-        <result property="articleTitle" javaType="String" column="article_title"/>
-        <result property="articleViewCount" javaType="Integer" column="article_view_count"/>
-        <result property="articleCommentCount" javaType="Integer" column="article_comment_count"/>
-        <result property="articleLikeCount" javaType="Integer" column="article_like_count"/>
-        <result property="articleCreateTime" javaType="Date" column="article_create_time"/>
-        <result property="articleUpdateTime" javaType="Date" column="article_update_time"/>
-        <result property="articleOrder" javaType="Integer" column="article_order"/>
-        <result property="articleContent" javaType="String" column="article_content"/>
-        <result property="articleSummary" javaType="String" column="article_summary"/>
-        <result property="articleIsReprint" javaType="Integer" column="article_is_reprint"/>
+        <result property="authorId" javaType="Integer" column="article_user_id"/>
+        <result property="title" javaType="String" column="article_title"/>
+        <result property="viewCount" javaType="Integer" column="article_view_count"/>
+        <result property="commentCount" javaType="Integer" column="article_comment_count"/>
+        <result property="likeCount" javaType="Integer" column="article_like_count"/>
+        <result property="createTime" javaType="Date" column="article_create_time"/>
+        <result property="updateTime" javaType="Date" column="article_update_time"/>
+        <result property="status" javaType="Integer" column="article_status"/>
+        <result property="order" javaType="Integer" column="article_order"/>
+        <result property="content" javaType="String" column="article_content"/>
+        <result property="summary" javaType="String" column="article_summary"/>
+        <result property="isReprint" javaType="Integer" column="article_is_reprint"/>
 
-        <association property="user" column="article_user_id" javaType="com.ugly.blog.entity.User"
-                     select="com.ugly.blog.mapper.UserMapper.getUserById">
-        </association>
-        <collection property="tagList" column="" ofType="com.ugly.blog.entity.Tag">
+        <!--        <association property="user" column="article_user_id" javaType="com.ugly.blog.domain.User"-->
+        <!--                     select="com.ugly.blog.mapper.UserMapper.getUserById">-->
+        <!--        </association>-->
+        <!--        <collection property="tagList" column="" ofType="com.ugly.blog.domain.Tag">-->
 
-        </collection>
-        <collection property="categoryList" column="" ofType="com.ugly.blog.entity.Category">
+        <!--        </collection>-->
+        <!--        <collection property="categoryList" column="" ofType="com.ugly.blog.domain.Category">-->
 
-        </collection>
-
+        <!--        </collection>-->
     </resultMap>
-    <insert id="insertArticle" useGeneratedKeys="true" parameterType="com.ugly.blog.entity.Article"
+
+
+    <delete id="deleteArticle" parameterType="integer">
+        DELETE
+        FROM article
+        WHERE article_id = #{articleId};
+    </delete>
+
+
+    <insert id="addViewCount" parameterType="integer">
+        UPDATE article
+        SET article_view_count = article_view_count + 1
+        WHERE article_id = #{articleId};
+    </insert>
+
+
+    <insert id="addLikeCount" parameterType="integer">
+        UPDATE article
+        SET article_like_count = article_like_count + 1
+        WHERE article_id = #{articleId};
+    </insert>
+
+
+    <select id="getCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM article
+    </select>
+
+
+    <select id="getById" resultMap="articleMap">
+        SELECT *
+        FROM article
+        WHERE article_id = #{articleId}
+    </select>
+
+
+    <select id="getTopHotArticle" resultMap="articleMap">
+        SELECT article_id, article_title
+        FROM article
+        ORDER BY article_view_count DESC
+        LIMIT #{num};
+    </select>
+
+
+    <select id="getPage" resultMap="articleMap">
+        SELECT article_id,
+               article_title,
+               article_view_count,
+               article_comment_count,
+               article_create_time,
+               article_is_reprint,
+               article_summary,
+               article_user_id
+        FROM article
+        LIMIT #{begin},#{pageSize}
+    </select>
+
+
+    <select id="getNextArticle" resultMap="articleMap" parameterType="integer">
+        SELECT article_id, article_title
+        FROM article
+        WHERE article_id > #{articleId}
+        ORDER BY article_id
+        LIMIT 1;
+    </select>
+
+
+    <select id="getPrevArticle" resultMap="articleMap" parameterType="integer">
+        SELECT article_id, article_title
+        FROM article
+        WHERE article_id &lt; #{articleId}
+        ORDER BY article_id DESC
+        LIMIT 1;
+    </select>
+
+
+    <insert id="insertArticle" useGeneratedKeys="true" parameterType="com.ugly.blog.domain.Article"
             keyColumn="article_id" keyProperty="articleId">
         <selectKey keyProperty="articleId" keyColumn="article_id" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
-
-        INSERT INTO article(article_user_id, article_title, article_content, article_view_count,
-        article_comment_count, article_like_count, article_status, article_order,
-        article_update_time, article_create_time, article_summary, article_is_reprint)
-        VALUES (#{articleUserId}, #{articleTitle}, #{articleContent}, #{articleViewCount}, #{articleCommentCount},
-        #{articleLikeCount}, #{articleStatus}, #{articleOrder}, #{articleUpdateTime}, #{articleCreateTime},
-        #{articleSummary}, #{articleIsReprint})
+        INSERT INTO article(
+        <if test="authorId != null">article_user_id,</if>
+        <if test="title != null">article_title,</if>
+        <if test="content != null">article_content,</if>
+        <if test="viewCount != null">article_view_count,</if>
+        <if test="commentCount != null">article_comment_count,</if>
+        <if test="likeCount != null">article_like_count,</if>
+        <if test="status != null">article_status,</if>
+        <if test="order != null">article_order,</if>
+        <if test="summary != null">article_summary,</if>
+        <if test="isReprint != null">article_is_reprint,</if>
+        article_create_time,
+        article_update_time
+        )
+        VALUES (
+        <if test="authorId != null">#{authorId},</if>
+        <if test="title != null">#{title},</if>
+        <if test="content != null">#{content},</if>
+        <if test="viewCount != null">#{viewCount},</if>
+        <if test="commentCount != null">#{commentCount},</if>
+        <if test="likeCount != null">#{likeCount},</if>
+        <if test="status != null">#{status},</if>
+        <if test="order != null">#{order},</if>
+        <if test="summary != null">#{summary},</if>
+        <if test="isReprint != null">#{isReprint},</if>
+        sysdate(),
+        sysdate()
+        )
     </insert>
 
-    <update id="updateArticle" parameterType="com.ugly.blog.entity.Article">
+    <update id="updateArticle" parameterType="com.ugly.blog.domain.Article">
         UPDATE article
         <set>
-            <if test="articleUserId != null">article_user_id=#{articleUserId}</if>
-            <if test="articleTitle != null">article_title=#{articleTitle}</if>
-            <if test="articleContent != null">article_content=#{articleContent}</if>
-            <if test="articleViewCount != null">article_view_count=#{articleViewCount}</if>
-            <if test="articleCommentCount != null">article_comment_count=#{articleCommentCount}</if>
-            <if test="articleLikeCount != null">article_like_count=#{articleLikeCount}</if>
-            <if test="articleStatus != null">article_status=#{articleStatus}</if>
-            <if test="articleOrder != null">article_order=#{articleOrder}</if>
-            <if test="articleUpdateTime != null">article_update_time=#{articleUpdateTime}</if>
-            <if test="articleCreateTime != null">article_create_time=#{articleCreateTime}</if>
-            <if test="articleSummary != null">article_summary=#{articleSummary}</if>
-            <if test="articleIsReprint != null">article_is_reprint=#{articleIsReprint}</if>
+            <if test="authorId != null">article_user_id=#{authorId},</if>
+            <if test="title != null">article_title=#{title},</if>
+            <if test="content != null">article_content=#{content},</if>
+            <if test="viewCount != null">article_view_count=#{viewCount},</if>
+            <if test="commentCount != null">article_comment_count=#{commentCount},</if>
+            <if test="likeCount != null">article_like_count=#{likeCount},</if>
+            <if test="status != null">article_status=#{status},</if>
+            <if test="order != null">article_order=#{order},</if>
+            <if test="createTime != null">article_create_time=#{createTime},</if>
+            <if test="summary != null">article_summary=#{summary},</if>
+            <if test="isReprint != null">article_is_reprint=#{isReprint},</if>
+            article_update_time=sysdate()
         </set>
         WHERE article_id = #{articleId};
     </update>

@@ -1,10 +1,10 @@
 package com.ugly.blog.controller.home;
 
 import com.ugly.blog.config.AppConfig;
+import com.ugly.blog.domain.Article;
+import com.ugly.blog.domain.Category;
 import com.ugly.blog.dto.JSONResult;
 import com.ugly.blog.dto.Page;
-import com.ugly.blog.entity.Article;
-import com.ugly.blog.entity.Category;
 import com.ugly.blog.service.CategoryService;
 import com.ugly.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;

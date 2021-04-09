@@ -1,6 +1,6 @@
 package com.ugly.blog.service;
 
-import com.ugly.blog.entity.Category;
+import com.ugly.blog.domain.Category;
 
 import java.util.List;
 

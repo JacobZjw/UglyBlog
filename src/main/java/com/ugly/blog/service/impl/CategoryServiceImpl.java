@@ -1,6 +1,6 @@
 package com.ugly.blog.service.impl;
 
-import com.ugly.blog.entity.Category;
+import com.ugly.blog.domain.Category;
 import com.ugly.blog.mapper.CategoryMapper;
 import com.ugly.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

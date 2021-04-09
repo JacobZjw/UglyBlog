@@ -1,4 +1,4 @@
-package com.ugly.blog.entity;
+package com.ugly.blog.domain;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.ugly.blog.service;
 
 import com.ugly.blog.BaseTest;
-import com.ugly.blog.entity.Article;
+import com.ugly.blog.domain.Article;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

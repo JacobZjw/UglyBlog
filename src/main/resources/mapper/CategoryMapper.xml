@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ugly.blog.mapper.CategoryMapper">
+
+    <resultMap id="categoryMap" type="com.ugly.blog.domain.Category">
+        <id column="category_id" property="categoryId" javaType="Integer"/>
+        <result column="category_name" property="categoryName" javaType="String"/>
+    </resultMap>
+
+    <insert id="insertCategory" parameterType="string" useGeneratedKeys="true">
+        INSERT INTO category(
+        <if test="categoryName != null and categoryName != '' ">category_name</if>
+        )
+        VALUES (
+        <if test="categoryName != null and categoryName != '' ">#{catrgoryName}</if>
+        )
+    </insert>
+
+
+    <delete id="deleteCategoryById" parameterType="integer">
+        DELETE
+        FROM category
+        WHERE category_id = #{categoryId}
+    </delete>
+
+
+    <update id="updateCategory" parameterType="com.ugly.blog.domain.Category">
+        UPDATE category
+        SET category_name=#{categoryName}
+        WHERE category_id = #{categoryId}
+    </update>
+
+
+    <select id="getCategoryById" resultMap="categoryMap">
+        SELECT *
+        FROM category
+        WHERE category_id = #{categoryId}
+    </select>
+
+
+    <select id="getAllCategoryList" resultMap="categoryMap">
+        SELECT *
+        FROM category
+    </select>
+
+
+    <select id="getTopNumsCategoryList" resultMap="categoryMap" parameterType="integer">
+        SELECT c.*
+        FROM category c
+                 INNER JOIN (SELECT category_id, COUNT(*) AS nums
+                             FROM article_category_ref
+                             GROUP BY category_id) ac ON ac.category_id = c.category_id
+        ORDER BY ac.nums DESC, c.category_name
+        LIMIT #{num};
+    </select>
+
+
+</mapper>

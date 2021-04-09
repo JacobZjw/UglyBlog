@@ -1,98 +1,83 @@
 package com.ugly.blog.mapper;
 
 import com.ugly.blog.BaseTest;
-import com.ugly.blog.entity.Article;
-import org.junit.Assert;
+import com.ugly.blog.domain.Article;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 /**
  * @author JwZheng
- * @date 2021/4/2 18:56
+ * @date 2021/4/9 16:12
  */
 public class ArticleMapperTest extends BaseTest {
 
     @Autowired
-    ArticleMapper articleMapper;
+    private ArticleMapper articleMapper;
+
+
+    @Test
+    public void addViewCount() {
+        assertEquals(1, articleMapper.addLikeCount(1));
+    }
+
+    @Test
+    public void addLikeCount() {
+        assertEquals(1, articleMapper.addLikeCount(1));
+    }
+
+    @Test
+    public void getCount() {
+        assertNotEquals(0, articleMapper.getCount());
+    }
 
     @Test
     public void getById() {
-        System.out.println(articleMapper.getById(2));
+        assertNotNull(articleMapper.getById(1));
     }
 
     @Test
     public void getTopHotArticle() {
         List<Article> list = articleMapper.getTopHotArticle(4);
-        Assert.assertEquals(list.size(), 4);
-    }
-
-    @Test
-    public void getCount() {
-        System.out.println(articleMapper.getCount());
-    }
-
-    @Test
-    public void testGetById() {
-    }
-
-    @Test
-    public void testGetCount() {
+        assertEquals(list.size(), 4);
     }
 
     @Test
     public void getPage() {
-        articleMapper.getPage(1, 5).forEach(System.out::println);
+        List<Article> list = articleMapper.getPage(1, 4);
+        assertEquals(list.size(), 4);
     }
 
     @Test
-    public void getPageByTag() {
-        System.out.println(articleMapper.getPrevArticle(1));
-        System.out.println(articleMapper.getNextArticle(2));
+    public void getNextArticle() {
+        assertNotNull(articleMapper.getNextArticle(1));
     }
 
     @Test
-    public void getPageByCategory() {
+    public void getPrevArticle() {
+        assertNotNull(articleMapper.getPrevArticle(2));
     }
 
     @Test
-    public void testGetById1() {
+    public void updateArticle() {
+        Article article = articleMapper.getById(1);
+        assertEquals(1, articleMapper.updateArticle(article));
     }
 
     @Test
-    public void testGetTopHotArticle() {
+    @Ignore
+    public void insertArticle() {
+        Article article = articleMapper.getById(1);
+        assertEquals(1, articleMapper.insertArticle(article));
     }
 
     @Test
-    public void testGetCount1() {
-    }
-
-    @Test
-    public void testGetPage() {
-    }
-
-    @Test
-    public void getCountByTagList() {
-    }
-
-    @Test
-    public void getPageByTagList() {
-    }
-
-    @Test
-    public void getCountByTagId() {
-    }
-
-    @Test
-    public void getPageByTagId() {
-    }
-
-    @Test
-    public void getCountByCategory() {
-    }
-
-    @Test
-    public void testGetPageByCategory() {
+    @Ignore
+    public void deleteArticle() {
+        assertEquals(1, articleMapper.deleteArticle(7));
     }
 }

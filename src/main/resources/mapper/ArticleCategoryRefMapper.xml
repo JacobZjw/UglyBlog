@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ugly.blog.mapper.ArticleCategoryRefMapper">
+
+    <select id="getCountByCategory" resultType="java.lang.Integer" parameterType="integer">
+        SELECT COUNT(*)
+        FROM article_category_ref ac
+                 INNER JOIN article a ON ac.article_id = a.article_id
+        WHERE ac.category_id = #{categoryId}
+    </select>
+
+
+    <select id="getPageByCategory" resultMap="com.ugly.blog.mapper.ArticleMapper.articleMap">
+        SELECT a.article_id,
+               a.article_title,
+               a.article_view_count,
+               a.article_comment_count,
+               a.article_create_time,
+               a.article_summary,
+               a.article_user_id,
+               a.article_is_reprint
+        FROM article_category_ref ac
+                 INNER JOIN article a ON ac.article_id = a.article_id
+        WHERE ac.category_id = #{categoryId}
+        LIMIT #{begin},#{pageSize}
+    </select>
+</mapper>

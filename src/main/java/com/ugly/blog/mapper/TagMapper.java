@@ -1,7 +1,6 @@
 package com.ugly.blog.mapper;
 
-import com.ugly.blog.entity.Tag;
-import org.apache.ibatis.annotations.*;
+import com.ugly.blog.domain.Tag;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,56 +12,45 @@ import java.util.List;
 @Repository
 public interface TagMapper {
 
+
     /**
-     * 根据id寻找tag
+     * 新增标签信息
      *
-     * @param tagId
-     * @return tag或null
+     * @param tagName 标签名
+     * @return 结果
      */
-    @Select("SELECT * FROM tag WHERE tag_id=#{tagId}")
-    @Results(id = "tagMap", value = {
-            @Result(property = "tagId", column = "tag_id", id = true),
-            @Result(property = "tagName", column = "tag_name")
-    })
+    int insertTag(String tagName);
+
+
+    /**
+     * 通过标签ID删除标签信息
+     *
+     * @param tagId 标签ID
+     * @return 结果
+     */
+    int deleteTagById(Integer tagId);
+
+    /**
+     * 修改标签信息
+     *
+     * @param tag 标签信息
+     * @return 结果
+     */
+    int updateTag(Tag tag);
+
+    /**
+     * 根据标签ID寻找标签信息
+     *
+     * @param tagId 标签ID
+     * @return 标签对象信息
+     */
     Tag getTagById(Integer tagId);
 
 
     /**
-     * 获取所有的标签
+     * 查询所有的标签信息
      *
-     * @return 标签List
+     * @return 标签对象列表
      */
-    @Select("SELECT * FROM tag")
-    @ResultMap("tagMap")
     List<Tag> getAllTagList();
-
-    /**
-     * 更新标签
-     *
-     * @param tag
-     * @return
-     */
-    @Update("UPDATE tag SET tag_name=#{tagName} WHERE tag_id=#{tagId}")
-    @ResultMap("tagMap")
-    int updateTag(Tag tag);
-
-    /**
-     * 新增标签
-     *
-     * @param tagName
-     * @return
-     */
-    @Insert("INSERT tag(tag_name)VALUES(#{tagName})")
-    @ResultMap("tagMap")
-    int insertTag(String tagName);
-
-    /**
-     * 根据id删除标签
-     *
-     * @param tagId
-     * @return
-     */
-    @Delete("DELETE tag WHERE tag_id=#{tagId}")
-    @ResultMap("tagMap")
-    int deleteTagById(Integer tagId);
 }
