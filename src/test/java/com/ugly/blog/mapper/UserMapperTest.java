@@ -1,62 +1,60 @@
 package com.ugly.blog.mapper;
 
-import com.ugly.blog.domain.User;
-import junit.framework.TestCase;
+import com.ugly.blog.BaseTest;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author JwZheng
- * @date 2021/3/31 21:30
+ * @date 2021/4/9 19:12
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:Spring-mvc.xml", "classpath:applicationContext.xml"})
-public class UserMapperTest extends TestCase {
+public class UserMapperTest extends BaseTest {
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Test
-    public void testDeleteById() {
+    @Ignore
+    public void insert() {
     }
 
     @Test
-    public void testInsert() {
+    @Ignore
+    public void deleteById() {
     }
 
     @Test
-    public void testGetUserById() {
+    @Ignore
+    public void update() {
+    }
+
+    @Test
+    public void getUserById() {
         assertNotNull(userMapper.getUserById(1));
     }
 
     @Test
-    public void testUpdate() {
+    public void getUserList() {
+        assertNotEquals(0, userMapper.getUserList().size());
     }
 
     @Test
-    public void testGetUserList() {
-        userMapper.getUserList().forEach(System.out::println);
-    }
-
-    @Test
-    public void testGetUserByNameOrEmail() {
+    public void getUserByNameOrEmail() {
         assertNotNull(userMapper.getUserByNameOrEmail("admin"));
+        assertNotNull(userMapper.getUserByNameOrEmail("admin@admin.com"));
     }
 
     @Test
-    public void testGetUserByName() {
-        User admin = userMapper.getUserByName("admin");
-        System.out.println(admin);
-        assertNotNull(admin);
+    public void getUserByName() {
+        assertNotNull(userMapper.getUserByName("admin"));
     }
 
     @Test
-    public void testGetUserByEmail() {
-        User admin = userMapper.getUserByEmail("admin@liuyanzhao.com");
-        System.out.println(admin);
-        assertNotNull(admin);
+    public void getUserByEmail() {
+        assertNotNull(userMapper.getUserByEmail("admin@admin.com"));
     }
 }

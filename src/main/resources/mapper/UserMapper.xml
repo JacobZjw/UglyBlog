@@ -3,36 +3,107 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ugly.blog.mapper.UserMapper">
+    <resultMap id="userMap" type="com.ugly.blog.domain.User">
+        <id property="userId" column="user_id" javaType="integer"/>
+        <result column="user_name" property="username" javaType="string"/>
+        <result column="user_pwd" property="password" javaType="string"/>
+        <result column="user_nickname" property="nickname" javaType="string"/>
+        <result column="user_email" property="email" javaType="string"/>
+        <result column="user_avatar" property="avatar" javaType="string"/>
+        <result column="user_last_login_ip" property="lastLoginIp" javaType="string"/>
+        <result column="user_last_login_time" property="lastLoginTime" javaType="date"/>
+        <result column="user_register_time" property="registerTime" javaType="date"/>
+        <result column="user_status" property="status" javaType="integer"/>
+        <result column="user_role" property="role" javaType="string"/>
+    </resultMap>
+
 
     <insert id="insert" parameterType="com.ugly.blog.domain.User" useGeneratedKeys="true" keyProperty="userId"
             keyColumn="user_id">
-        insert into user(user_id, user_name, user_pwd,
-                         user_nickname, user_email,
-                         user_avatar, user_last_login_ip, user_register_time,
-                         user_last_login_time, user_status, user_role)
-        values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
-                #{userNickname,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR},
-                #{userAvatar,jdbcType=VARCHAR}, #{userLastLoginIp,jdbcType=VARCHAR},
-                #{userRegisterTime,jdbcType=TIMESTAMP}, #{userLastLoginTime,jdbcType=TIMESTAMP},
-                #{userStatus,jdbcType=INTEGER}, #{userRole,jdbcType=VARCHAR})
+        INSERT INTO user(
+        <if test="username != null and username != '' ">user_name,</if>
+        <if test="password != null and password != '' ">user_pwd,</if>
+        <if test="nickname != null and nickname != '' ">user_nickname,</if>
+        <if test="email != null and email != '' ">user_email,</if>
+        <if test="avatar != null and avatar != '' ">user_avatar,</if>
+        <if test="lastLoginIp != null and lastLoginIp != '' ">user_last_login_ip,</if>
+        <if test="lastLoginTime != null and lastLoginTime != '' ">user_last_login_time,</if>
+        <if test="status != null and status != '' ">user_status,</if>
+        <if test="role != null and role != '' ">user_role,</if>
+        user_register_time
+        )
+        VALUES (
+        <if test="username != null and username != '' ">#{username},</if>
+        <if test="password != null and password != '' ">#{password},</if>
+        <if test="nickname != null and nickname != '' ">#{nickname},</if>
+        <if test="email != null and email != '' ">#{email},</if>
+        <if test="avatar != null and avatar != '' ">#{avatar},</if>
+        <if test="lastLoginIp != null and lastLoginIp != '' ">#{lastLoginIp},</if>
+        <if test="lastLoginTime != null and lastLoginTime != '' ">#{lastLoginTime},</if>
+        <if test="status != null and status != '' ">#{status},</if>
+        <if test="role != null and role != '' ">#{role},</if>
+        sysdate()
+        )
     </insert>
+
+
+    <delete id="deleteById" parameterType="integer">
+        DELETE
+        FROM user
+        WHERE user_id = #{userId}
+    </delete>
+
+
     <update id="update" parameterType="com.ugly.blog.domain.User">
         update user
         <set>
-            <if test="userName != null">user_name=#{userName,jdbcType=VARCHAR}</if>
-            <if test="userPwd != null">,user_pwd = #{userPwd,jdbcType=VARCHAR}</if>
-            <if test="userNickname != null">,user_nickname = #{userNickname,jdbcType=VARCHAR}</if>
-            <if test="userEmail != null">,user_email = #{userEmail,jdbcType=VARCHAR}</if>
-            <if test="userAvatar != null">,user_avatar = #{userAvatar,jdbcType=VARCHAR}</if>
-            <if test="userLastLoginIp != null">,user_last_login_ip = #{userLastLoginIp,jdbcType=VARCHAR}</if>
-            <if test="userRegisterTime != null">,user_register_time = #{userRegisterTime,jdbcType=TIMESTAMP}</if>
-            <if test="userLastLoginTime != null">,user_last_login_time = #{userLastLoginTime,jdbcType=TIMESTAMP}</if>
-            <if test="userStatus != null">,user_status = #{userStatus,jdbcType=INTEGER}</if>
-            <if test="userRole != null">,user_role = #{userRole,jdbcType=VARCHAR}</if>
+            <if test="username != null and username != '' ">user_name=#{username,jdbcType=VARCHAR}</if>
+            <if test="password != null and password != ''">,user_pwd = #{password,jdbcType=VARCHAR}</if>
+            <if test="nickname != null and nickname != ''">,user_nickname = #{nickname,jdbcType=VARCHAR}</if>
+            <if test="email != null and email != ''">,user_email = #{email,jdbcType=VARCHAR}</if>
+            <if test="avatar != null and avatar != ''">,user_avatar = #{avatar,jdbcType=VARCHAR}</if>
+            <if test="lastLoginIp != null and lastLoginIp != ''">,user_last_login_ip = #{lastLoginIp,jdbcType=VARCHAR}
+            </if>
+            <if test="lastLoginTime != null and lastLoginTime != ''">,user_last_login_time =
+                #{lastLoginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">,user_status = #{status,jdbcType=INTEGER}</if>
+            <if test="role != null and role != ''">,user_role = #{role,jdbcType=VARCHAR}</if>
         </set>
-        <where>user_id=#{userId,javaType=INTEGER}</where>
+        <where>user_id=#{userId,jdbcType=INTEGER}</where>
     </update>
 
+
+    <select id="getUserList" resultMap="userMap">
+        SELECT *
+        FROM user
+    </select>
+
+    <select id="getUserByNameOrEmail" resultMap="userMap">
+        SELECT *
+        FROM user
+        WHERE user_email = #{str}
+           OR user_name = #{str}
+    </select>
+
+    <select id="getUserByName" resultMap="userMap">
+        SELECT *
+        FROM user
+        WHERE user_name = #{name}
+    </select>
+
+
+    <select id="getUserByEmail" resultMap="userMap">
+        SELECT *
+        FROM user
+        WHERE user_email = #{email}
+    </select>
+
+    <select id="getUserById" resultMap="userMap">
+        SELECT *
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
 
 
 </mapper>

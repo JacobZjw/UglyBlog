@@ -50,7 +50,7 @@ public class AdminController {
         if (user == null) {
             respJson.put("code", 0);
             respJson.put("msg", "用户名无效！");
-        } else if (!password.equals(user.getUserPwd())) {
+        } else if (!password.equals(user.getPassword())) {
             respJson.put("code", 0);
             respJson.put("msg", "密码错误！");
         } else {
@@ -67,7 +67,7 @@ public class AdminController {
                 response.addCookie(nameCookie);
                 response.addCookie(pwdCookie);
             }
-            user.setUserLastLoginIp(getIpAddr(request));
+            user.setLastLoginIp(getIpAddr(request));
 //            userService.updateUser(user);
         }
         System.out.println(new JSONObject(respJson).toString());

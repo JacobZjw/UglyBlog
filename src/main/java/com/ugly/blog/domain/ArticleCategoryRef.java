@@ -9,12 +9,12 @@ import java.io.Serializable;
 /**
  * 文章分类关联表
  *
- * @author liuyanzhao
+ * @author JwZheng
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleCategoryRef implements Serializable{
+public class ArticleCategoryRef implements Serializable {
 
     private static final long serialVersionUID = -6809206515467725995L;
 

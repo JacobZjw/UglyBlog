@@ -15,31 +15,26 @@ public class User implements Serializable {
 
     private Integer userId;
 
-    private String userName;
+    private String username;
 
-    private String userPwd;
+    private String password;
 
-    private String userNickname;
+    private String nickname;
 
-    private String userEmail;
+    private String email;
 
-    private String userAvatar;
+    private String avatar;
 
-    private String userLastLoginIp;
+    private String lastLoginIp;
 
-    private Date userRegisterTime;
+    private Date registerTime;
 
-    private Date userLastLoginTime;
+    private Date lastLoginTime;
 
-    private Integer userStatus;
+    private Integer status;
 
     /**
      * 用户角色：admin/user
      */
-    private String userRole;
-
-    /**
-     * 文章数量（不是数据库字段）
-     */
-    private Integer articleCount;
+    private String role;
 }
