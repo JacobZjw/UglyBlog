@@ -12,19 +12,19 @@
 <div class="blog-list layui-row">
     <article class="article-list">
         <c:forEach items="${articlePage.items}" var="article">
-            <fmt:formatDate value="${article.articleCreateTime}" pattern="yyyy" var="year"/>
-            <fmt:formatDate value="${article.articleCreateTime}" pattern="MM" var="month"/>
-            <fmt:formatDate value="${article.articleCreateTime}" pattern="dd" var="day"/>
+            <fmt:formatDate value="${article.createTime}" pattern="yyyy" var="year"/>
+            <fmt:formatDate value="${article.createTime}" pattern="MM" var="month"/>
+            <fmt:formatDate value="${article.createTime}" pattern="dd" var="day"/>
 
             <section class="article-item">
                 <h5 class="title">
-                    <c:if test="${article.articleIsReprint == 1}">
+                    <c:if test="${article.isReprint == 1}">
                         <span class="fc-red">【转载】</span>
                     </c:if>
-                    <c:if test="${article.articleIsReprint != 1}">
+                    <c:if test="${article.isReprint != 1}">
                         <span class="fc-blue">【原创】</span>
                     </c:if>
-                    <a href="/article/${article.articleId}">${article.articleTitle}</a>
+                    <a href="/article/${article.articleId}">${article.title}</a>
                 </h5>
                 <div class="time">
                     <span class="day">${day}</span>
@@ -32,7 +32,7 @@
                             class="fs-14">月</span></span>
                     <span class="year fs-18 ml10">${year}</span>
                 </div>
-                <div class="content">${article.articleSummary}</div>
+                <div class="content">${article.summary}</div>
                 <div class="read-more">
                     <a href="/article/${article.articleId}" class="fc-black f-fwb">继续阅读</a>
                 </div>
@@ -45,12 +45,12 @@
                     <div class="f-fr">
 									<span class="read">
                                         <i class="fa fa-eye fs-16"></i>
-                                        <i class="num">${article.articleViewCount}</i>
+                                        <i class="num">${article.viewCount}</i>
                                     </span>
                         <span class="ml20">
 											<i class="fa fa-comments fs-16"></i>
 											<a href="javascript:void(0)"
-                                               class="num fc-grey">${article.articleCommentCount}</a>
+                                               class="num fc-grey">${article.commentCount}</a>
                                     </span>
                     </div>
                 </aside>

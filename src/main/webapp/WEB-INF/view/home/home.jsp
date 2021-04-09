@@ -47,17 +47,24 @@
 </div>
 
 <jsp:include page="global/footer.jsp"/>
-</body>
-</html>
+
 
 <script src="/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
 <script src="/js/sidebar.js" type="text/javascript"></script>
 <script>
     $(function () {
-        //分页
-        layui.use('laypage', function () {
-            const laypage = layui.laypage;
+
+        layui.use(['element', 'laypage'], function () {
+            const laypage = layui.laypage,
+                element = layui.element;
+
+            element.on('nav(demo)', function (elem) {
+                //console.log(elem)
+                layer.msg(elem.text());
+            });
+            element.render();
+
             //执行一个laypage实例
             laypage.render({
                 elem: 'laypage', //注意，这里的 test1 是 ID，不用加 # 号
@@ -83,15 +90,7 @@
                 }
             });
         });
-
-        layui.use(['element'], function () {
-            var element = layui.element;
-            element.init();
-            element.on('nav(demo)', function (elem) {
-                //console.log(elem)
-                layer.msg(elem.text());
-            });
-            element.render();
-        });
     });
 </script>
+</body>
+</html>

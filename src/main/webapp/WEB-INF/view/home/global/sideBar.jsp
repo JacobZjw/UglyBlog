@@ -51,7 +51,7 @@
         <div class="layui-card-body">
             <ul class="article-card-list" id="hot-article-list">
                 <c:forEach items="${hotArticles}" var="article">
-                    <li><a href="/article/${article.articleId}">${article.articleTitle}</a></li>
+                    <li><a href="/article/${article.articleId}">${article.title}</a></li>
                 </c:forEach>
             </ul>
         </div>

@@ -11,47 +11,17 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>${article.articleTitle}</title>
+    <title>${article.title}</title>
     <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
     <link rel="stylesheet" type="text/css" href="/css/blog.css"/>
     <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
     <link rel="stylesheet" type="text/css" href="/css/header.css"/>
     <link rel="stylesheet" type="text/css" href="/css/sidebar.css"/>
     <link rel="stylesheet" type="text/css" href="/css/global.css"/>
-
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
-    <script src="/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
-    <script src="/js/sidebar.js" type="text/javascript"></script>
-
-    <script>
-        $(function () {
-            layui.use(['element'], function () {
-                var element = layui.element;
-                element.init();
-                element.on('nav(demo)', function (elem) {
-                    //console.log(elem)
-                    layer.msg(elem.text());
-                });
-                element.render();
-            });
-            $.getJSON("/article/${articleId}/prevAndNext", function (data) {
-                if (data.prevArticleTitle == null) {
-                    $("#prevArticle").text("当前是第一篇")
-                }
-                if (data.nextArticleTitle == null) {
-                    $("#nextArticle").text("当前是最后一篇")
-                }
-                $("#prevArticle > a").text(data.prevArticleTitle).attr("href", "/article/" + data.prevArticleId);
-                $("#nextArticle > a").text(data.nextArticleTitle).attr("href", "/article/" + data.nextArticleId);
-            });
-        });
-    </script>
 </head>
 <body>
 
-
 <jsp:include page="global/header.jsp"/>
-
 
 <div class="layui-container">
     <div class="layui-row breadcrumb">
@@ -59,7 +29,7 @@
         <div class="layui-row">
 					<span class="layui-breadcrumb" lay-separator=">">
 						<a href="<c:url value="/index"/>">首页</a>
-						<a href="<c:url value="/article/${articleId}"/>">${article.articleTitle}</a>
+						<a href="<c:url value="/article/${articleId}"/>">${article.title}</a>
 						<a><cite>正文</cite></a>
 					</span>
         </div>
@@ -67,28 +37,28 @@
     <div class="layui-row layui-col-space30">
         <div class="layui-col-md8">
             <article class="article">
-                <fmt:formatDate value="${article.articleUpdateTime}" dateStyle="medium" timeStyle="medium"
+                <fmt:formatDate value="${article.updateTime}" dateStyle="medium" timeStyle="medium"
                                 var="updateTime"/>
-                <fmt:formatDate value="${article.articleCreateTime}" pattern="yyyy" var="year"/>
-                <fmt:formatDate value="${article.articleCreateTime}" pattern="MM" var="month"/>
-                <fmt:formatDate value="${article.articleCreateTime}" pattern="dd" var="day"/>
+                <fmt:formatDate value="${article.createTime}" pattern="yyyy" var="year"/>
+                <fmt:formatDate value="${article.createTime}" pattern="MM" var="month"/>
+                <fmt:formatDate value="${article.createTime}" pattern="dd" var="day"/>
 
                 <section class="article-item">
                     <aside class="article-info" style="line-height:1.5; 	border-bottom: 1px solid #e8e9e7;">
                         <h4 class="title" style="border-bottom: none;">
-                            <c:if test="${article.articleIsReprint == 1}">
+                            <c:if test="${article.isReprint == 1}">
                                 <span class="fc-red">【转载】</span>
                             </c:if>
-                            <c:if test="${article.articleIsReprint != 1}">
+                            <c:if test="${article.isReprint != 1}">
                                 <span class="fc-blue">【原创】</span>
                             </c:if>
-                            <a>${article.articleTitle}</a>
+                            <a>${article.title}</a>
                         </h4>
                         <small>
                             作者：<a href="javascript:void(0)" target="_blank" class="fc-link"
-                                  style="color: #01AAED">${article.user.userName}</a>
+                                  style="color: #01AAED">${article.user.username}</a>
                         </small>
-                        <small class="ml10">阅读数：<i class="readcount">${article.articleViewCount}</i></small>
+                        <small class="ml10">阅读数：<i class="readcount">${article.viewCount}</i></small>
                         <small class="ml10">更新于 <label>${updateTime}</label> </small>
                     </aside>
 
@@ -99,12 +69,12 @@
                         <span class="year fs-18 ml10">${year}</span>
                     </div>
 
-                    <div class="content full-article">${article.articleContent}</div>
+                    <div class="content full-article">${article.content}</div>
 
                     <div class="copyright mt20" style="background-color: #f8f9f7;">
                         <p class="f-toe">
                             本文标题：
-                            <a href="javascript:void(0)" class="r-title">${article.articleTitle}</a>
+                            <a href="javascript:void(0)" class="r-title">${article.title}</a>
                         </p>
                         <c:set var="fullPath"
                                value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/blogs/${article.articleId}"/>
@@ -113,7 +83,7 @@
                             <a href="${fullPath}">${fullPath}</a>
                         </p>
                         <p class="f-toe fc-black">
-                            非特殊说明，本文版权归 <a href="#" style="color: #1E9FFF">${article.user.userName}</a> 所有，转载请注明出处.
+                            非特殊说明，本文版权归 <a href="#" style="color: #1E9FFF">${article.user.username}</a> 所有，转载请注明出处.
                         </p>
                     </div>
 
@@ -148,5 +118,32 @@
 
 <jsp:include page="global/footer.jsp"/>
 
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/js/sidebar.js" type="text/javascript"></script>
+
+<script>
+    $(function () {
+        layui.use(['element'], function () {
+            const element = layui.element;
+            element.init();
+            element.on('nav(demo)', function (elem) {
+                //console.log(elem)
+                layer.msg(elem.text());
+            });
+            element.render();
+        });
+        $.getJSON("/article/${articleId}/prevAndNext", function (data) {
+            if (data.prevArticleTitle == null) {
+                $("#prevArticle").text("当前是第一篇")
+            }
+            if (data.nextArticleTitle == null) {
+                $("#nextArticle").text("当前是最后一篇")
+            }
+            $("#prevArticle > a").text(data.prevArticleTitle).attr("href", "/article/" + data.prevArticleId);
+            $("#nextArticle > a").text(data.nextArticleTitle).attr("href", "/article/" + data.nextArticleId);
+        });
+    });
+</script>
 </body>
 </html>
