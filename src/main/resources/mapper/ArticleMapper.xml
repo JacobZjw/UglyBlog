@@ -19,15 +19,15 @@
         <result property="summary" javaType="String" column="article_summary"/>
         <result property="isReprint" javaType="Integer" column="article_is_reprint"/>
 
-        <!--        <association property="user" column="article_user_id" javaType="com.ugly.blog.domain.User"-->
-        <!--                     select="com.ugly.blog.mapper.UserMapper.getUserById">-->
-        <!--        </association>-->
-        <!--        <collection property="tagList" column="" ofType="com.ugly.blog.domain.Tag">-->
+        <association property="user" column="article_user_id" javaType="com.ugly.blog.domain.User"
+                     resultMap="com.ugly.blog.mapper.UserMapper.userMap"/>
 
-        <!--        </collection>-->
-        <!--        <collection property="categoryList" column="" ofType="com.ugly.blog.domain.Category">-->
+        <collection property="tagList" ofType="com.ugly.blog.domain.Tag" javaType="java.util.List"
+                    resultMap="com.ugly.blog.mapper.TagMapper.tagMap"/>
 
-        <!--        </collection>-->
+        <collection property="categoryList" ofType="com.ugly.blog.domain.Category" javaType="java.util.List"
+                    resultMap="com.ugly.blog.mapper.CategoryMapper.categoryMap"/>
+
     </resultMap>
 
 
@@ -102,6 +102,47 @@
         WHERE article_id &lt; #{articleId}
         ORDER BY article_id DESC
         LIMIT 1;
+    </select>
+
+    <select id="getListByCondition" resultMap="articleMap">
+        SELECT a.article_id,
+        a.article_user_id,
+        a.article_create_time,
+        a.article_status,
+        a.article_view_count,
+        a.article_title,
+        u.user_name,
+        u.user_nickname,
+        atr.tag_id,
+        atr.tag_name,
+        acr.category_id,
+        acr.category_name
+        FROM article a
+        LEFT JOIN user u ON a.article_user_id = u.user_id
+        LEFT JOIN (SELECT article_id, tag.tag_id, tag_name
+        FROM article_tag_ref
+        LEFT JOIN tag ON article_tag_ref.tag_id = tag.tag_id) atr ON atr.article_id = a.article_id
+        LEFT JOIN (SELECT article_id, c.category_id, c.category_name
+        FROM article_category_ref
+        LEFT JOIN category c ON article_category_ref.category_id = c.category_id) acr
+        ON a.article_id = acr.article_id
+        <if test="article != null">
+            <where>
+                <if test="article.user != null and article.user.nickname != null and article.user.nickname != '' ">
+                    u.user_nickname LIKE concat('%',#{article.user.nickname},'%')
+                </if>
+                <if test="article.title != null and article.title != '' ">
+                    OR a.article_title LIKE concat('%',#{article.title},'%')
+                </if>
+                <if test="article.authorId != null and article.authorId != '' ">
+                    OR a.article_user_id = #{article.authorId}
+                </if>
+                <if test="article.user != null and article.user.username != null and article.user.username != '' ">
+                    OR u.username LIKE concat('%',#{article.user.username},'%')
+                </if>
+            </where>
+        </if>
+        LIMIT #{begin},#{pageSize};
     </select>
 
 

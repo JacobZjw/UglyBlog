@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!--Spring 整合MyBatis-->
+    <!--    配置连接池-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--        <property name="password" value="qwer"/>-->
+        <!--        <property name="username" value="root"/>-->
+        <!--        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>-->
+        <!--        <property name="url"-->
+        <!--                  value="jdbc:mysql://127.0.0.1:3306/ugly_blog?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"/>-->
+
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <property name="maxActive" value="20"/>
+        <property name="initialSize" value="3"/>
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="30000"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <!--        <property name="defaultAutoCommit" value="false"/>-->
+    </bean>
+
+    <!--    配置SqlSessionFactory对象-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--mapper.xml所在位置-->
+        <property name="mapperLocations" value="classpath*:mapper/*.xml"/>
+        <property name="configLocation" value="classpath:Mybatis-config.xml"/>
+    </bean>
+
+
+    <!--    配置Dao接口所在包-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.ugly.blog.mapper"/>
+    </bean>
+
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 开启事务注解驱动 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

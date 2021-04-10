@@ -20,6 +20,18 @@ public interface PageService {
      */
     Page<Article> getDefaultPage(int pageNo, int pageSize);
 
+
+    /**
+     * 根据条件查询文章分页列表
+     *
+     * @param begin    起始索引
+     * @param pageSize 页面大小
+     * @param article  文章信息
+     * @return 文章对象列表
+     */
+    Page<Article> getListByCondition(int pageNo, int pageSize, Article article);
+
+
     /**
      * 根据标签获取分页
      *
@@ -32,9 +44,10 @@ public interface PageService {
 
     /**
      * 根据一个标签获取分页
-     * @param pageNo 页号
+     *
+     * @param pageNo   页号
      * @param pageSize 每页显示的条数
-     * @param tagId 标签id
+     * @param tagId    标签id
      * @return article page
      */
     Page<Article> getPageByTagId(int pageNo, int pageSize, int tagId);
@@ -42,8 +55,9 @@ public interface PageService {
 
     /**
      * 根据分类获取分页
-     * @param pageNo 页号
-     * @param pageSize 每页显示的条数
+     *
+     * @param pageNo     页号
+     * @param pageSize   每页显示的条数
      * @param categoryId 分类id
      * @return
      */

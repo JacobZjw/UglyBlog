@@ -1,5 +1,7 @@
 package com.ugly.blog.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +13,7 @@ import java.util.List;
  * @date 2021/4/2 16:20
  */
 @Data
+@JsonInclude
 public class Article implements Serializable {
 
     private static final long serialVersionUID = 1426367570761539L;
@@ -40,14 +43,27 @@ public class Article implements Serializable {
     private String summary;
 
     /**
-     * 是否转载文章
+     * 是否转载文章(0是原创 1是转载)
      */
     private Integer isReprint;
 
+
+    /**
+     * 作者信息，非数据库字段
+     */
+    @JsonUnwrapped
     private User user;
 
+    /**
+     * 标签信息，非数据库字段
+     */
+    @JsonInclude
     private List<Tag> tagList;
 
+    /**
+     * 分类信息，非数据库字段
+     */
+    @JsonInclude
     private List<Category> categoryList;
 
 }

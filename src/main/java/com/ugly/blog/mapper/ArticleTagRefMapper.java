@@ -1,6 +1,7 @@
 package com.ugly.blog.mapper;
 
 import com.ugly.blog.domain.Article;
+import com.ugly.blog.domain.Tag;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -49,5 +50,14 @@ public interface ArticleTagRefMapper {
      * @return 文章对象列表
      */
     List<Article> getArticleListByTagId(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("tagId") int tagId);
+
+
+    /**
+     * 根据文章ID获取所有的标签信息
+     *
+     * @param articleId 文章ID
+     * @return 标签信息列表
+     */
+    List<Tag> getTagListByArticleId(Integer articleId);
 
 }

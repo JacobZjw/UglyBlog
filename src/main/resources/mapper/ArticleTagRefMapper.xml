@@ -53,5 +53,13 @@
         LIMIT #{begin},#{pageSize}
     </select>
 
+    <select id="getTagListByArticleId" resultMap="com.ugly.blog.mapper.TagMapper.tagMap" parameterType="integer">
+        SELECT t.*
+        FROM article_tag_ref atr
+                 LEFT JOIN article a ON a.article_id = atr.article_id = a.article_id
+                 LEFT JOIN tag t ON atr.tag_id = t.tag_id
+        WHERE atr.article_id = #{articleId};
+    </select>
+
 
 </mapper>

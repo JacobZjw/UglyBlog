@@ -92,6 +92,17 @@ public interface ArticleMapper {
 
 
     /**
+     * 根据条件查询文章分页列表
+     *
+     * @param begin    起始索引
+     * @param pageSize 页面大小
+     * @param article  文章信息
+     * @return 文章对象列表
+     */
+    List<Article> getListByCondition(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("article") Article article);
+
+
+    /**
      * 修改文章信息
      *
      * @param article 文章信息

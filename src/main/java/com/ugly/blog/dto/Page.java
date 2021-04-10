@@ -1,74 +1,36 @@
 package com.ugly.blog.dto;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
  * @author JwZheng
  */
+@Data
 public class Page<T> {
+    /**
+     * 当前页码
+     */
     private Integer pageNo;
+
     /**
      * 总页数
      */
     private Integer totalPage;
-    private Integer pageSize = 4;
+
     /**
-     * 总的item数
+     * 每页大小，默认值为4
+     */
+    private Integer pageSize = 4;
+
+    /**
+     * 总数据数
      */
     private Integer totalCount;
+
+    /**
+     * 页面数据列表
+     */
     private List<T> items;
-
-    public Page() {
-    }
-
-    public Integer getPageNo() {
-        return pageNo;
-    }
-
-    public void setPageNo(Integer pageNo) {
-        this.pageNo = pageNo;
-    }
-
-    public Integer getTotalPage() {
-        return totalPage;
-    }
-
-    public void setTotalPage(Integer totalPage) {
-        this.totalPage = totalPage;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public Integer getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    public List<T> getItems() {
-        return items;
-    }
-
-    public void setItems(List<T> items) {
-        this.items = items;
-    }
-
-    @Override
-    public String toString() {
-        return "Page{" +
-                "pageNo=" + pageNo +
-                ", pageTotal=" + totalPage +
-                ", pageSize=" + pageSize +
-                ", pageTotalCount=" + totalCount +
-                ", items=" + items +
-                '}';
-    }
 }

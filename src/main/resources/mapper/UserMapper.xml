@@ -15,6 +15,7 @@
         <result column="user_register_time" property="registerTime" javaType="date"/>
         <result column="user_status" property="status" javaType="integer"/>
         <result column="user_role" property="role" javaType="string"/>
+
     </resultMap>
 
 

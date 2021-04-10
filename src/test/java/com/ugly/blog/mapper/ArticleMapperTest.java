@@ -2,6 +2,7 @@ package com.ugly.blog.mapper;
 
 import com.ugly.blog.BaseTest;
 import com.ugly.blog.domain.Article;
+import com.ugly.blog.domain.User;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class ArticleMapperTest extends BaseTest {
 
     @Test
     public void getById() {
+        System.out.println(articleMapper.getById(1));
         assertNotNull(articleMapper.getById(1));
     }
 
@@ -79,5 +81,15 @@ public class ArticleMapperTest extends BaseTest {
     @Ignore
     public void deleteArticle() {
         assertEquals(1, articleMapper.deleteArticle(7));
+    }
+
+    @Test
+    public void getListByCondition() {
+        Article article = new Article();
+        User user = new User();
+        user.setNickname("言曌");
+        article.setTitle("Docker");
+        article.setUser(user);
+        articleMapper.getListByCondition(1, 5, article).forEach(System.out::println);
     }
 }

@@ -22,12 +22,12 @@ import static com.ugly.blog.util.Utils.getIpAddr;
  * @date 2021/3/31 15:04
  */
 @Controller
-public class AdminController {
+public class SysAdminController {
 
     private final UserService userService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public SysAdminController(UserService userService) {
         this.userService = userService;
     }
 

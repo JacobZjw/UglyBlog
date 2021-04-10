@@ -56,7 +56,7 @@
                         </h4>
                         <small>
                             作者：<a href="javascript:void(0)" target="_blank" class="fc-link"
-                                  style="color: #01AAED">${article.user.username}</a>
+                                  style="color: #01AAED">${article.user.nickname}</a>
                         </small>
                         <small class="ml10">阅读数：<i class="readcount">${article.viewCount}</i></small>
                         <small class="ml10">更新于 <label>${updateTime}</label> </small>

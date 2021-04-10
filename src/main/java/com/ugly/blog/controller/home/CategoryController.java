@@ -1,6 +1,6 @@
 package com.ugly.blog.controller.home;
 
-import com.ugly.blog.config.AppConfig;
+import com.ugly.blog.constant.PageConstant;
 import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.Category;
 import com.ugly.blog.dto.JSONResult;
@@ -33,8 +33,8 @@ public class CategoryController {
 
     @RequestMapping(value = "category/{categoryId}", method = RequestMethod.GET)
     public String getArticle(@PathVariable("categoryId") Integer categoryId,
-                             @RequestParam(required = false, defaultValue = AppConfig.DEFAULT_PAGE_INDEX) Integer pageIndex,
-                             @RequestParam(required = false, defaultValue = AppConfig.DEFAULT_PAGE_SIZE) Integer pageSize, Model model) {
+                             @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
+                             @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize, Model model) {
 
         Page<Article> page = pageService.getPageByCategory(pageIndex, pageSize, categoryId);
         model.addAttribute("articlePage", page);
@@ -47,8 +47,8 @@ public class CategoryController {
 
     @RequestMapping(value = "category/all", method = RequestMethod.GET)
     public String getArticle(
-            @RequestParam(required = false, defaultValue = AppConfig.DEFAULT_PAGE_INDEX) Integer pageIndex,
-            @RequestParam(required = false, defaultValue = AppConfig.DEFAULT_PAGE_SIZE) Integer pageSize, Model model) {
+            @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
+            @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize, Model model) {
 
         Page<Article> page = pageService.getDefaultPage(pageIndex, pageSize);
         model.addAttribute("articlePage", page);
