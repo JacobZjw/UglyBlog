@@ -12,61 +12,61 @@ public interface ArticleService {
     /**
      * 新增文章
      *
-     * @param article 新增的文章
-     * @return 成功 > 0
+     * @param article 文章信息
+     * @return 结果
      */
     int insertArticle(Article article);
 
 
     /**
-     * 更新文章信息
+     * 更修改文章信息
      *
-     * @param article 文章
-     * @return >0 if success
+     * @param article 文章信息
+     * @return 结果
      */
     int updateArticle(Article article);
 
 
     /**
-     * 删除文章
+     * 通过文章ID删除文章
      *
-     * @param articleId 文章id
-     * @return >0 if success
+     * @param articleId 文章ID
+     * @return 结果
      */
     int deleteArticle(Integer articleId);
 
     /**
-     * 访问量加一
+     * 指定ID的文章访问量加一
      *
-     * @param articleId 文章id
-     * @return >0 if success
+     * @param articleId 文章ID
+     * @return 结果
      */
     int addViewCount(Integer articleId);
 
 
     /**
-     * 点赞数加一
+     * 指定ID的文章点赞数加一
      *
-     * @param articleId 文章id
-     * @return >0 if success
+     * @param articleId 文章ID
+     * @return 结果
      */
     int addLikeCount(Integer articleId);
 
 
     /**
-     * 根据文章Id获取文章
+     * 根据文章Id获取文章信息
      *
-     * @param articleId 文章id
-     * @return 文章详细信息
+     * @param articleId 文章ID
+     * @return 文章对象信息
      */
     Article getArticleById(int articleId);
 
 
-
     /**
      * 获取最热门的几篇文章,默认根据访问数排序
+     *
      * @param num 文章数
-     * @return article list
+     * @return 文章对象列表
      */
     List<Article> getTopHotArticle(int num);
 
@@ -81,17 +81,25 @@ public interface ArticleService {
     /**
      * 获取下一篇文章的id和标题
      *
-     * @param articleId 当前文章的id
-     * @return article id and title
+     * @param articleId 当前文章的ID
+     * @return 文章对象信息，包含标题和ID
      */
     Article getNextArticle(Integer articleId);
 
 
     /**
-     * 获取上一篇文章的id和标题
+     * 获取上一篇文章的ID和标题
      *
-     * @param articleId 当前文章的id
-     * @return article id and title
+     * @param articleId 当前文章的ID
+     * @return 文章对象信息，包含标题和ID
      */
     Article getPrevArticle(Integer articleId);
+
+    /**
+     * 通过文章ID修改文章的状态
+     *
+     * @param articleId 文章ID
+     * @return 结果
+     */
+    int changeArticleStatus(Integer articleId);
 }

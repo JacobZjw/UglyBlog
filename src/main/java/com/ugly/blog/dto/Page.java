@@ -2,13 +2,15 @@ package com.ugly.blog.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author JwZheng
  */
 @Data
-public class Page<T> {
+public class Page<T> implements Serializable {
+    private static final long serialVersionUID = -38888009832291499L;
     /**
      * 当前页码
      */

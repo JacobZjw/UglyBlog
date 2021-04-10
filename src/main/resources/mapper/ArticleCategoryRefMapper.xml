@@ -26,4 +26,12 @@
         WHERE ac.category_id = #{categoryId}
         LIMIT #{begin},#{pageSize}
     </select>
+
+    <select id="getCategoryListByArticleId" resultMap="com.ugly.blog.mapper.CategoryMapper.categoryMap">
+        SELECT c.*
+        FROM article_category_ref acr
+                 LEFT JOIN article a ON a.article_id = acr.article_id
+                 LEFT JOIN category c ON acr.category_id = c.category_id
+        WHERE a.article_id = #{articleId};
+    </select>
 </mapper>

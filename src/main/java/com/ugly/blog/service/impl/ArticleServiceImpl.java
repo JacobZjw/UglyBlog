@@ -71,4 +71,18 @@ public class ArticleServiceImpl implements ArticleService {
     public Article getPrevArticle(Integer articleId) {
         return articleMapper.getPrevArticle(articleId);
     }
+
+    @Override
+    public int changeArticleStatus(Integer articleId) {
+        Article article = getArticleById(articleId);
+        if (article == null) {
+            return 0;
+        }
+        if (article.getStatus() == 0) {
+            article.setStatus(1);
+        } else {
+            article.setStatus(0);
+        }
+        return updateArticle(article);
+    }
 }

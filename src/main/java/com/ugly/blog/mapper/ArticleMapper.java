@@ -92,6 +92,15 @@ public interface ArticleMapper {
 
 
     /**
+     * 根据条件查询文章总数
+     *
+     * @param article 文章条件信息
+     * @return 文章总数
+     */
+    int getCountByCondition(@Param("article") Article article);
+
+
+    /**
      * 根据条件查询文章分页列表
      *
      * @param begin    起始索引

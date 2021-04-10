@@ -1,4 +1,4 @@
-package com.ugly.blog.controller.admin;
+package com.ugly.blog.controller.system;
 
 import cn.hutool.json.JSONObject;
 import com.ugly.blog.domain.User;

@@ -30,6 +30,52 @@
 
     </resultMap>
 
+    <sql id="fullInfo">
+        SELECT a.*,
+               u.user_name,
+               u.user_nickname,
+               atr.tag_id,
+               atr.tag_name,
+               acr.category_id,
+               acr.category_name
+        FROM article a
+                 LEFT JOIN user u ON a.article_user_id = u.user_id
+                 LEFT JOIN (SELECT article_id, tag.tag_id, tag_name
+                            FROM article_tag_ref
+                                     LEFT JOIN tag ON article_tag_ref.tag_id = tag.tag_id) atr
+                           ON atr.article_id = a.article_id
+                 LEFT JOIN (SELECT article_id, c.category_id, c.category_name
+                            FROM article_category_ref
+                                     LEFT JOIN category c ON article_category_ref.category_id = c.category_id) acr
+                           ON a.article_id = acr.article_id
+    </sql>
+
+
+    <sql id="condition">
+        SELECT a.article_id,
+               a.article_user_id,
+               a.article_create_time,
+               a.article_status,
+               a.article_view_count,
+               a.article_title,
+               u.user_name,
+               u.user_nickname,
+               atr.tag_id,
+               atr.tag_name,
+               acr.category_id,
+               acr.category_name
+        FROM article a
+                 LEFT JOIN user u ON a.article_user_id = u.user_id
+                 LEFT JOIN (SELECT article_id, tag.tag_id, tag_name
+                            FROM article_tag_ref
+                                     LEFT JOIN tag ON article_tag_ref.tag_id = tag.tag_id) atr
+                           ON atr.article_id = a.article_id
+                 LEFT JOIN (SELECT article_id, c.category_id, c.category_name
+                            FROM article_category_ref
+                                     LEFT JOIN category c ON article_category_ref.category_id = c.category_id) acr
+                           ON a.article_id = acr.article_id
+    </sql>
+
 
     <delete id="deleteArticle" parameterType="integer">
         DELETE
@@ -59,9 +105,8 @@
 
 
     <select id="getById" resultMap="articleMap">
-        SELECT *
-        FROM article
-        WHERE article_id = #{articleId}
+        <include refid="fullInfo"/>
+        WHERE a.article_id = #{articleId}
     </select>
 
 
@@ -104,24 +149,36 @@
         LIMIT 1;
     </select>
 
+
     <select id="getListByCondition" resultMap="articleMap">
-        SELECT a.article_id,
-        a.article_user_id,
-        a.article_create_time,
-        a.article_status,
-        a.article_view_count,
-        a.article_title,
-        u.user_name,
-        u.user_nickname,
-        atr.tag_id,
-        atr.tag_name,
-        acr.category_id,
-        acr.category_name
+        <include refid="condition"/>
+        <if test="article != null">
+            <where>
+                <if test="article.user != null and article.user.nickname != null and article.user.nickname != '' ">
+                    u.user_nickname LIKE concat('%',#{article.user.nickname},'%')
+                </if>
+                <if test="article.title != null and article.title != '' ">
+                    OR a.article_title LIKE concat('%',#{article.title},'%')
+                </if>
+                <if test="article.authorId != null and article.authorId != '' ">
+                    OR a.article_user_id = #{article.authorId}
+                </if>
+                <if test="article.user != null and article.user.username != null and article.user.username != '' ">
+                    OR u.username LIKE concat('%',#{article.user.username},'%')
+                </if>
+            </where>
+        </if>
+        LIMIT #{begin},#{pageSize};
+    </select>
+
+    <select id="getCountByCondition" resultType="java.lang.Integer">
+        SELECT COUNT(a.article_id)
         FROM article a
         LEFT JOIN user u ON a.article_user_id = u.user_id
         LEFT JOIN (SELECT article_id, tag.tag_id, tag_name
         FROM article_tag_ref
-        LEFT JOIN tag ON article_tag_ref.tag_id = tag.tag_id) atr ON atr.article_id = a.article_id
+        LEFT JOIN tag ON article_tag_ref.tag_id = tag.tag_id) atr
+        ON atr.article_id = a.article_id
         LEFT JOIN (SELECT article_id, c.category_id, c.category_name
         FROM article_category_ref
         LEFT JOIN category c ON article_category_ref.category_id = c.category_id) acr
@@ -142,7 +199,6 @@
                 </if>
             </where>
         </if>
-        LIMIT #{begin},#{pageSize};
     </select>
 
 

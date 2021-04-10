@@ -68,7 +68,7 @@ public class User implements Serializable {
     /**
      * 状态(0正常 1停用)
      */
-    private Integer status;
+    private Integer userStatus;
 
     /**
      * 用户角色(admin管理员 user普通用户)

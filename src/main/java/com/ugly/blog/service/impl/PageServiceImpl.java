@@ -40,8 +40,8 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page<Article> getListByCondition(int pageNo, int pageSize, Article article) {
-        int totalCount = articleMapper.getCount();
+    public Page<Article> getPageByCondition(int pageNo, int pageSize, Article article) {
+        int totalCount = articleMapper.getCountByCondition(article);
         Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
         int begin = (page.getPageNo() - 1) * pageSize;
         page.setItems(articleMapper.getListByCondition(begin, pageSize, article));

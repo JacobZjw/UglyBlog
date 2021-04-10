@@ -13,7 +13,7 @@
         <result column="user_last_login_ip" property="lastLoginIp" javaType="string"/>
         <result column="user_last_login_time" property="lastLoginTime" javaType="date"/>
         <result column="user_register_time" property="registerTime" javaType="date"/>
-        <result column="user_status" property="status" javaType="integer"/>
+        <result column="user_status" property="userStatus" javaType="integer"/>
         <result column="user_role" property="role" javaType="string"/>
 
     </resultMap>
@@ -29,7 +29,7 @@
         <if test="avatar != null and avatar != '' ">user_avatar,</if>
         <if test="lastLoginIp != null and lastLoginIp != '' ">user_last_login_ip,</if>
         <if test="lastLoginTime != null and lastLoginTime != '' ">user_last_login_time,</if>
-        <if test="status != null and status != '' ">user_status,</if>
+        <if test="userStatus != null and userStatus != '' ">user_status,</if>
         <if test="role != null and role != '' ">user_role,</if>
         user_register_time
         )
@@ -41,7 +41,7 @@
         <if test="avatar != null and avatar != '' ">#{avatar},</if>
         <if test="lastLoginIp != null and lastLoginIp != '' ">#{lastLoginIp},</if>
         <if test="lastLoginTime != null and lastLoginTime != '' ">#{lastLoginTime},</if>
-        <if test="status != null and status != '' ">#{status},</if>
+        <if test="userStatus != null and userStatus != '' ">#{status},</if>
         <if test="role != null and role != '' ">#{role},</if>
         sysdate()
         )
@@ -68,7 +68,7 @@
             <if test="lastLoginTime != null and lastLoginTime != ''">,user_last_login_time =
                 #{lastLoginTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="status != null and status != ''">,user_status = #{status,jdbcType=INTEGER}</if>
+            <if test="userStatus != null and userStatus != ''">,user_status = #{userStatus,jdbcType=INTEGER}</if>
             <if test="role != null and role != ''">,user_role = #{role,jdbcType=VARCHAR}</if>
         </set>
         <where>user_id=#{userId,jdbcType=INTEGER}</where>

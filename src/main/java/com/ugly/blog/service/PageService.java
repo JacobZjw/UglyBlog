@@ -22,14 +22,14 @@ public interface PageService {
 
 
     /**
-     * 根据条件查询文章分页列表
+     * 根据条件模糊查询文章分页列表
      *
-     * @param begin    起始索引
+     * @param pageNo   页码
      * @param pageSize 页面大小
      * @param article  文章信息
      * @return 文章对象列表
      */
-    Page<Article> getListByCondition(int pageNo, int pageSize, Article article);
+    Page<Article> getPageByCondition(int pageNo, int pageSize, Article article);
 
 
     /**

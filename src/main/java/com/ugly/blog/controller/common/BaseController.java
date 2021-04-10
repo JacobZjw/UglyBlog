@@ -45,6 +45,17 @@ public class BaseController {
         return result ? AjaxResult.success() : AjaxResult.error();
     }
 
+
+    /**
+     * 响应返回结果
+     *
+     * @param result 结果
+     * @return 操作结果
+     */
+    protected AjaxResult toAjax(Object data) {
+        return data != null ? AjaxResult.success(data) : AjaxResult.error();
+    }
+
     /**
      * @return 成功消息
      */

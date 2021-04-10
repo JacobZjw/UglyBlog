@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2021/4/2 16:20
  */
 @Data
-@JsonInclude
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Article implements Serializable {
 
     private static final long serialVersionUID = 1426367570761539L;
