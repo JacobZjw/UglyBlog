@@ -9,12 +9,12 @@
         <result column="category_name" property="categoryName" javaType="String"/>
     </resultMap>
 
-    <insert id="insertCategory" parameterType="string" useGeneratedKeys="true">
+    <insert id="insertCategory" useGeneratedKeys="true">
         INSERT INTO category(
         <if test="categoryName != null and categoryName != '' ">category_name</if>
         )
         VALUES (
-        <if test="categoryName != null and categoryName != '' ">#{catrgoryName}</if>
+        <if test="categoryName != null and categoryName != '' ">#{categoryName}</if>
         )
     </insert>
 
@@ -54,6 +54,12 @@
                              GROUP BY category_id) ac ON ac.category_id = c.category_id
         ORDER BY ac.nums DESC, c.category_name
         LIMIT #{num};
+    </select>
+
+    <select id="getByCategoryName" resultMap="categoryMap">
+        SELECT *
+        FROM category
+        WHERE category_name = #{categoryName};
     </select>
 
 

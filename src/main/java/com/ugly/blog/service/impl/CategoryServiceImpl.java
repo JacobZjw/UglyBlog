@@ -36,12 +36,23 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public int updateCategory(Integer categoryId, String categoryName) {
-        return categoryMapper.updateCategory(new Category(categoryId, categoryName));
+    public Category getByCategoryName(String categoryName) {
+        return categoryMapper.getByCategoryName(categoryName);
+    }
+
+    @Override
+    public int updateOrInsertCategory(Category category) {
+        if (category.getCategoryId() == null) {
+            return insertCategory(category.getCategoryName());
+        }
+        return categoryMapper.updateCategory(category);
     }
 
     @Override
     public int insertCategory(String categoryName) {
+        if (getByCategoryName(categoryName) != null) {
+            return 0;
+        }
         return categoryMapper.insertCategory(categoryName);
     }
 

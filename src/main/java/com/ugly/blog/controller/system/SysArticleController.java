@@ -68,13 +68,13 @@ public class SysArticleController extends BaseController {
         return toAjax(articleService.changeArticleStatus(articleId));
     }
 
-    @RequestMapping(value = "/insert/", method = RequestMethod.POST)
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult insertArticle(Article article) {
         return toAjax(articleService.insertArticle(article));
     }
 
-    @RequestMapping(value = "/update/", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateArticle(Article article) {
         return toAjax(articleService.updateArticle(article));

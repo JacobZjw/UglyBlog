@@ -1,6 +1,7 @@
 package com.ugly.blog.mapper;
 
 import com.ugly.blog.domain.Category;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface CategoryMapper {
      * @param categoryName 分类名
      * @return 结果
      */
-    int insertCategory(String categoryName);
+    int insertCategory(@Param("categoryName") String categoryName);
 
     /**
      * 通过文章ID删除分类信息
@@ -24,7 +25,7 @@ public interface CategoryMapper {
      * @param categoryId 分类ID
      * @return 结果
      */
-    int deleteCategoryById(Integer categoryId);
+    int deleteCategoryById(@Param("categoryId") Integer categoryId);
 
 
     /**
@@ -42,7 +43,16 @@ public interface CategoryMapper {
      * @param categoryId 分类ID
      * @return 分类对象信息
      */
-    Category getCategoryById(Integer categoryId);
+    Category getCategoryById(@Param("categoryId") Integer categoryId);
+
+
+    /**
+     * 通过分类名查找分类信息
+     *
+     * @param categoryName 分类名
+     * @return 分类对象信息
+     */
+    Category getByCategoryName(@Param("categoryName") String categoryName);
 
 
     /**

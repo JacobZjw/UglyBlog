@@ -5,6 +5,8 @@ import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.dto.Page;
 import com.ugly.blog.dto.TableDataInfo;
 
+import java.util.List;
+
 /**
  * @author JwZheng
  * @date 2021/4/9 22:38
@@ -22,6 +24,21 @@ public class BaseController {
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setCount(page.getTotalCount());
         rspData.setData(page.getItems());
+        return rspData;
+    }
+
+
+    /**
+     * 返回表格分页数据
+     *
+     * @param page 数据库查询到的分页
+     * @return 分页数据
+     */
+    protected TableDataInfo getDataTable(List<?> list) {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setCount(list.size());
+        rspData.setData(list);
         return rspData;
     }
 

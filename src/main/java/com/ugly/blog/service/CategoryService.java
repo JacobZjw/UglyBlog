@@ -15,7 +15,9 @@ public interface CategoryService {
 
     Category getCategoryById(Integer categoryId);
 
-    int updateCategory(Integer categoryId, String categoryName);
+    Category getByCategoryName(String categoryName);
+
+    int updateOrInsertCategory(Category category);
 
     int insertCategory(String categoryName);
 

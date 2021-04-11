@@ -9,7 +9,7 @@
         <result column="tag_name" property="tagName"/>
     </resultMap>
 
-    <insert id="insertTag" parameterType="string">
+    <insert id="insertTag">
         INSERT tag(
         <if test="tagName != null and tagName != '' ">tag_name</if>
         )
@@ -43,6 +43,13 @@
     <select id="getAllTagList" resultMap="tagMap">
         SELECT *
         FROM tag
+    </select>
+
+
+    <select id="getByTagName" resultMap="tagMap">
+        SELECT *
+        FROM tag
+        WHERE tag_id = #{tagName}
     </select>
 
 

@@ -48,9 +48,19 @@ public interface TagMapper {
 
 
     /**
+     * 根据标签名寻找标签信息
+     *
+     * @param tagName 标签名
+     * @return 标签对象信息
+     */
+    Tag getByTagName(String tagName);
+
+
+    /**
      * 查询所有的标签信息
      *
      * @return 标签对象列表
      */
     List<Tag> getAllTagList();
+
 }

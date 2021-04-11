@@ -31,4 +31,30 @@ public class TagServiceImpl implements TagService {
     public Tag getTagById(Integer tagId) {
         return tagMapper.getTagById(tagId);
     }
+
+    @Override
+    public int insertTag(String tagName) {
+        if (getByTagName(tagName) != null) {
+            return 0;
+        }
+        return tagMapper.insertTag(tagName);
+    }
+
+    @Override
+    public int deleteTagById(Integer tagId) {
+        return tagMapper.deleteTagById(tagId);
+    }
+
+    @Override
+    public int updateOrInsertTag(Tag tag) {
+        if (tag.getTagId() != null) {
+            return tagMapper.updateTag(tag);
+        }
+        return tagMapper.insertTag(tag.getTagName());
+    }
+
+    @Override
+    public Tag getByTagName(String tagName) {
+        return tagMapper.getByTagName(tagName);
+    }
 }
