@@ -46,10 +46,10 @@
                 <section class="article-item">
                     <aside class="article-info" style="line-height:1.5; 	border-bottom: 1px solid #e8e9e7;">
                         <h4 class="title" style="border-bottom: none;">
-                            <c:if test="${article.isReprint == 1}">
+                            <c:if test="${article.isOriginal == 1}">
                                 <span class="fc-red">【转载】</span>
                             </c:if>
-                            <c:if test="${article.isReprint != 1}">
+                            <c:if test="${article.isOriginal != 1}">
                                 <span class="fc-blue">【原创】</span>
                             </c:if>
                             <a>${article.title}</a>
@@ -58,7 +58,7 @@
                             作者：<a href="javascript:void(0)" target="_blank" class="fc-link"
                                   style="color: #01AAED">${article.user.nickname}</a>
                         </small>
-                        <small class="ml10">阅读数：<i class="readcount">${article.viewCount}</i></small>
+                        <small class="ml10">阅读数：<i class="readcount">${article.clickCount}</i></small>
                         <small class="ml10">更新于 <label>${updateTime}</label> </small>
                     </aside>
 

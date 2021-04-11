@@ -24,6 +24,14 @@ public interface ArticleCategoryRefMapper {
 
 
     /**
+     * 通过文章ID获取分类
+     *
+     * @param articleId 文章ID
+     * @return 文章对象
+     */
+    Category getCategoryByArticleId(Integer articleId);
+
+    /**
      * 某一分类文章总数
      *
      * @param categoryId 分类ID

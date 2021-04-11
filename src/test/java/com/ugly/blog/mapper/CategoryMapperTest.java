@@ -38,12 +38,12 @@ public class CategoryMapperTest extends BaseTest {
 
     @Test
     public void getCategoryById() {
-        assertNotNull(categoryMapper.getCategoryById(1));
+        assertNotNull(categoryMapper.getById(1));
     }
 
     @Test
     public void getAllCategoryList() {
-        assertNotNull(categoryMapper.getAllCategoryList());
+        assertNotNull(categoryMapper.getList());
     }
 
     @Test

@@ -21,5 +21,4 @@ public class ArticleTagRef implements Serializable {
 
     private Integer tagId;
 
-
 }

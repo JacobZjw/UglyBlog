@@ -17,7 +17,7 @@ public interface CategoryMapper {
      * @param categoryName 分类名
      * @return 结果
      */
-    int insertCategory(@Param("categoryName") String categoryName);
+    int insert(@Param("categoryName") String categoryName);
 
     /**
      * 通过文章ID删除分类信息
@@ -25,7 +25,7 @@ public interface CategoryMapper {
      * @param categoryId 分类ID
      * @return 结果
      */
-    int deleteCategoryById(@Param("categoryId") Integer categoryId);
+    int deleteById(@Param("categoryId") Integer categoryId);
 
 
     /**
@@ -34,7 +34,7 @@ public interface CategoryMapper {
      * @param category 分类信息
      * @return 结果
      */
-    int updateCategory(Category category);
+    int update(Category category);
 
 
     /**
@@ -43,7 +43,7 @@ public interface CategoryMapper {
      * @param categoryId 分类ID
      * @return 分类对象信息
      */
-    Category getCategoryById(@Param("categoryId") Integer categoryId);
+    Category getById(@Param("categoryId") Integer categoryId);
 
 
     /**
@@ -52,7 +52,7 @@ public interface CategoryMapper {
      * @param categoryName 分类名
      * @return 分类对象信息
      */
-    Category getByCategoryName(@Param("categoryName") String categoryName);
+    Category getByName(@Param("categoryName") String categoryName);
 
 
     /**
@@ -60,7 +60,7 @@ public interface CategoryMapper {
      *
      * @return 分类对象列表
      */
-    List<Category> getAllCategoryList();
+    List<Category> getList();
 
     /**
      * 根据分类所属的文章数查找前n个分类对象信息

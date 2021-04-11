@@ -18,7 +18,7 @@ public interface PageService {
      * @param pageSize 每页显示的条数
      * @return
      */
-    Page<Article> getDefaultPage(int pageNo, int pageSize);
+    Page<Article> getArticleDefaultPage(int pageNo, int pageSize);
 
 
     /**
@@ -29,7 +29,7 @@ public interface PageService {
      * @param article  文章信息
      * @return 文章对象列表
      */
-    Page<Article> getPageByCondition(int pageNo, int pageSize, Article article);
+//    Page<Article> getPageByCondition(int pageNo, int pageSize, Article article);
 
 
     /**

@@ -9,7 +9,7 @@
         <result column="tag_name" property="tagName"/>
     </resultMap>
 
-    <insert id="insertTag">
+    <insert id="insert">
         INSERT tag(
         <if test="tagName != null and tagName != '' ">tag_name</if>
         )
@@ -19,34 +19,34 @@
     </insert>
 
 
-    <delete id="deleteTagById" parameterType="integer">
+    <delete id="deleteById" parameterType="integer">
         DELETE
         FROM tag
         WHERE tag_id = #{tagId}
     </delete>
 
 
-    <update id="updateTag" parameterType="com.ugly.blog.domain.Tag">
+    <update id="update" parameterType="com.ugly.blog.domain.Tag">
         UPDATE tag
         SET tag_name=#{tagName}
         WHERE tag_id = #{tagId}
     </update>
 
 
-    <select id="getTagById" resultMap="tagMap" parameterType="integer">
+    <select id="getById" resultMap="tagMap" parameterType="integer">
         SELECT *
         FROM tag
         WHERE tag_id = #{tagId}
     </select>
 
 
-    <select id="getAllTagList" resultMap="tagMap">
+    <select id="getList" resultMap="tagMap">
         SELECT *
         FROM tag
     </select>
 
 
-    <select id="getByTagName" resultMap="tagMap">
+    <select id="getByName" resultMap="tagMap">
         SELECT *
         FROM tag
         WHERE tag_id = #{tagName}

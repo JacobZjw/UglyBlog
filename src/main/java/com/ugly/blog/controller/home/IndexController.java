@@ -45,7 +45,7 @@ public class IndexController {
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String index(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
                         @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize, Model model) {
-        Page<Article> page = pageService.getDefaultPage(pageIndex, pageSize);
+        Page<Article> page = pageService.getArticleDefaultPage(pageIndex, pageSize);
         model.addAttribute("articlePage", page);
 
         List<Category> categoryList = categoryService.getTopNumsCategoryList(AppConfig.SIDEBAR_CATEGORY_NUM);
@@ -63,7 +63,7 @@ public class IndexController {
     @RequestMapping(value = "/page/{pageIndex}", produces = "application/json;charset=utf-8")
     public @ResponseBody
     String getPage(@PathVariable("pageIndex") Integer pageIndex) {
-        Page<Article> page = pageService.getDefaultPage(pageIndex, 10);
+        Page<Article> page = pageService.getArticleDefaultPage(pageIndex, 10);
         return new JSONObject(page).toString();
     }
 

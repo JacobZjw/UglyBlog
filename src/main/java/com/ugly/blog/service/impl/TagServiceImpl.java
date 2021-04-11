@@ -24,12 +24,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> getTagList() {
-        return tagMapper.getAllTagList();
+        return tagMapper.getList();
     }
 
     @Override
     public Tag getTagById(Integer tagId) {
-        return tagMapper.getTagById(tagId);
+        return tagMapper.getById(tagId);
     }
 
     @Override
@@ -37,24 +37,24 @@ public class TagServiceImpl implements TagService {
         if (getByTagName(tagName) != null) {
             return 0;
         }
-        return tagMapper.insertTag(tagName);
+        return tagMapper.insert(tagName);
     }
 
     @Override
     public int deleteTagById(Integer tagId) {
-        return tagMapper.deleteTagById(tagId);
+        return tagMapper.deleteById(tagId);
     }
 
     @Override
     public int updateOrInsertTag(Tag tag) {
         if (tag.getTagId() != null) {
-            return tagMapper.updateTag(tag);
+            return tagMapper.update(tag);
         }
-        return tagMapper.insertTag(tag.getTagName());
+        return tagMapper.insert(tag.getTagName());
     }
 
     @Override
     public Tag getByTagName(String tagName) {
-        return tagMapper.getByTagName(tagName);
+        return tagMapper.getByName(tagName);
     }
 }

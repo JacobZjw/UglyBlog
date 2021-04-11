@@ -19,7 +19,7 @@ public interface TagMapper {
      * @param tagName 标签名
      * @return 结果
      */
-    int insertTag(String tagName);
+    int insert(String tagName);
 
 
     /**
@@ -28,7 +28,7 @@ public interface TagMapper {
      * @param tagId 标签ID
      * @return 结果
      */
-    int deleteTagById(Integer tagId);
+    int deleteById(Integer tagId);
 
     /**
      * 修改标签信息
@@ -36,7 +36,7 @@ public interface TagMapper {
      * @param tag 标签信息
      * @return 结果
      */
-    int updateTag(Tag tag);
+    int update(Tag tag);
 
     /**
      * 根据标签ID寻找标签信息
@@ -44,7 +44,7 @@ public interface TagMapper {
      * @param tagId 标签ID
      * @return 标签对象信息
      */
-    Tag getTagById(Integer tagId);
+    Tag getById(Integer tagId);
 
 
     /**
@@ -53,7 +53,7 @@ public interface TagMapper {
      * @param tagName 标签名
      * @return 标签对象信息
      */
-    Tag getByTagName(String tagName);
+    Tag getByName(String tagName);
 
 
     /**
@@ -61,6 +61,6 @@ public interface TagMapper {
      *
      * @return 标签对象列表
      */
-    List<Tag> getAllTagList();
+    List<Tag> getList();
 
 }

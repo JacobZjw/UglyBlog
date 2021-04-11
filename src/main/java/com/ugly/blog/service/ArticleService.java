@@ -15,7 +15,7 @@ public interface ArticleService {
      * @param article 文章信息
      * @return 结果
      */
-    int insertArticle(Article article);
+    int insert(Article article);
 
 
     /**
@@ -24,7 +24,7 @@ public interface ArticleService {
      * @param article 文章信息
      * @return 结果
      */
-    int updateArticle(Article article);
+    int update(Article article);
 
 
     /**
@@ -33,7 +33,7 @@ public interface ArticleService {
      * @param articleId 文章ID
      * @return 结果
      */
-    int deleteArticle(Integer articleId);
+    int delete(Integer articleId);
 
     /**
      * 指定ID的文章访问量加一
@@ -52,6 +52,14 @@ public interface ArticleService {
      */
     int addLikeCount(Integer articleId);
 
+    /**
+     * 指定ID的文章评论数加一
+     *
+     * @param articleId 文章ID
+     * @return 结果
+     */
+    int addCommentCount(Integer articleId);
+
 
     /**
      * 根据文章Id获取文章信息
@@ -59,7 +67,7 @@ public interface ArticleService {
      * @param articleId 文章ID
      * @return 文章对象信息
      */
-    Article getArticleById(int articleId);
+    Article getFullInfoById(int articleId);
 
 
     /**
@@ -72,11 +80,20 @@ public interface ArticleService {
 
 
     /**
+     * 根据条件查询文章列表
+     *
+     * @param article 文章信息
+     * @return 文章对象列表
+     */
+    List<Article> getListByCondition(Article article);
+
+
+    /**
      * 获取文章总数
      *
      * @return 文章总数
      */
-    int getCount();
+    int getTotalCount();
 
     /**
      * 获取下一篇文章的id和标题
@@ -96,10 +113,10 @@ public interface ArticleService {
     Article getPrevArticle(Integer articleId);
 
     /**
-     * 通过文章ID修改文章的状态
+     * 切换文章的显示状态
      *
      * @param articleId 文章ID
      * @return 结果
      */
-    int changeArticleStatus(Integer articleId);
+    int switchShowStatus(Integer articleId);
 }

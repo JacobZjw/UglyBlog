@@ -1,7 +1,10 @@
 package com.ugly.blog.service.impl;
 
 import com.ugly.blog.domain.Article;
+import com.ugly.blog.mapper.ArticleCategoryRefMapper;
 import com.ugly.blog.mapper.ArticleMapper;
+import com.ugly.blog.mapper.ArticleTagRefMapper;
+import com.ugly.blog.mapper.UserMapper;
 import com.ugly.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,25 +19,31 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleMapper articleMapper;
+    private final UserMapper userMapper;
+    private final ArticleTagRefMapper atrMapper;
+    private final ArticleCategoryRefMapper acrMapper;
 
     @Autowired
-    public ArticleServiceImpl(ArticleMapper articleMapper) {
+    public ArticleServiceImpl(ArticleMapper articleMapper, UserMapper userMapper, ArticleTagRefMapper atrMapper, ArticleCategoryRefMapper acrMapper) {
         this.articleMapper = articleMapper;
+        this.userMapper = userMapper;
+        this.atrMapper = atrMapper;
+        this.acrMapper = acrMapper;
     }
 
     @Override
-    public int insertArticle(Article article) {
-        return articleMapper.insertArticle(article);
+    public int insert(Article article) {
+        return articleMapper.insert(article);
     }
 
     @Override
-    public int updateArticle(Article article) {
-        return articleMapper.updateArticle(article);
+    public int update(Article article) {
+        return articleMapper.update(article);
     }
 
     @Override
-    public int deleteArticle(Integer articleId) {
-        return articleMapper.deleteArticle(articleId);
+    public int delete(Integer articleId) {
+        return articleMapper.delete(articleId);
     }
 
     @Override
@@ -48,8 +57,15 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getArticleById(int articleId) {
-        return articleMapper.getById(articleId);
+    public int addCommentCount(Integer articleId) {
+        return articleMapper.addCommentCount(articleId);
+    }
+
+    @Override
+    public Article getFullInfoById(int articleId) {
+        Article article = articleMapper.getFullInfoById(articleId);
+        article.setTagList(atrMapper.getTagListByArticleId(articleId));
+        return article;
     }
 
     @Override
@@ -58,8 +74,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public int getCount() {
-        return articleMapper.getCount();
+    public List<Article> getListByCondition(Article article) {
+        List<Article> list = articleMapper.getListByCondition(article);
+        for (Article a : list) {
+            a.setTagList(atrMapper.getTagListByArticleId(a.getArticleId()));
+        }
+        return list;
+    }
+
+    @Override
+    public int getTotalCount() {
+        return articleMapper.getTotalCount();
     }
 
     @Override
@@ -73,16 +98,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public int changeArticleStatus(Integer articleId) {
-        Article article = getArticleById(articleId);
+    public int switchShowStatus(Integer articleId) {
+        Article article = articleMapper.getSimpleInfoById(articleId);
         if (article == null) {
             return 0;
         }
-        if (article.getStatus() == 0) {
-            article.setStatus(1);
+        if (article.getIsShow() == 0) {
+            article.setIsShow(1);
         } else {
-            article.setStatus(0);
+            article.setIsShow(0);
         }
-        return updateArticle(article);
+        return update(article);
     }
 }

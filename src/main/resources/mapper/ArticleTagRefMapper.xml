@@ -5,9 +5,22 @@
 <mapper namespace="com.ugly.blog.mapper.ArticleTagRefMapper">
 
 
+    <insert id="insert">
+        INSERT INTO article_tags(tag_id, article_id)
+        VALUES (#{tagId}, #{articleId});
+    </insert>
+
+    <delete id="delete">
+        DELETE
+        FROM article_tags
+        WHERE article_id = #{articleId}
+          AND tag_id = #{tagId};
+    </delete>
+
+
     <select id="getCountByTagList" resultType="java.lang.Integer" parameterType="list">
         SELECT COUNT(*)
-        FROM article_tag_ref at
+        FROM article_tags at
         INNER JOIN article a ON at.article_id = a.article_id
         WHERE tag_id IN
         <foreach collection="tagIds" open="(" item="tagId" separator="," close=")">
@@ -18,9 +31,9 @@
 
 
     <select id="getArticleListByTagList" resultMap="com.ugly.blog.mapper.ArticleMapper.articleMap" parameterType="list">
-        SELECT a.article_id,a.article_title,a.article_view_count,a.article_comment_count,a.article_create_time,
-        a.article_summary,a.article_user_id
-        FROM article_tag_ref at
+        SELECT a.article_id,a.title,a.click,a.comment,a.create_time,
+        a.summary,a.user_id
+        FROM article_tags at
         INNER JOIN article a ON at.article_id = a.article_id
         WHERE tag_id IN
         <foreach collection="tagIds" open="(" item="tagId" separator="," close=")">
@@ -32,7 +45,7 @@
 
     <select id="getCountByTagId" resultType="java.lang.Integer" parameterType="integer">
         SELECT COUNT(*)
-        FROM article_tag_ref at
+        FROM article_tags at
                  INNER JOIN article a ON at.article_id = a.article_id
         WHERE at.tag_id = #{tagId};
     </select>
@@ -40,14 +53,14 @@
 
     <select id="getArticleListByTagId" resultMap="com.ugly.blog.mapper.ArticleMapper.articleMap">
         SELECT a.article_id,
-               a.article_title,
-               a.article_view_count,
-               a.article_comment_count,
-               a.article_create_time,
-               a.article_summary,
-               a.article_user_id,
-               a.article_is_reprint
-        FROM article_tag_ref at
+               a.title,
+               a.click,
+               a.comment,
+               a.create_time,
+               a.summary,
+               a.user_id,
+               a.is_original
+        FROM article_tags at
                  INNER JOIN article a ON at.article_id = a.article_id
         WHERE at.tag_id = #{tagId}
         LIMIT #{begin},#{pageSize}
@@ -55,7 +68,7 @@
 
     <select id="getTagListByArticleId" resultMap="com.ugly.blog.mapper.TagMapper.tagMap" parameterType="integer">
         SELECT t.*
-        FROM article_tag_ref atr
+        FROM article_tags atr
                  LEFT JOIN article a ON a.article_id = atr.article_id = a.article_id
                  LEFT JOIN tag t ON atr.tag_id = t.tag_id
         WHERE atr.article_id = #{articleId};

@@ -32,11 +32,11 @@ public class TagMapperTest extends BaseTest {
 
     @Test
     public void getTagById() {
-        assertNotNull(tagMapper.getTagById(1));
+        assertNotNull(tagMapper.getById(1));
     }
 
     @Test
     public void getAllTagList() {
-        assertNotNull(tagMapper.getAllTagList());
+        assertNotNull(tagMapper.getList());
     }
 }

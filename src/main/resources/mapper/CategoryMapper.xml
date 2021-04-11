@@ -9,7 +9,7 @@
         <result column="category_name" property="categoryName" javaType="String"/>
     </resultMap>
 
-    <insert id="insertCategory" useGeneratedKeys="true">
+    <insert id="insert" useGeneratedKeys="true">
         INSERT INTO category(
         <if test="categoryName != null and categoryName != '' ">category_name</if>
         )
@@ -19,28 +19,28 @@
     </insert>
 
 
-    <delete id="deleteCategoryById" parameterType="integer">
+    <delete id="deleteById" parameterType="integer">
         DELETE
         FROM category
         WHERE category_id = #{categoryId}
     </delete>
 
 
-    <update id="updateCategory" parameterType="com.ugly.blog.domain.Category">
+    <update id="update" parameterType="com.ugly.blog.domain.Category">
         UPDATE category
         SET category_name=#{categoryName}
         WHERE category_id = #{categoryId}
     </update>
 
 
-    <select id="getCategoryById" resultMap="categoryMap">
+    <select id="getById" resultMap="categoryMap">
         SELECT *
         FROM category
         WHERE category_id = #{categoryId}
     </select>
 
 
-    <select id="getAllCategoryList" resultMap="categoryMap">
+    <select id="getList" resultMap="categoryMap">
         SELECT *
         FROM category
     </select>
@@ -50,13 +50,13 @@
         SELECT c.*
         FROM category c
                  INNER JOIN (SELECT category_id, COUNT(*) AS nums
-                             FROM article_category_ref
+                             FROM article_category
                              GROUP BY category_id) ac ON ac.category_id = c.category_id
         ORDER BY ac.nums DESC, c.category_name
         LIMIT #{num};
     </select>
 
-    <select id="getByCategoryName" resultMap="categoryMap">
+    <select id="getByName" resultMap="categoryMap">
         SELECT *
         FROM category
         WHERE category_name = #{categoryName};

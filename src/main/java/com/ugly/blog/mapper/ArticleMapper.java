@@ -1,7 +1,6 @@
 package com.ugly.blog.mapper;
 
 import com.ugly.blog.domain.Article;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface ArticleMapper {
      * @param articleId 文章ID
      * @return 结果
      */
-    int deleteArticle(Integer articleId);
+    int delete(Integer articleId);
 
     /**
      * 指定ID的文章访问量加一
@@ -40,19 +39,38 @@ public interface ArticleMapper {
 
 
     /**
+     * 指定ID的文章评论数数加一
+     *
+     * @param articleId 文章ID
+     * @return 结果
+     */
+    int addCommentCount(Integer articleId);
+
+
+    /**
      * 获取文章总数
      *
      * @return 文章总数
      */
-    int getCount();
+    int getTotalCount();
 
     /**
-     * 通过文章ID获取文章
+     * 通过文章ID获取文章详细信息
      *
      * @param articleId 文章ID
      * @return 文章对象信息
      */
-    Article getById(int articleId);
+    Article getFullInfoById(int articleId);
+
+
+    /**
+     * 通过文章ID获取文章简要信息
+     *
+     * @param articleId 文章ID
+     * @return 文章对象信息
+     */
+    Article getSimpleInfoById(int articleId);
+
 
     /**
      * 根据文章访问数获取最热门的n篇文章
@@ -61,16 +79,6 @@ public interface ArticleMapper {
      * @return 文章对象列表
      */
     List<Article> getTopHotArticle(int num);
-
-
-    /**
-     * 获取文章分页
-     *
-     * @param begin    起始索引
-     * @param pageSize 页面大小
-     * @return 文章对象列表
-     */
-    List<Article> getPage(@Param("begin") int begin, @Param("pageSize") int pageSize);
 
 
     /**
@@ -92,23 +100,12 @@ public interface ArticleMapper {
 
 
     /**
-     * 根据条件查询文章总数
+     * 根据条件查询文章列表
      *
-     * @param article 文章条件信息
-     * @return 文章总数
-     */
-    int getCountByCondition(@Param("article") Article article);
-
-
-    /**
-     * 根据条件查询文章分页列表
-     *
-     * @param begin    起始索引
-     * @param pageSize 页面大小
-     * @param article  文章信息
+     * @param article 文章信息
      * @return 文章对象列表
      */
-    List<Article> getListByCondition(@Param("begin") int begin, @Param("pageSize") int pageSize, @Param("article") Article article);
+    List<Article> getListByCondition(Article article);
 
 
     /**
@@ -117,7 +114,7 @@ public interface ArticleMapper {
      * @param article 文章信息
      * @return 结果
      */
-    int updateArticle(Article article);
+    int update(Article article);
 
     /**
      * 新增文章信息
@@ -125,5 +122,5 @@ public interface ArticleMapper {
      * @param article 文章信息
      * @return 结果
      */
-    int insertArticle(Article article);
+    int insert(Article article);
 }

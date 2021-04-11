@@ -22,31 +22,82 @@ public class Article implements Serializable {
 
     private Integer authorId;
 
+    private Integer categoryId;
+
+    /**
+     * 标题
+     */
     private String title;
 
-    private String content;
+    /**
+     * 封面图
+     */
+    private String coverImage;
 
-    private Integer viewCount;
-
-    private Integer commentCount;
-
-    private Integer likeCount;
-
-    private Integer status;
-
-    private Integer order;
-
-    private Date createTime;
-
-    private Date updateTime;
-
+    /**
+     * 摘要
+     */
     private String summary;
 
     /**
-     * 是否转载文章(0是原创 1是转载)
+     * 关键词
      */
-    private Integer isReprint;
+    private String keyWords;
 
+    /**
+     * 文章内容
+     */
+    private String content;
+
+    /**
+     * markdown源码
+     */
+    private String contentMd;
+
+    /**
+     * 点击量
+     */
+    private Integer clickCount;
+
+    /**
+     * 评论数
+     */
+    private Integer commentCount;
+
+    /**
+     * 点赞数
+     */
+    private Integer likeCount;
+
+    /**
+     * 是否置顶 1是 0否
+     */
+    private Integer isTop;
+
+    /**
+     * 是否显示 1是 0否
+     */
+    private Integer isShow;
+
+    /**
+     * 是否原创 1是 0否
+     */
+    private Integer isOriginal;
+
+    /**
+     * 是否发布 1是 0否
+     */
+    private Integer isPublished;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     /**
      * 作者信息，非数据库字段
@@ -57,13 +108,14 @@ public class Article implements Serializable {
     /**
      * 标签信息，非数据库字段
      */
-    @JsonInclude
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Tag> tagList;
 
     /**
      * 分类信息，非数据库字段
      */
-    @JsonInclude
-    private List<Category> categoryList;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonUnwrapped
+    private Category category;
 
 }

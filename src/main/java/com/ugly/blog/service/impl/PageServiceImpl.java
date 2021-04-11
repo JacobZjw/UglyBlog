@@ -1,10 +1,12 @@
 package com.ugly.blog.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.ugly.blog.domain.Article;
 import com.ugly.blog.dto.Page;
 import com.ugly.blog.mapper.ArticleCategoryRefMapper;
 import com.ugly.blog.mapper.ArticleMapper;
 import com.ugly.blog.mapper.ArticleTagRefMapper;
+import com.ugly.blog.service.ArticleService;
 import com.ugly.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,33 +22,36 @@ public class PageServiceImpl implements PageService {
 
     private final ArticleMapper articleMapper;
 
+    private final ArticleService articleService;
+
     private final ArticleTagRefMapper articleTagRefMapper;
     private final ArticleCategoryRefMapper articleCategoryRefMapper;
 
     @Autowired
-    public PageServiceImpl(ArticleMapper articleMapper, ArticleTagRefMapper articleTagRefMapper, ArticleCategoryRefMapper articleCategoryRefMapper) {
+    public PageServiceImpl(ArticleMapper articleMapper, ArticleService articleService, ArticleTagRefMapper articleTagRefMapper, ArticleCategoryRefMapper articleCategoryRefMapper) {
         this.articleMapper = articleMapper;
+        this.articleService = articleService;
         this.articleTagRefMapper = articleTagRefMapper;
         this.articleCategoryRefMapper = articleCategoryRefMapper;
     }
 
     @Override
-    public Page<Article> getDefaultPage(int pageNo, int pageSize) {
-        int totalCount = articleMapper.getCount();
+    public Page<Article> getArticleDefaultPage(int pageNo, int pageSize) {
+        int totalCount = articleMapper.getTotalCount();
         Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
-        int begin = (page.getPageNo() - 1) * pageSize;
-        page.setItems(articleMapper.getPage(begin, pageSize));
+        PageHelper.startPage(pageNo, pageSize);
+        page.setItems(articleService.getListByCondition(null));
         return page;
     }
 
-    @Override
-    public Page<Article> getPageByCondition(int pageNo, int pageSize, Article article) {
-        int totalCount = articleMapper.getCountByCondition(article);
-        Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
-        int begin = (page.getPageNo() - 1) * pageSize;
-        page.setItems(articleMapper.getListByCondition(begin, pageSize, article));
-        return page;
-    }
+//    @Override
+//    public Page<Article> getPageByCondition(int pageNo, int pageSize, Article article) {
+//        int totalCount = articleMapper.getCountByCondition(article);
+//        Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
+//        int begin = (page.getPageNo() - 1) * pageSize;
+//        page.setItems(articleMapper.getListByCondition(begin, pageSize, article));
+//        return page;
+//    }
 
 
     @Override

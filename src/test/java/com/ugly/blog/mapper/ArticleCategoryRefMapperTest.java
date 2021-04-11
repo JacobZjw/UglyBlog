@@ -14,7 +14,7 @@ public class ArticleCategoryRefMapperTest extends BaseTest {
     private ArticleCategoryRefMapper articleCategoryRefMapper;
 
     @Test
-    public void getCategoryListByArticleId() {
-        articleCategoryRefMapper.getCategoryListByArticleId(1).forEach(System.out::println);
+    public void getCategoryByArticleId() {
+        System.out.println(articleCategoryRefMapper.getCategoryByArticleId(1));
     }
 }

@@ -27,17 +27,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllCategoryList() {
-        return categoryMapper.getAllCategoryList();
+        return categoryMapper.getList();
     }
 
     @Override
     public Category getCategoryById(Integer categoryId) {
-        return categoryMapper.getCategoryById(categoryId);
+        return categoryMapper.getById(categoryId);
     }
 
     @Override
     public Category getByCategoryName(String categoryName) {
-        return categoryMapper.getByCategoryName(categoryName);
+        return categoryMapper.getByName(categoryName);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (category.getCategoryId() == null) {
             return insertCategory(category.getCategoryName());
         }
-        return categoryMapper.updateCategory(category);
+        return categoryMapper.update(category);
     }
 
     @Override
@@ -53,11 +53,11 @@ public class CategoryServiceImpl implements CategoryService {
         if (getByCategoryName(categoryName) != null) {
             return 0;
         }
-        return categoryMapper.insertCategory(categoryName);
+        return categoryMapper.insert(categoryName);
     }
 
     @Override
     public int deleteCategoryById(Integer categoryId) {
-        return categoryMapper.deleteCategoryById(categoryId);
+        return categoryMapper.deleteById(categoryId);
     }
 }

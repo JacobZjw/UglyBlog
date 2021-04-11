@@ -57,7 +57,7 @@ public class User implements Serializable {
      * 注册时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date registerTime;
+    private Date createTime;
 
     /**
      * 上次登录时间
@@ -68,7 +68,7 @@ public class User implements Serializable {
     /**
      * 状态(0正常 1停用)
      */
-    private Integer userStatus;
+    private Integer status;
 
     /**
      * 用户角色(admin管理员 user普通用户)

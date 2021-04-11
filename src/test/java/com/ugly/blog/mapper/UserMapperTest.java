@@ -34,7 +34,7 @@ public class UserMapperTest extends BaseTest {
 
     @Test
     public void getUserById() {
-        assertNotNull(userMapper.getUserById(1));
+        assertNotNull(userMapper.getById(1));
     }
 
     @Test

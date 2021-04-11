@@ -4,136 +4,120 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ugly.blog.mapper.ArticleMapper">
 
-    <resultMap id="articleMap" type="com.ugly.blog.domain.Article">
+    <resultMap id="articleMap" type="Article">
         <id property="articleId" javaType="Integer" column="article_id"/>
-        <result property="authorId" javaType="Integer" column="article_user_id"/>
-        <result property="title" javaType="String" column="article_title"/>
-        <result property="viewCount" javaType="Integer" column="article_view_count"/>
-        <result property="commentCount" javaType="Integer" column="article_comment_count"/>
-        <result property="likeCount" javaType="Integer" column="article_like_count"/>
-        <result property="createTime" javaType="Date" column="article_create_time"/>
-        <result property="updateTime" javaType="Date" column="article_update_time"/>
-        <result property="status" javaType="Integer" column="article_status"/>
-        <result property="order" javaType="Integer" column="article_order"/>
-        <result property="content" javaType="String" column="article_content"/>
-        <result property="summary" javaType="String" column="article_summary"/>
-        <result property="isReprint" javaType="Integer" column="article_is_reprint"/>
+        <result property="authorId" javaType="Integer" column="user_id"/>
+        <result property="categoryId" javaType="Integer" column="category_id"/>
+        <result property="title" javaType="String" column="title"/>
+        <result property="coverImage" javaType="String" column="cover_image"/>
+        <result property="summary" javaType="String" column="summary"/>
+        <result property="keyWords" javaType="String" column="keywords"/>
+        <result property="content" javaType="String" column="content"/>
+        <result property="contentMd" javaType="String" column="content_md"/>
 
-        <association property="user" column="article_user_id" javaType="com.ugly.blog.domain.User"
-                     resultMap="com.ugly.blog.mapper.UserMapper.userMap"/>
+        <result property="clickCount" javaType="Integer" column="click"/>
+        <result property="commentCount" javaType="Integer" column="comment"/>
+        <result property="likeCount" javaType="Integer" column="like"/>
+
+        <result property="isTop" javaType="Integer" column="is_top"/>
+        <result property="isShow" javaType="Integer" column="is_show"/>
+        <result property="isOriginal" javaType="Integer" column="is_original"/>
+        <result property="isPublished" javaType="Integer" column="is_published"/>
+
+        <result property="createTime" javaType="Date" column="create_time"/>
+        <result property="updateTime" javaType="Date" column="update_time"/>
+
+        <association property="user" column="user_id" javaType="com.ugly.blog.domain.User"
+                     select="com.ugly.blog.mapper.UserMapper.getById"/>
+
+        <association property="category" column="category_id" javaType="com.ugly.blog.domain.Category"
+                     select="com.ugly.blog.mapper.CategoryMapper.getById"/>
 
         <collection property="tagList" ofType="com.ugly.blog.domain.Tag" javaType="java.util.List"
                     resultMap="com.ugly.blog.mapper.TagMapper.tagMap"/>
 
-        <collection property="categoryList" ofType="com.ugly.blog.domain.Category" javaType="java.util.List"
-                    resultMap="com.ugly.blog.mapper.CategoryMapper.categoryMap"/>
-
     </resultMap>
 
-    <sql id="fullInfo">
-        SELECT a.*,
-               u.user_name,
-               u.user_nickname,
-               atr.tag_id,
-               atr.tag_name,
-               acr.category_id,
-               acr.category_name
-        FROM article a
-                 LEFT JOIN user u ON a.article_user_id = u.user_id
-                 LEFT JOIN (SELECT article_id, tag.tag_id, tag_name
-                            FROM article_tag_ref
-                                     LEFT JOIN tag ON article_tag_ref.tag_id = tag.tag_id) atr
-                           ON atr.article_id = a.article_id
-                 LEFT JOIN (SELECT article_id, c.category_id, c.category_name
-                            FROM article_category_ref
-                                     LEFT JOIN category c ON article_category_ref.category_id = c.category_id) acr
-                           ON a.article_id = acr.article_id
+    <sql id="full">
+        SELECT *
+        FROM article
+    </sql>
+
+    <sql id="simple">
+        SELECT article_id,
+               user_id,
+               category_id,
+               title,
+               cover_image,
+               summary,
+               click,
+               `like`,
+               `comment`,
+               is_top,
+               is_show,
+               is_original,
+               is_published,
+               create_time,
+               update_time
+        FROM article
     </sql>
 
 
-    <sql id="condition">
-        SELECT a.article_id,
-               a.article_user_id,
-               a.article_create_time,
-               a.article_status,
-               a.article_view_count,
-               a.article_title,
-               u.user_name,
-               u.user_nickname,
-               atr.tag_id,
-               atr.tag_name,
-               acr.category_id,
-               acr.category_name
-        FROM article a
-                 LEFT JOIN user u ON a.article_user_id = u.user_id
-                 LEFT JOIN (SELECT article_id, tag.tag_id, tag_name
-                            FROM article_tag_ref
-                                     LEFT JOIN tag ON article_tag_ref.tag_id = tag.tag_id) atr
-                           ON atr.article_id = a.article_id
-                 LEFT JOIN (SELECT article_id, c.category_id, c.category_name
-                            FROM article_category_ref
-                                     LEFT JOIN category c ON article_category_ref.category_id = c.category_id) acr
-                           ON a.article_id = acr.article_id
-    </sql>
-
-
-    <delete id="deleteArticle" parameterType="integer">
+    <delete id="delete">
         DELETE
         FROM article
         WHERE article_id = #{articleId};
     </delete>
 
 
-    <insert id="addViewCount" parameterType="integer">
+    <insert id="addViewCount">
         UPDATE article
-        SET article_view_count = article_view_count + 1
+        SET click = click + 1
         WHERE article_id = #{articleId};
     </insert>
 
 
     <insert id="addLikeCount" parameterType="integer">
         UPDATE article
-        SET article_like_count = article_like_count + 1
+        SET `like` = article.`like` + 1
         WHERE article_id = #{articleId};
     </insert>
 
 
-    <select id="getCount" resultType="java.lang.Integer">
+    <insert id="addCommentCount">
+        UPDATE article
+        SET `comment` = article.`comment` + 1
+        WHERE article_id = #{articleId};
+    </insert>
+
+
+    <select id="getTotalCount" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM article
     </select>
 
 
-    <select id="getById" resultMap="articleMap">
-        <include refid="fullInfo"/>
-        WHERE a.article_id = #{articleId}
+    <select id="getFullInfoById" resultMap="articleMap">
+        <include refid="full"/>
+        WHERE article_id = #{articleId}
+    </select>
+
+    <select id="getSimpleInfoById" resultMap="articleMap">
+        <include refid="simple"/>
+        WHERE article_id = #{articleId};
     </select>
 
 
     <select id="getTopHotArticle" resultMap="articleMap">
-        SELECT article_id, article_title
+        SELECT article_id, title
         FROM article
-        ORDER BY article_view_count DESC
+        ORDER BY click DESC
         LIMIT #{num};
     </select>
 
 
-    <select id="getPage" resultMap="articleMap">
-        SELECT article_id,
-               article_title,
-               article_view_count,
-               article_comment_count,
-               article_create_time,
-               article_is_reprint,
-               article_summary,
-               article_user_id
-        FROM article
-        LIMIT #{begin},#{pageSize}
-    </select>
-
-
     <select id="getNextArticle" resultMap="articleMap" parameterType="integer">
-        SELECT article_id, article_title
+        SELECT article_id, title
         FROM article
         WHERE article_id > #{articleId}
         ORDER BY article_id
@@ -142,7 +126,7 @@
 
 
     <select id="getPrevArticle" resultMap="articleMap" parameterType="integer">
-        SELECT article_id, article_title
+        SELECT article_id, title
         FROM article
         WHERE article_id &lt; #{articleId}
         ORDER BY article_id DESC
@@ -151,38 +135,7 @@
 
 
     <select id="getListByCondition" resultMap="articleMap">
-        <include refid="condition"/>
-        <if test="article != null">
-            <where>
-                <if test="article.user != null and article.user.nickname != null and article.user.nickname != '' ">
-                    u.user_nickname LIKE concat('%',#{article.user.nickname},'%')
-                </if>
-                <if test="article.title != null and article.title != '' ">
-                    OR a.article_title LIKE concat('%',#{article.title},'%')
-                </if>
-                <if test="article.authorId != null and article.authorId != '' ">
-                    OR a.article_user_id = #{article.authorId}
-                </if>
-                <if test="article.user != null and article.user.username != null and article.user.username != '' ">
-                    OR u.username LIKE concat('%',#{article.user.username},'%')
-                </if>
-            </where>
-        </if>
-        LIMIT #{begin},#{pageSize};
-    </select>
-
-    <select id="getCountByCondition" resultType="java.lang.Integer">
-        SELECT COUNT(a.article_id)
-        FROM article a
-        LEFT JOIN user u ON a.article_user_id = u.user_id
-        LEFT JOIN (SELECT article_id, tag.tag_id, tag_name
-        FROM article_tag_ref
-        LEFT JOIN tag ON article_tag_ref.tag_id = tag.tag_id) atr
-        ON atr.article_id = a.article_id
-        LEFT JOIN (SELECT article_id, c.category_id, c.category_name
-        FROM article_category_ref
-        LEFT JOIN category c ON article_category_ref.category_id = c.category_id) acr
-        ON a.article_id = acr.article_id
+        <include refid="simple"/>
         <if test="article != null">
             <where>
                 <if test="article.user != null and article.user.nickname != null and article.user.nickname != '' ">
@@ -202,56 +155,68 @@
     </select>
 
 
-    <insert id="insertArticle" useGeneratedKeys="true" parameterType="com.ugly.blog.domain.Article"
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.ugly.blog.domain.Article"
             keyColumn="article_id" keyProperty="articleId">
         <selectKey keyProperty="articleId" keyColumn="article_id" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO article(
-        <if test="authorId != null">article_user_id,</if>
-        <if test="title != null">article_title,</if>
-        <if test="content != null">article_content,</if>
-        <if test="viewCount != null">article_view_count,</if>
-        <if test="commentCount != null">article_comment_count,</if>
-        <if test="likeCount != null">article_like_count,</if>
-        <if test="status != null">article_status,</if>
-        <if test="order != null">article_order,</if>
-        <if test="summary != null">article_summary,</if>
-        <if test="isReprint != null">article_is_reprint,</if>
-        article_create_time,
-        article_update_time
+        <if test="articleId !=null and  articleId   != '' ">article_id,</if>
+        <if test="authorId !=null and   authorId  != '' ">user_id,</if>
+        <if test="categoryId !=null and   categoryId  != '' ">category_id,</if>
+        <if test="title  !=null and  title   != '' ">title,</if>
+        <if test="coverImage !=null and   coverImage  != '' ">cover_image,</if>
+        <if test="summary !=null and  summary   != '' ">summary,</if>
+        <if test="keyWords !=null and   keyWords  != '' ">keywords,</if>
+        <if test="content  !=null and  content   != '' ">content,</if>
+        <if test="contentMd !=null and  contentMd   != '' ">content_md,</if>
+        <if test="clickCount !=null and   clickCount  != '' ">click,</if>
+        <if test="commentCount !=null and  commentCount   != '' ">`comment`,</if>
+        <if test="likeCount !=null and  likeCount   != '' ">`like`,</if>
+        <if test="isTop !=null and isTop != '' ">is_top,</if>
+        <if test="isShow  !=null and isShow != '' ">is_show,</if>
+        <if test="isOriginal !=null and isOriginal  != '' ">is_original,</if>
+        <if test="isPublished !=null and isPublished  != '' ">is_published</if>
         )
         VALUES (
-        <if test="authorId != null">#{authorId},</if>
-        <if test="title != null">#{title},</if>
-        <if test="content != null">#{content},</if>
-        <if test="viewCount != null">#{viewCount},</if>
-        <if test="commentCount != null">#{commentCount},</if>
-        <if test="likeCount != null">#{likeCount},</if>
-        <if test="status != null">#{status},</if>
-        <if test="order != null">#{order},</if>
-        <if test="summary != null">#{summary},</if>
-        <if test="isReprint != null">#{isReprint},</if>
-        sysdate(),
-        sysdate()
+        <if test="articleId !=null and  articleId   != '' ">#{articleId},</if>
+        <if test="authorId !=null and   authorId  != '' ">#{authorId},</if>
+        <if test="categoryId !=null and   categoryId  != '' ">#{categoryId},</if>
+        <if test="title  !=null and  title   != '' ">#{title},</if>
+        <if test="coverImage !=null and   coverImage  != '' ">#{coverImage},</if>
+        <if test="summary !=null and  summary   != '' ">#{summary},</if>
+        <if test="keyWords !=null and keyWords  != '' ">#{keyWords},</if>
+        <if test="content  !=null and content   != '' ">#{content},</if>
+        <if test="contentMd !=null and contentMd   != '' ">#{contentMd},</if>
+        <if test="clickCount !=null and clickCount  != '' ">#{clickCount},</if>
+        <if test="commentCount !=null and commentCount   != '' ">#{commentCount},</if>
+        <if test="likeCount !=null and likeCount   != '' ">#{likeCount},</if>
+        <if test="isTop !=null and isTop  != '' ">#{isTop},</if>
+        <if test="isShow  !=null and isShow   != '' ">#{isShow},</if>
+        <if test="isOriginal  !=null and isOriginal  != '' ">#{isOriginal},</if>
+        <if test="isPublished  !=null and isPublished  != '' ">#{isPublished}</if>
         )
     </insert>
 
-    <update id="updateArticle" parameterType="com.ugly.blog.domain.Article">
+
+    <update id="update" parameterType="com.ugly.blog.domain.Article">
         UPDATE article
         <set>
-            <if test="authorId != null">article_user_id=#{authorId},</if>
-            <if test="title != null">article_title=#{title},</if>
-            <if test="content != null">article_content=#{content},</if>
-            <if test="viewCount != null">article_view_count=#{viewCount},</if>
-            <if test="commentCount != null">article_comment_count=#{commentCount},</if>
-            <if test="likeCount != null">article_like_count=#{likeCount},</if>
-            <if test="status != null">article_status=#{status},</if>
-            <if test="order != null">article_order=#{order},</if>
-            <if test="createTime != null">article_create_time=#{createTime},</if>
-            <if test="summary != null">article_summary=#{summary},</if>
-            <if test="isReprint != null">article_is_reprint=#{isReprint},</if>
-            article_update_time=sysdate()
+            <if test="  authorId !=null and   authorId  != '' ">user_id=#{authorId},</if>
+            <if test="  categoryId !=null and   categoryId  != '' ">category_id=#{categoryId},</if>
+            <if test=" title  !=null and  title   != '' ">title=${title},</if>
+            <if test="  coverImage !=null and   coverImage  != '' ">cover_image=#{coverImage},</if>
+            <if test="  summary !=null and  summary   != '' ">summary=#{summary},</if>
+            <if test="  keyWords !=null and   keyWords  != '' ">keywords=#{keyWords},</if>
+            <if test=" content  !=null and  content   != '' ">content=#{content},</if>
+            <if test="  contentMd !=null and  contentMd   != '' ">content_md=#{contentMd},</if>
+            <if test="  clickCount !=null and   clickCount  != '' ">click = #{clickCount},</if>
+            <if test="  commentCount !=null and  commentCount   != '' ">`comment`=#{commentCount},</if>
+            <if test="  likeCount !=null and  likeCount   != '' ">`like`=#{likeCount},</if>
+            <if test="   isTop !=null and   isTop  != '' ">is_top=#{isTop},</if>
+            <if test=" isShow  !=null and  isShow   != '' ">is_show=#{isShow},</if>
+            <if test=" isOriginal  !=null and   isOriginal  != '' ">is_original=#{isOriginal},</if>
+            <if test=" isPublished  !=null and   isPublished  != '' ">is_published=#{isPublished}</if>
         </set>
         WHERE article_id = #{articleId};
     </update>

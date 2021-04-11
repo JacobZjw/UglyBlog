@@ -43,7 +43,7 @@ public interface UserMapper {
      * @param userId 用户ID
      * @return 用户对象信息
      */
-    User getUserById(Integer userId);
+    User getById(Integer userId);
 
     /**
      * 查询所有用户信息

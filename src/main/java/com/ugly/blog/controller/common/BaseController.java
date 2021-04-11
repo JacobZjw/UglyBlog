@@ -1,5 +1,7 @@
 package com.ugly.blog.controller.common;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ugly.blog.constant.HttpStatus;
 import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.dto.Page;
@@ -29,15 +31,24 @@ public class BaseController {
 
 
     /**
+     * 设置请求分页数据
+     */
+    protected void startPage(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
+    }
+
+
+    /**
      * 返回表格分页数据
      *
-     * @param page 数据库查询到的分页
+     * @param list 数据库查询到的分页
      * @return 分页数据
      */
     protected TableDataInfo getDataTable(List<?> list) {
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setCount(list.size());
+        rspData.setCount(Math.toIntExact(new PageInfo(list).getTotal()));
         rspData.setData(list);
         return rspData;
     }

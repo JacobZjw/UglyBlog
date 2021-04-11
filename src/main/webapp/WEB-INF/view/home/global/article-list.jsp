@@ -18,10 +18,10 @@
 
             <section class="article-item">
                 <h5 class="title">
-                    <c:if test="${article.isReprint == 1}">
+                    <c:if test="${article.isOriginal == 1}">
                         <span class="fc-red">【转载】</span>
                     </c:if>
-                    <c:if test="${article.isReprint != 1}">
+                    <c:if test="${article.isOriginal != 1}">
                         <span class="fc-blue">【原创】</span>
                     </c:if>
                     <a href="/article/${article.articleId}">${article.title}</a>
@@ -45,7 +45,7 @@
                     <div class="f-fr">
 									<span class="read">
                                         <i class="fa fa-eye fs-16"></i>
-                                        <i class="num">${article.viewCount}</i>
+                                        <i class="num">${article.clickCount}</i>
                                     </span>
                         <span class="ml20">
 											<i class="fa fa-comments fs-16"></i>

@@ -48,7 +48,7 @@ public class TagController {
     @RequestMapping(value = "tag/all", method = RequestMethod.GET)
     public String getArticle(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
                              @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize, Model model) {
-        Page<Article> page = pageService.getDefaultPage(pageIndex, pageSize);
+        Page<Article> page = pageService.getArticleDefaultPage(pageIndex, pageSize);
         model.addAttribute("articlePage", page);
 
         List<Tag> tagList = tagService.getTagList();

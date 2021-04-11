@@ -6,7 +6,7 @@
 
     <select id="getCountByCategory" resultType="java.lang.Integer" parameterType="integer">
         SELECT COUNT(*)
-        FROM article_category_ref ac
+        FROM article_category ac
                  INNER JOIN article a ON ac.article_id = a.article_id
         WHERE ac.category_id = #{categoryId}
     </select>
@@ -14,14 +14,14 @@
 
     <select id="getPageByCategory" resultMap="com.ugly.blog.mapper.ArticleMapper.articleMap">
         SELECT a.article_id,
-               a.article_title,
-               a.article_view_count,
-               a.article_comment_count,
-               a.article_create_time,
-               a.article_summary,
-               a.article_user_id,
-               a.article_is_reprint
-        FROM article_category_ref ac
+               a.title,
+               a.click,
+               a.comment,
+               a.create_time,
+               a.summary,
+               a.user_id,
+               a.is_original
+        FROM article_category ac
                  INNER JOIN article a ON ac.article_id = a.article_id
         WHERE ac.category_id = #{categoryId}
         LIMIT #{begin},#{pageSize}
@@ -29,9 +29,16 @@
 
     <select id="getCategoryListByArticleId" resultMap="com.ugly.blog.mapper.CategoryMapper.categoryMap">
         SELECT c.*
-        FROM article_category_ref acr
+        FROM article_category acr
                  LEFT JOIN article a ON a.article_id = acr.article_id
                  LEFT JOIN category c ON acr.category_id = c.category_id
         WHERE a.article_id = #{articleId};
+    </select>
+
+    <select id="getCategoryByArticleId" resultMap="com.ugly.blog.mapper.CategoryMapper.categoryMap">
+        SELECT c.*
+        FROM article_category ac
+                 LEFT JOIN category c ON ac.category_id = c.category_id
+        WHERE article_id = #{articleId}
     </select>
 </mapper>
