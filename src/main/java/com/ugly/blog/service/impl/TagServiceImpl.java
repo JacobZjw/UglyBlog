@@ -23,8 +23,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> getTagList() {
-        return tagMapper.getList();
+    public List<Tag> getTagList(String tagName) {
+        return tagMapper.getList(tagName);
     }
 
     @Override

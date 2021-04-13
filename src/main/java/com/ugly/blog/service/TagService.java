@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface TagService {
 
-    List<Tag> getTagList();
+    List<Tag> getTagList(String tagName);
 
     Tag getTagById(Integer tagId);
 

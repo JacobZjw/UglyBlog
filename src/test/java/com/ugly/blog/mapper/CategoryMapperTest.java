@@ -43,7 +43,8 @@ public class CategoryMapperTest extends BaseTest {
 
     @Test
     public void getAllCategoryList() {
-        assertNotNull(categoryMapper.getList());
+        categoryMapper.getList("java");
+        assertNotNull(categoryMapper.getList(null));
     }
 
     @Test

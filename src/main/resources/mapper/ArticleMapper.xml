@@ -40,26 +40,26 @@
 
     <sql id="full">
         SELECT *
-        FROM article
+        FROM article a
     </sql>
 
     <sql id="simple">
-        SELECT article_id,
-               user_id,
-               category_id,
-               title,
-               cover_image,
-               summary,
-               click,
-               `like`,
-               `comment`,
-               is_top,
-               is_show,
-               is_original,
-               is_published,
-               create_time,
-               update_time
-        FROM article
+        SELECT a.article_id,
+               a.user_id,
+               a.category_id,
+               a.title,
+               a.cover_image,
+               a.summary,
+               a.click,
+               a.`like`,
+               a.`comment`,
+               a.is_top,
+               a.is_show,
+               a.is_original,
+               a.is_published,
+               a.create_time,
+               a.update_time
+        FROM article a
     </sql>
 
 
@@ -134,24 +134,22 @@
     </select>
 
 
-    <select id="getListByCondition" resultMap="articleMap">
-        <include refid="simple"/>
-        <if test="article != null">
-            <where>
-                <if test="article.user != null and article.user.nickname != null and article.user.nickname != '' ">
-                    u.user_nickname LIKE concat('%',#{article.user.nickname},'%')
-                </if>
-                <if test="article.title != null and article.title != '' ">
-                    OR a.article_title LIKE concat('%',#{article.title},'%')
-                </if>
-                <if test="article.authorId != null and article.authorId != '' ">
-                    OR a.article_user_id = #{article.authorId}
-                </if>
-                <if test="article.user != null and article.user.username != null and article.user.username != '' ">
-                    OR u.username LIKE concat('%',#{article.user.username},'%')
-                </if>
-            </where>
-        </if>
+    <select id="getListByCondition" resultMap="articleMap" parameterType="article">
+        <include refid="simple"/>LEFT JOIN user u ON a.user_id = u.user_id
+        <where>
+            <if test="user != null and user.nickname != null and user.nickname != '' ">
+                u.nickname LIKE concat('%',#{user.nickname},'%')
+            </if>
+            <if test="title != null and title != '' ">
+                OR a.title LIKE concat('%',#{title},'%')
+            </if>
+            <if test="authorId != null and authorId != '' ">
+                OR a.user_id = #{authorId}
+            </if>
+            <if test="user != null and user.username != null and user.username != '' ">
+                OR u.use_name LIKE concat('%',#{user.username},'%')
+            </if>
+        </where>
     </select>
 
 
@@ -161,64 +159,68 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO article(
-        <if test="articleId !=null and  articleId   != '' ">article_id,</if>
-        <if test="authorId !=null and   authorId  != '' ">user_id,</if>
-        <if test="categoryId !=null and   categoryId  != '' ">category_id,</if>
-        <if test="title  !=null and  title   != '' ">title,</if>
-        <if test="coverImage !=null and   coverImage  != '' ">cover_image,</if>
-        <if test="summary !=null and  summary   != '' ">summary,</if>
-        <if test="keyWords !=null and   keyWords  != '' ">keywords,</if>
-        <if test="content  !=null and  content   != '' ">content,</if>
-        <if test="contentMd !=null and  contentMd   != '' ">content_md,</if>
-        <if test="clickCount !=null and   clickCount  != '' ">click,</if>
-        <if test="commentCount !=null and  commentCount   != '' ">`comment`,</if>
-        <if test="likeCount !=null and  likeCount   != '' ">`like`,</if>
-        <if test="isTop !=null and isTop != '' ">is_top,</if>
-        <if test="isShow  !=null and isShow != '' ">is_show,</if>
-        <if test="isOriginal !=null and isOriginal  != '' ">is_original,</if>
-        <if test="isPublished !=null and isPublished  != '' ">is_published</if>
+        <trim suffixOverrides=",">
+            <if test="articleId != null ">article_id,</if>
+            <if test="authorId != null ">user_id,</if>
+            <if test="categoryId != null ">category_id,</if>
+            <if test="title != null ">title,</if>
+            <if test="coverImage != null and coverImage != '' ">cover_image,</if>
+            <if test="summary != null and summary != '' ">summary,</if>
+            <if test="keyWords != null and keyWords != '' ">keywords,</if>
+            <if test="content != null and content != '' ">content,</if>
+            <if test="contentMd != null and contentMd != '' ">content_md,</if>
+            <if test="clickCount != null ">click,</if>
+            <if test="commentCount != null ">`comment`,</if>
+            <if test="likeCount != null ">`like`,</if>
+            <if test="isTop != null ">is_top,</if>
+            <if test="isShow  != null ">is_show,</if>
+            <if test="isOriginal != null ">is_original,</if>
+            <if test="isPublished != null ">is_published</if>
+        </trim>
         )
         VALUES (
-        <if test="articleId !=null and  articleId   != '' ">#{articleId},</if>
-        <if test="authorId !=null and   authorId  != '' ">#{authorId},</if>
-        <if test="categoryId !=null and   categoryId  != '' ">#{categoryId},</if>
-        <if test="title  !=null and  title   != '' ">#{title},</if>
-        <if test="coverImage !=null and   coverImage  != '' ">#{coverImage},</if>
-        <if test="summary !=null and  summary   != '' ">#{summary},</if>
-        <if test="keyWords !=null and keyWords  != '' ">#{keyWords},</if>
-        <if test="content  !=null and content   != '' ">#{content},</if>
-        <if test="contentMd !=null and contentMd   != '' ">#{contentMd},</if>
-        <if test="clickCount !=null and clickCount  != '' ">#{clickCount},</if>
-        <if test="commentCount !=null and commentCount   != '' ">#{commentCount},</if>
-        <if test="likeCount !=null and likeCount   != '' ">#{likeCount},</if>
-        <if test="isTop !=null and isTop  != '' ">#{isTop},</if>
-        <if test="isShow  !=null and isShow   != '' ">#{isShow},</if>
-        <if test="isOriginal  !=null and isOriginal  != '' ">#{isOriginal},</if>
-        <if test="isPublished  !=null and isPublished  != '' ">#{isPublished}</if>
+        <trim suffixOverrides=",">
+            <if test="articleId != null ">#{articleId},</if>
+            <if test="authorId != null ">#{authorId},</if>
+            <if test="categoryId != null ">#{categoryId},</if>
+            <if test="title  != null and title != '' ">#{title},</if>
+            <if test="coverImage != null and coverImage  != '' ">#{coverImage},</if>
+            <if test="summary != null and summary != '' ">#{summary},</if>
+            <if test="keyWords != null and keyWords != '' ">#{keyWords},</if>
+            <if test="content != null and content != '' ">#{content},</if>
+            <if test="contentMd != null and contentMd != '' ">#{contentMd},</if>
+            <if test="clickCount != null ">#{clickCount},</if>
+            <if test="commentCount != null ">#{commentCount},</if>
+            <if test="likeCount != null ">#{likeCount},</if>
+            <if test="isTop != null ">#{isTop},</if>
+            <if test="isShow != null ">#{isShow},</if>
+            <if test="isOriginal != null ">#{isOriginal},</if>
+            <if test="isPublished != null ">#{isPublished}</if>
+        </trim>
         )
     </insert>
 
 
-    <update id="update" parameterType="com.ugly.blog.domain.Article">
+    <update id="update" parameterType="article">
         UPDATE article
-        <set>
-            <if test="  authorId !=null and   authorId  != '' ">user_id=#{authorId},</if>
-            <if test="  categoryId !=null and   categoryId  != '' ">category_id=#{categoryId},</if>
-            <if test=" title  !=null and  title   != '' ">title=${title},</if>
-            <if test="  coverImage !=null and   coverImage  != '' ">cover_image=#{coverImage},</if>
-            <if test="  summary !=null and  summary   != '' ">summary=#{summary},</if>
-            <if test="  keyWords !=null and   keyWords  != '' ">keywords=#{keyWords},</if>
-            <if test=" content  !=null and  content   != '' ">content=#{content},</if>
-            <if test="  contentMd !=null and  contentMd   != '' ">content_md=#{contentMd},</if>
-            <if test="  clickCount !=null and   clickCount  != '' ">click = #{clickCount},</if>
-            <if test="  commentCount !=null and  commentCount   != '' ">`comment`=#{commentCount},</if>
-            <if test="  likeCount !=null and  likeCount   != '' ">`like`=#{likeCount},</if>
-            <if test="   isTop !=null and   isTop  != '' ">is_top=#{isTop},</if>
-            <if test=" isShow  !=null and  isShow   != '' ">is_show=#{isShow},</if>
-            <if test=" isOriginal  !=null and   isOriginal  != '' ">is_original=#{isOriginal},</if>
-            <if test=" isPublished  !=null and   isPublished  != '' ">is_published=#{isPublished}</if>
-        </set>
-        WHERE article_id = #{articleId};
+        <trim prefix="set" suffixOverrides=",">
+            <if test="authorId != null">user_id = #{authorId},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="title != null and title != '' ">title = #{title},</if>
+            <if test="coverImage != null and coverImage != '' ">cover_image = #{coverImage},</if>
+            <if test="summary != null and summary != '' ">summary = #{summary},</if>
+            <if test="keyWords != null and keyWords != '' ">keywords = #{keyWords},</if>
+            <if test="content != null and content != '' ">content = #{content},</if>
+            <if test="contentMd != null and contentMd != '' ">content_md = #{contentMd},</if>
+            <if test="clickCount != null ">click = #{clickCount},</if>
+            <if test="commentCount != null ">`comment` = #{commentCount},</if>
+            <if test="likeCount != null ">`like` = #{likeCount},</if>
+            <if test="isTop != null ">is_top = #{isTop},</if>
+            <if test="isShow != null ">is_show = #{isShow},</if>
+            <if test="isOriginal != null ">is_original = #{isOriginal},</if>
+            <if test="isPublished != null ">is_published = #{isPublished}</if>
+        </trim>
+        WHERE article_id = #{articleId}
     </update>
 
 

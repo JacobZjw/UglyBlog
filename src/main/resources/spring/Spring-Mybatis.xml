@@ -11,15 +11,21 @@
 
     <context:property-placeholder location="classpath:db.properties"/>
 
+    <!--Start 慢SQL记录  数据源配置p:proxyFilters="stat-filter,log-filter"-->
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <!-- 慢sql时间设置,即执行时间大于1秒的都是慢sql -->
+        <property name="slowSqlMillis" value="1000"/>
+        <property name="logSlowSql" value="true"/>
+    </bean>
+    <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+        <property name="dataSourceLogEnabled" value="true"/>
+        <property name="statementExecutableSqlLogEnable" value="true"/>
+    </bean>
+    <!--end 慢SQL记录 -->
+
     <!--Spring 整合MyBatis-->
     <!--    配置连接池-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-        <!--        <property name="password" value="qwer"/>-->
-        <!--        <property name="username" value="root"/>-->
-        <!--        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>-->
-        <!--        <property name="url"-->
-        <!--                  value="jdbc:mysql://127.0.0.1:3306/ugly_blog?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"/>-->
-
         <property name="driverClassName" value="${jdbc.driver}"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
@@ -35,6 +41,14 @@
         <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
         <property name="minEvictableIdleTimeMillis" value="300000"/>
         <!--        <property name="defaultAutoCommit" value="false"/>-->
+
+        <property name="filters" value="stat"/>
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter"/>
+                <ref bean="log-filter"/>
+            </list>
+        </property>
     </bean>
 
     <!--    配置SqlSessionFactory对象-->

@@ -61,6 +61,6 @@ public interface TagMapper {
      *
      * @return 标签对象列表
      */
-    List<Tag> getList();
+    List<Tag> getList(String tagName);
 
 }

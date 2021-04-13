@@ -7,7 +7,6 @@ import com.ugly.blog.domain.User;
 import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.dto.TableDataInfo;
 import com.ugly.blog.service.ArticleService;
-import com.ugly.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,65 +21,57 @@ import java.util.List;
 @RequestMapping("api/system/article")
 public class SysArticleController extends BaseController {
 
-    @Autowired
-    private PageService pageService;
+
+    private final ArticleService articleService;
 
     @Autowired
-    private ArticleService articleService;
+    public SysArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public TableDataInfo getTableData(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
-                                      @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize) {
-        startPage(pageIndex, pageSize);
-//        Page<Article> page = pageService.getPageByCondition(null);
-        List<Article> list = articleService.getListByCondition(null);
-        return getDataTable(list);
-    }
-
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
-    @ResponseBody
     public TableDataInfo getTableDataByCondition(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
                                                  @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
-                                                 String nickname, String title) {
-        Article article = new Article();
-        article.setTitle(title);
-        User user = new User();
-        user.setNickname(nickname);
-        article.setUser(user);
+                                                 Article article,
+                                                 User user) {
+        if (article != null) {
+            article.setUser(user);
+        }
         startPage(pageIndex, pageSize);
-        List<Article> list = articleService.getListByCondition(null);
+        List<Article> list = articleService.getListByCondition(article);
         return getDataTable(list);
     }
 
 
     @RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getArticleDetails(@PathVariable("articleId") Integer articleId) {
+    public AjaxResult getDetails(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.getFullInfoById(articleId));
     }
 
     @RequestMapping(value = "/delete/{articleId}", method = RequestMethod.PUT)
     @ResponseBody
-    public AjaxResult deleteArticle(@PathVariable("articleId") Integer articleId) {
+    public AjaxResult delete(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.delete(articleId));
     }
 
-    @RequestMapping(value = "/status/{articleId}/change", method = RequestMethod.PUT)
+    @RequestMapping(value = "/show/{articleId}/switch", method = RequestMethod.PUT)
     @ResponseBody
-    public AjaxResult changeArticleStatus(@PathVariable("articleId") Integer articleId) {
+    public AjaxResult switchShowStatus(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.switchShowStatus(articleId));
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult insertArticle(Article article) {
+    public AjaxResult insert(@RequestBody Article article) {
         return toAjax(articleService.insert(article));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult updateArticle(Article article) {
+    public AjaxResult update(@RequestBody Article article) {
+        System.out.println(article);
         return toAjax(articleService.update(article));
     }
 

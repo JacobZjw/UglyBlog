@@ -1,6 +1,8 @@
 package com.ugly.blog.service.impl;
 
 import com.ugly.blog.domain.Article;
+import com.ugly.blog.domain.ArticleCategoryRef;
+import com.ugly.blog.domain.Tag;
 import com.ugly.blog.mapper.ArticleCategoryRefMapper;
 import com.ugly.blog.mapper.ArticleMapper;
 import com.ugly.blog.mapper.ArticleTagRefMapper;
@@ -33,17 +35,37 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public int insert(Article article) {
-        return articleMapper.insert(article);
+        if (articleMapper.insert(article) > 0) {
+            int articleId = article.getArticleId();
+            List<Tag> list = article.getTagList();
+            atrMapper.insertWithList(articleId, list);
+            acrMapper.insert(new ArticleCategoryRef(articleId, article.getCategoryId()));
+            return 1;
+        }
+        return 0;
     }
 
     @Override
     public int update(Article article) {
-        return articleMapper.update(article);
+        if (articleMapper.update(article) >= 0) {
+            int articleId = article.getArticleId();
+            List<Tag> list = article.getTagList();
+            atrMapper.deleteByArticleId(articleId);
+            atrMapper.insertWithList(articleId, list);
+            acrMapper.update(new ArticleCategoryRef(articleId, article.getCategoryId()));
+            return 1;
+        }
+        return 0;
     }
 
     @Override
     public int delete(Integer articleId) {
-        return articleMapper.delete(articleId);
+        if (articleMapper.delete(articleId) > 0) {
+            atrMapper.deleteByArticleId(articleId);
+            acrMapper.delete(articleId);
+            return 1;
+        }
+        return 0;
     }
 
     @Override
@@ -108,6 +130,6 @@ public class ArticleServiceImpl implements ArticleService {
         } else {
             article.setIsShow(0);
         }
-        return update(article);
+        return articleMapper.update(article);
     }
 }

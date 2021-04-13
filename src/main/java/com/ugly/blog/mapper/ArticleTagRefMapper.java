@@ -13,7 +13,6 @@ import java.util.List;
  */
 public interface ArticleTagRefMapper {
 
-
     /**
      * 新增文章和标签关联
      *
@@ -22,6 +21,16 @@ public interface ArticleTagRefMapper {
      */
     int insert(ArticleTagRef ref);
 
+
+    /**
+     * 新增文章和标签关联
+     *
+     * @param articleId 文章ID
+     * @param list      标签列表
+     * @return 结果
+     */
+    int insertWithList(@Param("articleId") int articleId, @Param("list") List<Tag> list);
+
     /**
      * 删除文章和标签关联
      *
@@ -29,6 +38,22 @@ public interface ArticleTagRefMapper {
      * @return 结果
      */
     int delete(ArticleTagRef ref);
+
+    /**
+     * 根据文章ID删除所有的关联信息
+     *
+     * @param articleId 文章ID
+     * @return 结果
+     */
+    int deleteByArticleId(int articleId);
+
+    /**
+     * 根据标签ID删除所有的关联信息
+     *
+     * @param tagId 标签ID
+     * @return 结果
+     */
+    int deleteByTagId(int tagId);
 
     /**
      * 查询属于标签列表的所有文章总数

@@ -30,4 +30,13 @@ public class ArticleServiceTest extends BaseTest {
     @Test
     public void getCount() {
     }
+
+    @Test
+    public void switchShowStatus() {
+        System.err.println(articleService.getFullInfoById(1));
+        articleService.switchShowStatus(1);
+        System.err.println(articleService.getFullInfoById(1));
+    }
+
+
 }

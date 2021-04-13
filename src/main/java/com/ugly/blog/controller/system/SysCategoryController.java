@@ -26,26 +26,35 @@ public class SysCategoryController extends BaseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public TableDataInfo getList(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
-                                 @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize) {
-        List<Category> list = categoryService.getAllCategoryList();
+                                 @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
+                                 String categoryName) {
+        startPage(pageIndex, pageSize);
+        List<Category> list = categoryService.getCategoryList(categoryName);
+        return getDataTable(list);
+    }
+
+    @RequestMapping(value = "/list/all", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public TableDataInfo getList() {
+        List<Category> list = categoryService.getCategoryList(null);
         return getDataTable(list);
     }
 
     @RequestMapping(value = "/delete/{categoryId}", method = RequestMethod.PUT, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public AjaxResult deleteArticle(@PathVariable("categoryId") Integer categoryId) {
+    public AjaxResult delete(@PathVariable("categoryId") Integer categoryId) {
         return toAjax(categoryService.deleteCategoryById(categoryId));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public AjaxResult updateArticle(@RequestBody Category category) {
+    public AjaxResult update(@RequestBody Category category) {
         return toAjax(categoryService.updateOrInsertCategory(category));
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public AjaxResult insertArticle(String categoryName) {
+    public AjaxResult insert(String categoryName) {
         return toAjax(categoryService.insertCategory(categoryName));
     }
 

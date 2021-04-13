@@ -39,7 +39,7 @@ public class TagController {
         Page<Article> page = pageService.getPageByTagId(pageIndex, pageSize, tagId);
         model.addAttribute("articlePage", page);
 
-        List<Tag> tagList = tagService.getTagList();
+        List<Tag> tagList = tagService.getTagList(null);
         model.addAttribute("tagList", tagList);
 
         return "home/articlesByTag";
@@ -51,11 +51,12 @@ public class TagController {
         Page<Article> page = pageService.getArticleDefaultPage(pageIndex, pageSize);
         model.addAttribute("articlePage", page);
 
-        List<Tag> tagList = tagService.getTagList();
+        List<Tag> tagList = tagService.getTagList(null);
         model.addAttribute("tagList", tagList);
 
         return "home/articlesByTag";
     }
+
 
     @RequestMapping(value = "tag/tagName/{tagId}", method = RequestMethod.GET)
     @ResponseBody

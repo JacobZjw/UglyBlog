@@ -1,5 +1,6 @@
 package com.ugly.blog.mapper;
 
+import com.github.pagehelper.PageHelper;
 import com.ugly.blog.BaseTest;
 import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.User;
@@ -88,9 +89,10 @@ public class ArticleMapperTest extends BaseTest {
     public void getListByCondition() {
         Article article = new Article();
         User user = new User();
-        user.setNickname("言曌");
+//        user.setNickname("言曌");
         article.setTitle("Docker");
         article.setUser(user);
-//        articleMapper.getListByCondition(1, 5, article).forEach(System.out::println);
+        PageHelper.startPage(1, 5);
+        articleMapper.getListByCondition(article).forEach(System.out::println);
     }
 }

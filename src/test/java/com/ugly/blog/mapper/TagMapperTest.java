@@ -37,6 +37,7 @@ public class TagMapperTest extends BaseTest {
 
     @Test
     public void getAllTagList() {
-        assertNotNull(tagMapper.getList());
+        tagMapper.getList("Java").forEach(System.out::println);
+        assertNotNull(tagMapper.getList("Java"));
     }
 }

@@ -39,7 +39,7 @@ public class CategoryController {
         Page<Article> page = pageService.getPageByCategory(pageIndex, pageSize, categoryId);
         model.addAttribute("articlePage", page);
 
-        List<Category> categoryList = categoryService.getAllCategoryList();
+        List<Category> categoryList = categoryService.getCategoryList(null);
         model.addAttribute("categoryList", categoryList);
 
         return "home/articlesByCategory";
@@ -53,7 +53,7 @@ public class CategoryController {
         Page<Article> page = pageService.getArticleDefaultPage(pageIndex, pageSize);
         model.addAttribute("articlePage", page);
 
-        List<Category> categoryList = categoryService.getAllCategoryList();
+        List<Category> categoryList = categoryService.getCategoryList(null);
         model.addAttribute("categoryList", categoryList);
 
         return "home/articlesByCategory";

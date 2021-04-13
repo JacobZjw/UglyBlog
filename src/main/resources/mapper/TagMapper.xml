@@ -7,14 +7,16 @@
     <resultMap id="tagMap" type="com.ugly.blog.domain.Tag">
         <id column="tag_id" property="tagId"/>
         <result column="tag_name" property="tagName"/>
+        <association property="articleNum" column="tag_id"
+                     select="com.ugly.blog.mapper.ArticleTagRefMapper.getCountByTagId"/>
     </resultMap>
 
     <insert id="insert">
         INSERT tag(
-        <if test="tagName != null and tagName != '' ">tag_name</if>
+        <if test="_parameter != null and _parameter != '' ">tag_name</if>
         )
         VALUES (
-        <if test="tagName != null and tagName != '' ">#{tagName}</if>
+        <if test="_parameter != null and _parameter != '' ">#{tagName}</if>
         )
     </insert>
 
@@ -33,23 +35,24 @@
     </update>
 
 
-    <select id="getById" resultMap="tagMap" parameterType="integer">
+    <select id="getById" resultMap="tagMap">
         SELECT *
         FROM tag
         WHERE tag_id = #{tagId}
     </select>
 
 
-    <select id="getList" resultMap="tagMap">
+    <select id="getList" resultMap="tagMap" parameterType="string">
         SELECT *
         FROM tag
+        <if test="_parameter  != null and _parameter  != ''">WHERE tag_name LIKE concat('%',#{tagName},'%')</if>
     </select>
 
 
     <select id="getByName" resultMap="tagMap">
         SELECT *
         FROM tag
-        WHERE tag_id = #{tagName}
+        WHERE tag_name = #{tagName}
     </select>
 
 

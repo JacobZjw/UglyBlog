@@ -10,11 +10,32 @@
         VALUES (#{tagId}, #{articleId});
     </insert>
 
+
+    <insert id="insertWithList">
+        INSERT INTO article_tags(tag_id, article_id)
+        VALUES
+        <foreach collection="list" item="tag" separator=",">
+            (#{tag.tagId},#{articleId})
+        </foreach>
+    </insert>
+
     <delete id="delete">
         DELETE
         FROM article_tags
         WHERE article_id = #{articleId}
           AND tag_id = #{tagId};
+    </delete>
+
+    <delete id="deleteByArticleId">
+        DELETE
+        FROM article_tags
+        WHERE article_id = #{articleId}
+    </delete>
+
+    <delete id="deleteByTagId">
+        DELETE
+        FROM article_tags
+        WHERE tag_id = #{tagId}
     </delete>
 
 

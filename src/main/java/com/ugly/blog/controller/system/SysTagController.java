@@ -26,26 +26,35 @@ public class SysTagController extends BaseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public TableDataInfo getList(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
-                                 @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize) {
-        List<Tag> list = tagService.getTagList();
+                                 @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
+                                 String tagName) {
+        startPage(pageIndex, pageSize);
+        List<Tag> list = tagService.getTagList(tagName);
+        return getDataTable(list);
+    }
+
+    @RequestMapping(value = "/list/all", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public TableDataInfo getList() {
+        List<Tag> list = tagService.getTagList(null);
         return getDataTable(list);
     }
 
     @RequestMapping(value = "/delete/{tagId}", method = RequestMethod.PUT, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public AjaxResult deleteArticle(@PathVariable("tagId") Integer tagId) {
+    public AjaxResult delete(@PathVariable("tagId") Integer tagId) {
         return toAjax(tagService.deleteTagById(tagId));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public AjaxResult updateArticle(@RequestBody Tag tag) {
+    public AjaxResult update(@RequestBody Tag tag) {
         return toAjax(tagService.updateOrInsertTag(tag));
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public AjaxResult insertArticle(String tagName) {
+    public AjaxResult insert(String tagName) {
         return toAjax(tagService.insertTag(tagName));
     }
 }

@@ -20,4 +20,6 @@ public class Tag implements Serializable {
     private Integer tagId;
 
     private String tagName;
+
+    private Integer articleNum;
 }

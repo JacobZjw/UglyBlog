@@ -7,6 +7,8 @@
     <resultMap id="categoryMap" type="com.ugly.blog.domain.Category">
         <id column="category_id" property="categoryId" javaType="Integer"/>
         <result column="category_name" property="categoryName" javaType="String"/>
+        <association property="articleNum" column="category_id"
+                     select="com.ugly.blog.mapper.ArticleCategoryRefMapper.getCountByCategory"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true">
@@ -43,6 +45,8 @@
     <select id="getList" resultMap="categoryMap">
         SELECT *
         FROM category
+        <if test="_parameter  != null and _parameter  != ''">WHERE category_name LIKE concat('%',#{categoryName},'%')
+        </if>
     </select>
 
 
@@ -53,13 +57,13 @@
                              FROM article_category
                              GROUP BY category_id) ac ON ac.category_id = c.category_id
         ORDER BY ac.nums DESC, c.category_name
-        LIMIT #{num};
+        LIMIT #{num}
     </select>
 
     <select id="getByName" resultMap="categoryMap">
         SELECT *
         FROM category
-        WHERE category_name = #{categoryName};
+        WHERE category_name = #{categoryName}
     </select>
 
 

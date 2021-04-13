@@ -11,7 +11,7 @@ import java.util.List;
 public interface CategoryService {
     List<Category> getTopNumsCategoryList(int num);
 
-    List<Category> getAllCategoryList();
+    List<Category> getCategoryList(String name);
 
     Category getCategoryById(Integer categoryId);
 

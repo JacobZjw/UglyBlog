@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
     <context:component-scan base-package="com.ugly.blog">
@@ -10,4 +11,27 @@
     </context:component-scan>
 
     <import resource="Spring-Mybatis.xml"/>
+
+    <!--Start druid开启Spring的监控 需要引入aspectjweaver包-->
+    <!--p:filters="stat,wall,log4j"   stat和wall。一个是用于监控，一个是用于防火墙。如果想使用sql防火墙，必须加上wall-->
+    <!--druid Spring monitor setting-->
+    <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor"/>
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+        <property name="patterns">
+            <list>
+                <!-- 配置监听的bean路径 支持方法名的拦截 -->
+                <value>com.ugly.blog.mapper.*</value>
+                <value>com.ugly.blog.service.*</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 基于AspectJ的自动代理.使用AnnotationAwareAspectJAutoProxyCreator  -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <aop:config>
+        <aop:advisor advice-ref="druid-stat-interceptor"
+                     pointcut-ref="druid-stat-pointcut"/>
+        <!-- pointcut-ref="druid-stat-pointcut"在idea中报Cannot resolve Spring Pointcut 'druid-stat-pointcut'  不用管它 -->
+    </aop:config>
+
+
 </beans>

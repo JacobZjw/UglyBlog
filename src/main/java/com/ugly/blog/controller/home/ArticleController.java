@@ -52,7 +52,7 @@ public class ArticleController {
         model.addAttribute("hotArticles", hotArticles);
 
 
-        List<Tag> tagList = tagService.getTagList();
+        List<Tag> tagList = tagService.getTagList(null);
         model.addAttribute("tagList", tagList);
         return "home/article";
     }

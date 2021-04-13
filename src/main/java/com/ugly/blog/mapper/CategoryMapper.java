@@ -60,7 +60,7 @@ public interface CategoryMapper {
      *
      * @return 分类对象列表
      */
-    List<Category> getList();
+    List<Category> getList(String categoryName);
 
     /**
      * 根据分类所属的文章数查找前n个分类对象信息
