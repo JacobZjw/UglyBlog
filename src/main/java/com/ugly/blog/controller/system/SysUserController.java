@@ -1,28 +1,24 @@
 package com.ugly.blog.controller.system;
 
-import cn.hutool.json.JSONObject;
+import com.ugly.blog.constant.PageConstant;
+import com.ugly.blog.controller.common.BaseController;
 import com.ugly.blog.domain.User;
+import com.ugly.blog.dto.AjaxResult;
+import com.ugly.blog.dto.TableDataInfo;
 import com.ugly.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.ugly.blog.util.Utils.getIpAddr;
+import java.util.List;
 
 /**
  * @author JwZheng
- * @date 2021/3/31 15:04
+ * @date 2021/4/13 15:05
  */
 @Controller
-public class SysUserController {
+@RequestMapping("api/system/user")
+public class SysUserController extends BaseController {
 
     private final UserService userService;
 
@@ -31,46 +27,53 @@ public class SysUserController {
         this.userService = userService;
     }
 
-
-    @RequestMapping("login")
-    public String loginPage() {
-        return "Admin/login";
-    }
-
-
-    @RequestMapping(value = "/loginVerify", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public String loginVerify(HttpServletRequest request, HttpServletResponse response) {
-        String account = request.getParameter("account");
-        String password = request.getParameter("password");
-        boolean remember = Boolean.parseBoolean(request.getParameter("remember"));
-
-        Map<String, Object> respJson = new HashMap<>(2);
-        User user = userService.getUserByNameOrEmail(account);
-        if (user == null) {
-            respJson.put("code", 0);
-            respJson.put("msg", "用户名无效！");
-        } else if (!password.equals(user.getPassword())) {
-            respJson.put("code", 0);
-            respJson.put("msg", "密码错误！");
-        } else {
-            respJson.put("code", 1);
-            respJson.put("msg", "");
-            request.getSession().setAttribute("user", user);
-            if (remember) {
-                //创建两个Cookie对象
-                Cookie nameCookie = new Cookie("account", account);
-                //设置Cookie的有效期为3天
-                nameCookie.setMaxAge(60 * 60 * 24 * 3);
-                Cookie pwdCookie = new Cookie("password", password);
-                pwdCookie.setMaxAge(60 * 60 * 24 * 3);
-                response.addCookie(nameCookie);
-                response.addCookie(pwdCookie);
-            }
-            user.setLastLoginIp(getIpAddr(request));
-//            userService.updateUser(user);
-        }
-        System.out.println(new JSONObject(respJson).toString());
-        return new JSONObject(respJson).toString();
+    public TableDataInfo getTableDataByCondition(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
+                                                 @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
+                                                 User user) {
+        startPage(pageIndex, pageSize);
+        List<User> list = userService.getListByCondition(user);
+        return getDataTable(list);
     }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResult getDetails(@PathVariable("userId") Integer userId) {
+        return toAjax(userService.getDetails(userId));
+    }
+
+    @RequestMapping(value = "/delete/{userId}", method = RequestMethod.PUT)
+    @ResponseBody
+    public AjaxResult delete(@PathVariable("userId") Integer userId) {
+        return toAjax(userService.delete(userId));
+    }
+
+
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult insert(@RequestBody User user) {
+        return toAjax(userService.insert(user));
+    }
+
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult update(@RequestBody User user) {
+        return toAjax(userService.update(user));
+    }
+
+    @RequestMapping(value = "/role/{userId}/switch", method = RequestMethod.PUT)
+    @ResponseBody
+    public AjaxResult switchRole(@PathVariable("userId") Integer userId) {
+        return toAjax(userService.switchRole(userId));
+    }
+
+    @RequestMapping(value = "/status/{userId}/switch", method = RequestMethod.PUT)
+    @ResponseBody
+    public AjaxResult switchStatus(@PathVariable("userId") Integer userId) {
+        return toAjax(userService.switchStatus(userId));
+    }
+
+
 }

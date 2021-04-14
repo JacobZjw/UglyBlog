@@ -55,6 +55,14 @@ public interface ArticleMapper {
     int getTotalCount();
 
     /**
+     * 通过用户ID查询文章总数
+     *
+     * @param userId 用户ID
+     * @return 结果
+     */
+    int getCountByUserId(Integer userId);
+
+    /**
      * 通过文章ID获取文章详细信息
      *
      * @param articleId 文章ID

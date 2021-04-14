@@ -152,6 +152,12 @@
         </where>
     </select>
 
+    <select id="getCountByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(article_id)
+        FROM article
+        WHERE user_id = #{userId}
+    </select>
+
 
     <insert id="insert" useGeneratedKeys="true" parameterType="com.ugly.blog.domain.Article"
             keyColumn="article_id" keyProperty="articleId">

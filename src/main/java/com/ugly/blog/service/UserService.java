@@ -2,6 +2,8 @@ package com.ugly.blog.service;
 
 import com.ugly.blog.domain.User;
 
+import java.util.List;
+
 /**
  * @author JwZheng
  * @date 2021/3/31 18:23
@@ -17,13 +19,68 @@ public interface UserService {
      */
     User getUserByNameOrEmail(String str);
 
+    /**
+     * 根据条件查找用户列表
+     *
+     * @param user 用户信息
+     * @return 用户对象列表
+     */
+    List<User> getListByCondition(User user);
+
+    /**
+     * 验证用户密码是否匹配
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    boolean check(User user);
+
+    /**
+     * 修改用户信息
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    int update(User user);
+
+    /**
+     * 新增用户
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    int insert(User user);
+
+    /**
+     * 删除用户
+     *
+     * @param userId 用户Id
+     * @return 结果
+     */
+    int delete(Integer userId);
+
+    /**
+     * 获取用户详细信息
+     *
+     * @param userId 用户Id
+     * @return 结果
+     */
+    User getDetails(Integer userId);
 
 
     /**
-     * 更新
+     * 切换角色
      *
-     * @param user 用户
-     * @return 影响行数
+     * @param userId 用户ID
+     * @return 结果
      */
-    int update(User user);
+    int switchRole(Integer userId);
+
+    /**
+     * 切换状态
+     *
+     * @param userId 用户ID
+     * @return 结果
+     */
+    int switchStatus(Integer userId);
 }

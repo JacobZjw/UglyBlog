@@ -22,12 +22,20 @@ public interface UserMapper {
     int insert(User user);
 
     /**
+     * 验证用户密码是否匹配
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    int check(User user);
+
+    /**
      * 根据用户ID删除用户信息
      *
      * @param userId 用户ID
      * @return 结果
      */
-    int deleteById(@Param("userId") Integer userId);
+    int delete(@Param("userId") Integer userId);
 
     /**
      * 修改用户信息
@@ -50,7 +58,15 @@ public interface UserMapper {
      *
      * @return 用户对象列表
      */
-    List<User> getUserList();
+    List<User> getList();
+
+    /**
+     * 根据条件查找用户列表
+     *
+     * @param user 用户信息
+     * @return 用户对象列表
+     */
+    List<User> getListByCondition(User user);
 
     /**
      * 根据用户名或邮箱查询用户信息
@@ -58,7 +74,7 @@ public interface UserMapper {
      * @param str 用户名或邮箱
      * @return 用户信息对象
      */
-    User getUserByNameOrEmail(@Param("str") String str);
+    User getByNameOrEmail(@Param("str") String str);
 
     /**
      * 根据用户名查询用户信息
@@ -66,7 +82,7 @@ public interface UserMapper {
      * @param name 用户名
      * @return 用户信息对象
      */
-    User getUserByName(@Param("name") String name);
+    User getByName(@Param("name") String name);
 
     /**
      * 根据邮箱查询用户信息
@@ -74,6 +90,6 @@ public interface UserMapper {
      * @param email 邮箱
      * @return 用户信息对象
      */
-    User getUserByEmail(@Param("email") String email);
+    User getByEmail(@Param("email") String email);
 
 }

@@ -2,6 +2,7 @@ package com.ugly.blog.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * @date 2021/3/31 14:47
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements Serializable {
     private static final long serialVersionUID = -4415517704211731385L;
 
@@ -26,17 +28,18 @@ public class User implements Serializable {
      */
     private String username;
 
+
+    /**
+     * 昵称
+     */
+    private String nickname;
+
     /**
      * 密码
      */
     @JsonIgnore
     @JsonProperty
     private String password;
-
-    /**
-     * 昵称
-     */
-    private String nickname;
 
     /**
      * 邮箱
@@ -49,15 +52,21 @@ public class User implements Serializable {
     private String avatar;
 
     /**
+     * 状态(1正常 0停用)
+     */
+    private Integer status;
+
+    /**
+     * 用户角色(0管理员 1普通用户)
+     */
+    private Integer role;
+
+
+    /**
      * 最后一次登录IP地址
      */
     private String lastLoginIp;
 
-    /**
-     * 注册时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
 
     /**
      * 上次登录时间
@@ -66,12 +75,14 @@ public class User implements Serializable {
     private Date lastLoginTime;
 
     /**
-     * 状态(0正常 1停用)
+     * 注册时间
      */
-    private Integer status;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+
 
     /**
-     * 用户角色(admin管理员 user普通用户)
+     * 文章数，非数据库字段
      */
-    private String role;
+    private Integer articleNum;
 }

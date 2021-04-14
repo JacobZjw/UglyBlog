@@ -39,22 +39,27 @@ public class UserMapperTest extends BaseTest {
 
     @Test
     public void getUserList() {
-        assertNotEquals(0, userMapper.getUserList().size());
+        assertNotEquals(0, userMapper.getList().size());
     }
 
     @Test
     public void getUserByNameOrEmail() {
-        assertNotNull(userMapper.getUserByNameOrEmail("admin"));
-        assertNotNull(userMapper.getUserByNameOrEmail("admin@admin.com"));
+        assertNotNull(userMapper.getByNameOrEmail("admin"));
+        assertNotNull(userMapper.getByNameOrEmail("admin@admin.com"));
     }
 
     @Test
     public void getUserByName() {
-        assertNotNull(userMapper.getUserByName("admin"));
+        assertNotNull(userMapper.getByName("admin"));
     }
 
     @Test
     public void getUserByEmail() {
-        assertNotNull(userMapper.getUserByEmail("admin@admin.com"));
+        assertNotNull(userMapper.getByEmail("admin@admin.com"));
+    }
+
+    @Test
+    public void getListByCondition() {
+        userMapper.getListByCondition(null).forEach(System.out::println);
     }
 }

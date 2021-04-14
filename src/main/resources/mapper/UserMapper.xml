@@ -14,22 +14,24 @@
         <result column="last_login_time" property="lastLoginTime" javaType="date"/>
         <result column="create_time" property="createTime" javaType="date"/>
         <result column="status" property="status" javaType="integer"/>
-        <result column="role" property="role" javaType="string"/>
+        <result column="role" property="role" javaType="integer"/>
+        <association property="articleNum" column="user_id"
+                     select="com.ugly.blog.mapper.ArticleMapper.getCountByUserId"/>
     </resultMap>
 
 
     <insert id="insert" parameterType="com.ugly.blog.domain.User" useGeneratedKeys="true" keyProperty="userId"
             keyColumn="user_id">
         INSERT INTO user(
-        <if test="username != null and username != '' ">user_name,</if>
+        <if test="username != null and username != '' ">`user_name`,</if>
         <if test="password != null and password != '' ">`password`,</if>
-        <if test="nickname != null and nickname != '' ">nickname,</if>
-        <if test="email != null and email != '' ">email,</if>
-        <if test="avatar != null and avatar != '' ">avatar,</if>
-        <if test="lastLoginIp != null and lastLoginIp != '' ">last_login_ip,</if>
-        <if test="lastLoginTime != null and lastLoginTime != '' ">last_login_time,</if>
-        <if test="status != null and status != '' ">status,</if>
-        <if test="role != null and role != '' ">role</if>
+        <if test="nickname != null and nickname != '' ">`nickname`,</if>
+        <if test="email != null and email != '' ">`email`,</if>
+        <if test="avatar != null and avatar != '' ">`avatar`,</if>
+        <if test="lastLoginIp != null and lastLoginIp != '' ">`last_login_ip`,</if>
+        <if test="lastLoginTime != null and lastLoginTime != '' ">`last_login_time`,</if>
+        <if test="status != null ">`status`,</if>
+        <if test="role != null ">`role`</if>
         )
         VALUES (
         <if test="username != null and username != '' ">#{username},</if>
@@ -39,77 +41,101 @@
         <if test="avatar != null and avatar != '' ">#{avatar},</if>
         <if test="lastLoginIp != null and lastLoginIp != '' ">#{lastLoginIp},</if>
         <if test="lastLoginTime != null and lastLoginTime != '' ">#{lastLoginTime},</if>
-        <if test="status != null and status != '' ">#{status},</if>
-        <if test="role != null and role != '' ">#{role}</if>
+        <if test="status != null ">#{status},</if>
+        <if test="role != null ">#{role}</if>
         )
     </insert>
 
 
-    <delete id="deleteById" parameterType="integer">
-        DELETE
-        FROM user
-        WHERE user_id = #{userId}
+    <delete id="delete" parameterType="integer">
+        UPDATE user
+        SET is_del=1
+        WHERE user_id = #{userId};
     </delete>
 
 
     <update id="update" parameterType="com.ugly.blog.domain.User">
         update user
-        <set>
-            <if test="username != null and username != '' ">user_name=#{username,jdbcType=VARCHAR}</if>
+        <trim suffixOverrides="," prefix="set">
+            <if test="username != null and username != '' ">`user_name`=#{username,jdbcType=VARCHAR}</if>
             <if test="password != null and password != ''">,`password` = #{password,jdbcType=VARCHAR}</if>
-            <if test="nickname != null and nickname != ''">,nickname = #{nickname,jdbcType=VARCHAR}</if>
-            <if test="email != null and email != ''">,email = #{email,jdbcType=VARCHAR}</if>
-            <if test="avatar != null and avatar != ''">,avatar = #{avatar,jdbcType=VARCHAR}</if>
-            <if test="lastLoginIp != null and lastLoginIp != ''">,last_login_ip = #{lastLoginIp,jdbcType=VARCHAR}
+            <if test="nickname != null and nickname != ''">,`nickname` = #{nickname,jdbcType=VARCHAR}</if>
+            <if test="email != null and email != ''">,`email` = #{email,jdbcType=VARCHAR}</if>
+            <if test="avatar != null and avatar != ''">,`avatar` = #{avatar,jdbcType=VARCHAR}</if>
+            <if test="lastLoginIp != null and lastLoginIp != ''">,`last_login_ip` = #{lastLoginIp,jdbcType=VARCHAR}
             </if>
-            <if test="lastLoginTime != null and lastLoginTime != ''">,last_login_time =
+            <if test="lastLoginTime != null and lastLoginTime != ''">,`last_login_time` =
                 #{lastLoginTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="status != null and status != ''">,`status` = #{status,jdbcType=INTEGER}</if>
-            <if test="role != null and role != ''">,`role` = #{role,jdbcType=VARCHAR}</if>
-        </set>
-        <where>user_id=#{userId,jdbcType=INTEGER}</where>
+            <if test="status != null">,`status` = #{status,jdbcType=INTEGER}</if>
+            <if test="role != null ">,`role` = #{role,jdbcType=INTEGER}</if>
+        </trim>
+
+        <where>`user_id`=#{userId,jdbcType=INTEGER}</where>
     </update>
 
+    <sql id="info">
+        SELECT `user_id`,
+               `user_name`,
+               `nickname`,
+               `email`,
+               `avatar`,
+               `role`,
+               `status`,
+               `last_login_time`,
+               `last_login_ip`,
+               `create_time`
+        FROM user
+    </sql>
 
-    <select id="getUserList" resultMap="userMap">
+    <select id="getList" resultMap="userMap">
         SELECT *
         FROM user
     </select>
 
-    <select id="getUserByNameOrEmail" resultMap="userMap">
+    <select id="getByNameOrEmail" resultMap="userMap">
         SELECT *
         FROM user
-        WHERE email = #{str}
-           OR user_name = #{str}
+        WHERE `email` = #{str}
+           OR `user_name` = #{str}
     </select>
 
-    <select id="getUserByName" resultMap="userMap">
+    <select id="getByName" resultMap="userMap">
         SELECT *
         FROM user
-        WHERE user_name = #{name}
+        WHERE `user_name` = #{name}
     </select>
 
 
-    <select id="getUserByEmail" resultMap="userMap">
+    <select id="getByEmail" resultMap="userMap">
         SELECT *
         FROM user
-        WHERE email = #{email}
+        WHERE `email` = #{email}
     </select>
 
     <select id="getById" resultMap="userMap">
-        SELECT user_id,
-               user_name,
-               nickname,
-               email,
-               avatar,
-               role,
-               status,
-               last_login_time,
-               last_login_ip,
-               create_time
-        FROM user
+        <include refid="info"/>
         WHERE user_id = #{userId}
+    </select>
+
+
+    <select id="getListByCondition" resultMap="userMap" parameterType="user">
+        <include refid="info"/>
+        <where>
+            <if test="userId != null ">user_id = #{userId}</if>
+            <if test="username != null and username != '' ">OR user_name LIKE concat('%',#{username},'%')</if>
+            <if test="nickname != null and nickname != '' ">OR nickname LIKE concat('%',#{nickname},'%')</if>
+            <if test="email != null and email != '' ">OR email LIKE concat('%',#{email},'%')</if>
+            AND is_del != 1
+        </where>
+    </select>
+
+    <select id="check" resultType="java.lang.Integer" parameterType="user">
+        SELECT COUNT(*)
+        FROM user
+        WHERE password = #{password} AND is_del != 1
+            AND user_name = #{username}
+           OR email = #{email}
     </select>
 
 
