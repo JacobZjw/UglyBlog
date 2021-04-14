@@ -8,5 +8,5 @@ public class FileConstant {
 
     public static final String USER_AVATAR_PATH = "D:\\UglyBlog\\avatar";
     public static final String ARTICLE_IMG_PATH = "D:\\UglyBlog\\article";
-    public static final String ALLOW_SUFFIX = ".jpg.jpeg.png.gif";
+    public static final String ALLOW_SUFFIX = ".jpg.jpeg.png.gif.ico";
 }

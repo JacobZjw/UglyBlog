@@ -4,8 +4,7 @@ import com.ugly.blog.constant.HttpStatus;
 import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.exception.BaseException;
 import com.ugly.blog.exception.CustomException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,9 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2021/4/14 18:12
  */
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * 基础异常

@@ -6,7 +6,7 @@
     <!-- 配置全局属性 -->
     <settings>
         <!-- 设置日志输出属性 -->
-        <setting name="logImpl" value="LOG4J"/>
+        <setting name="logImpl" value="SLF4J"/>
 
         <!-- 使用jdbc的getGeneratedKeys获取数据库自增主键值 -->
         <setting name="useGeneratedKeys" value="true"/>

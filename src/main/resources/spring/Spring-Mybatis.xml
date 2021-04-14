@@ -17,7 +17,7 @@
         <property name="slowSqlMillis" value="1000"/>
         <property name="logSlowSql" value="true"/>
     </bean>
-    <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+    <bean class="com.alibaba.druid.filter.logging.Slf4jLogFilter" id="log-filter">
         <property name="dataSourceLogEnabled" value="true"/>
         <property name="statementExecutableSqlLogEnable" value="true"/>
     </bean>
