@@ -9,7 +9,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:property-placeholder location="classpath:db.properties"/>
+    <context:property-placeholder location="classpath:application.properties"/>
 
     <!--Start 慢SQL记录  数据源配置p:proxyFilters="stat-filter,log-filter"-->
     <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
@@ -26,21 +26,20 @@
     <!--Spring 整合MyBatis-->
     <!--    配置连接池-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-        <property name="driverClassName" value="${jdbc.driver}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClassName" value="${druid.driverClassName}"/>
+        <property name="url" value="${druid.url}"/>
+        <property name="username" value="${druid.username}"/>
+        <property name="password" value="${druid.password}"/>
 
-        <property name="maxActive" value="20"/>
-        <property name="initialSize" value="3"/>
+        <property name="maxActive" value="${druid.maxActive}"/>
+        <property name="initialSize" value="${druid.initialSize}"/>
         <!-- 配置获取连接等待超时的时间 -->
-        <property name="maxWait" value="30000"/>
+        <property name="maxWait" value="${druid.maxWait}"/>
         <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}"/>
 
         <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-        <property name="minEvictableIdleTimeMillis" value="300000"/>
-        <!--        <property name="defaultAutoCommit" value="false"/>-->
+        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}"/>
 
         <property name="filters" value="stat"/>
         <property name="proxyFilters">
