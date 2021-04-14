@@ -3,7 +3,7 @@ package com.ugly.blog.controller.home;
 import com.ugly.blog.constant.PageConstant;
 import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.Category;
-import com.ugly.blog.dto.JSONResult;
+import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.dto.Page;
 import com.ugly.blog.service.CategoryService;
 import com.ugly.blog.service.PageService;
@@ -61,18 +61,9 @@ public class CategoryController {
 
     @RequestMapping(value = "category/categoryName/{categoryId}", method = RequestMethod.GET)
     @ResponseBody
-    public JSONResult getCategoryName(@PathVariable("categoryId") Integer categoryId) {
-        JSONResult result = new JSONResult();
+    public AjaxResult getCategoryName(@PathVariable("categoryId") Integer categoryId) {
         Category category = categoryService.getCategoryById(categoryId);
-        if (category == null) {
-            result.setCode(404);
-            result.setMsg("Tag Not Found");
-        } else {
-            result.setCode(200);
-            result.setMsg("success");
-            result.setData(category.getCategoryName());
-        }
-        return result;
+        return category == null ? AjaxResult.error("Category Not Found") : AjaxResult.success("Success!", category.getCategoryName());
     }
 
 }

@@ -55,9 +55,7 @@ public class CrossFilter implements Filter {
     }
 
     /**
-     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param chain    The filter chain we are processing
      * @throws IOException      if an input/output error occurs
      * @throws ServletException if a servlet error occurs
      */

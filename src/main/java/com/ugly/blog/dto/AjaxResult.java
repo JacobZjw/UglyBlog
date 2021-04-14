@@ -1,6 +1,7 @@
 package com.ugly.blog.dto;
 
 import com.ugly.blog.constant.HttpStatus;
+import lombok.Data;
 
 import java.util.HashMap;
 
@@ -8,6 +9,7 @@ import java.util.HashMap;
  * @author JwZheng
  * @date 2021/4/9 17:11
  */
+@Data
 public class AjaxResult extends HashMap<String, Object> {
 
     /**

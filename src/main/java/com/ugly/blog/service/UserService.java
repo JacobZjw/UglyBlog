@@ -36,6 +36,30 @@ public interface UserService {
     boolean check(User user);
 
     /**
+     * 校验用户名称是否唯一
+     *
+     * @param username 用户名称
+     * @return 结果
+     */
+    String checkUsernameUnique(String username);
+
+
+    /**
+     * 校验邮箱是否唯一
+     *
+     * @param email 邮箱
+     * @return 结果
+     */
+    String checkEmailUnique(String email);
+
+    /**
+     * 校验是否有权限操作超级管理员信息
+     *
+     * @param userId 用户ID
+     */
+    void checkUserAllow(Integer userId);
+
+    /**
      * 修改用户信息
      *
      * @param user 用户信息

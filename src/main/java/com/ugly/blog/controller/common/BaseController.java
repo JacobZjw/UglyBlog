@@ -4,8 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ugly.blog.constant.HttpStatus;
 import com.ugly.blog.dto.AjaxResult;
-import com.ugly.blog.dto.Page;
-import com.ugly.blog.dto.TableDataInfo;
 
 import java.util.List;
 
@@ -15,27 +13,12 @@ import java.util.List;
  */
 public class BaseController {
 
-    /**
-     * 返回表格分页数据
-     *
-     * @param page 数据库查询到的分页
-     * @return 分页数据
-     */
-    protected TableDataInfo getDataTable(Page<?> page) {
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setCount(page.getTotalCount());
-        rspData.setData(page.getItems());
-        return rspData;
-    }
-
 
     /**
      * 设置请求分页数据
      */
     protected void startPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-
     }
 
 
@@ -45,12 +28,10 @@ public class BaseController {
      * @param list 数据库查询到的分页
      * @return 分页数据
      */
-    protected TableDataInfo getDataTable(List<?> list) {
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setCount(Math.toIntExact(new PageInfo(list).getTotal()));
-        rspData.setData(list);
-        return rspData;
+    protected AjaxResult getDataTable(List<?> list) {
+        AjaxResult result = new AjaxResult(HttpStatus.SUCCESS, "Success", list);
+        result.put("count", Math.toIntExact(new PageInfo(list).getTotal()));
+        return result;
     }
 
     /**
@@ -77,11 +58,11 @@ public class BaseController {
     /**
      * 响应返回结果
      *
-     * @param result 结果
+     * @param data 结果
      * @return 操作结果
      */
     protected AjaxResult toAjax(Object data) {
-        return data != null ? AjaxResult.success(data) : AjaxResult.error();
+        return data != null ? AjaxResult.success(data) : AjaxResult.error(HttpStatus.NOT_FOUND, "未找到");
     }
 
     /**

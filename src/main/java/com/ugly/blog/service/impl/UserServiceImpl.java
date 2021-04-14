@@ -1,6 +1,9 @@
 package com.ugly.blog.service.impl;
 
+import com.ugly.blog.constant.HttpStatus;
+import com.ugly.blog.constant.UserConstant;
 import com.ugly.blog.domain.User;
+import com.ugly.blog.exception.CustomException;
 import com.ugly.blog.mapper.UserMapper;
 import com.ugly.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean check(User user) {
         return userMapper.check(user) > 0;
+    }
+
+    @Override
+    public String checkUsernameUnique(String username) {
+        if (userMapper.getByName(username) != null) {
+            return UserConstant.NOT_UNIQUE;
+        }
+        return UserConstant.UNIQUE;
+    }
+
+    @Override
+    public String checkEmailUnique(String email) {
+        if (userMapper.getByEmail(email) != null) {
+            return UserConstant.NOT_UNIQUE;
+        }
+        return UserConstant.UNIQUE;
+    }
+
+    @Override
+    public void checkUserAllow(Integer userId) {
+        if (userId != null && userId == 1) {
+            throw new CustomException(HttpStatus.FORBIDDEN, "不允许操作超级管理员账户");
+        }
     }
 
     @Override

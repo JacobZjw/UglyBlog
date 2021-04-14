@@ -5,7 +5,6 @@ import com.ugly.blog.controller.common.BaseController;
 import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.User;
 import com.ugly.blog.dto.AjaxResult;
-import com.ugly.blog.dto.TableDataInfo;
 import com.ugly.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,6 @@ import java.util.List;
 @RequestMapping("api/system/article")
 public class SysArticleController extends BaseController {
 
-
     private final ArticleService articleService;
 
     @Autowired
@@ -31,10 +29,10 @@ public class SysArticleController extends BaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public TableDataInfo getTableDataByCondition(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
-                                                 @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
-                                                 Article article,
-                                                 User user) {
+    public AjaxResult getTableDataByCondition(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
+                                              @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
+                                              Article article,
+                                              User user) {
         if (article != null) {
             article.setUser(user);
         }

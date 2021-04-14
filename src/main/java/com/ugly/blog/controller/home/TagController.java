@@ -3,7 +3,7 @@ package com.ugly.blog.controller.home;
 import com.ugly.blog.constant.PageConstant;
 import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.Tag;
-import com.ugly.blog.dto.JSONResult;
+import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.dto.Page;
 import com.ugly.blog.service.PageService;
 import com.ugly.blog.service.TagService;
@@ -60,18 +60,9 @@ public class TagController {
 
     @RequestMapping(value = "tag/tagName/{tagId}", method = RequestMethod.GET)
     @ResponseBody
-    public JSONResult getTagName(@PathVariable("tagId") Integer tagId) {
-        JSONResult result = new JSONResult();
+    public AjaxResult getTagName(@PathVariable("tagId") Integer tagId) {
         Tag tag = tagService.getTagById(tagId);
-        if (tag == null) {
-            result.setCode(404);
-            result.setMsg("Tag Not Found");
-        } else {
-            result.setCode(200);
-            result.setMsg("success");
-            result.setData(tag.getTagName());
-        }
-        return result;
+        return tag == null ? AjaxResult.error("Tag Not Found") : AjaxResult.success("Success!", tag.getTagName());
     }
 
 }

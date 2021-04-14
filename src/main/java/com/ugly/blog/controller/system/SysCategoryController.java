@@ -4,7 +4,6 @@ import com.ugly.blog.constant.PageConstant;
 import com.ugly.blog.controller.common.BaseController;
 import com.ugly.blog.domain.Category;
 import com.ugly.blog.dto.AjaxResult;
-import com.ugly.blog.dto.TableDataInfo;
 import com.ugly.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,9 +24,9 @@ public class SysCategoryController extends BaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public TableDataInfo getList(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
-                                 @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
-                                 String categoryName) {
+    public AjaxResult getList(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
+                              @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
+                              String categoryName) {
         startPage(pageIndex, pageSize);
         List<Category> list = categoryService.getCategoryList(categoryName);
         return getDataTable(list);
@@ -35,7 +34,7 @@ public class SysCategoryController extends BaseController {
 
     @RequestMapping(value = "/list/all", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public TableDataInfo getList() {
+    public AjaxResult getList() {
         List<Category> list = categoryService.getCategoryList(null);
         return getDataTable(list);
     }
