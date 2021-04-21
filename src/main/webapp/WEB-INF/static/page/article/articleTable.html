@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta content="webkit" name="renderer">
+    <meta content="*" http-equiv="Access-Control-Allow-Origin">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.6.4/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
+    <title>全部文章</title>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索文章</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">作者</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" name="nickname" type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">文章标题</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" name="title" type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button class="layui-btn layui-btn-primary" lay-filter="article-search-btn" lay-submit
+                                    type="submit"><i class="layui-icon"></i> 搜 索
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script id="toolbar" type="text/html">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-btn-normal data-add-btn" lay-event="add"> 添加</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除</button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="articleTable" lay-filter="articleTableFilter"></table>
+
+        <script id="tableBar" type="text/html">
+            <a class="layui-btn layui-btn-xs layui-btn-normal data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock-min.js"></script>-->
+
+<script src="../../api/baseApi.js"></script>
+
+<script charset="utf-8" src="../../lib/layui-v2.6.4/layui.js"></script>
+<script charset="utf-8" src="../../lib/jQuery-v3.6.0/jquery-3.6.0.min.js"></script>
+<script src="../../js/lay-config.js"></script>
+
+<script id="publishedStatus" type="text/html">
+    {{#  if(d.isPublished === 1){ }}
+    <div style="color:#07B3F9">已发布</div>
+    {{#  }else{ }}
+    <div style="color: #ff4a50">草稿</div>
+    {{# } }}
+</script>
+
+<script id="showSwitch" type="text/html">
+    <input type="checkbox" name="articleId" value="{{d.articleId}}" lay-skin="switch" lay-text="封禁|显示"
+           lay-filter="showSwitch" {{ d.isShow== 0 ? 'checked' : '' }}>
+</script>
+
+<script>
+    layui.use(['form', 'table', 'miniTab', 'laypage', 'laytpl'], function () {
+        const $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            laypage = layui.laypage,
+            miniTab = layui.miniTab, laytpl = layui.laytpl;
+
+        form.on('switch(showSwitch)', function (obj) {
+            const info = obj.elem.checked ? '封禁文章？' : '解除封禁？';
+            layer.confirm(info, function (index) {
+                //TODO:加上鉴权
+                $.ajax({
+                    url: articleShowUrl + '/' + obj.value + '/switch',
+                    dataType: 'json',
+                    method: 'PUT',
+                    success: function (result) {
+                        layer.msg(result.msg);
+                        table.reload('articleTable');
+                    },
+                    error: function (result) {
+                        layer.msg(result.msg);
+                    }
+                })
+                layer.close(index);
+            });
+        })
+
+        table.render({
+            elem: '#articleTable',
+            toolbar: '#toolbar',
+            url: articleListUrl,
+            request: {
+                pageName: 'pageIndex',//页码
+                limitName: 'pageSize'//每页大小
+            },
+            response: {
+                statusCode: 200 //规定成功的状态码，默认：0
+            },
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [
+                [{
+                    type: "checkbox",
+                    width: 50
+                },
+                    {
+                        field: 'articleId',
+                        width: 80,
+                        title: 'ID',
+                        sort: true
+                    },
+                    {
+                        field: 'title',
+                        minWidth: 220,
+                        title: '标题'
+                    },
+                    {
+                        field: 'nickname',
+                        width: 120,
+                        title: '作者昵称',
+                    },
+
+                    {
+                        field: 'clickCount',
+                        width: 90,
+                        title: '阅读数',
+                        sort: true
+                    },
+                    {
+                        field: 'categoryName',
+                        minWidth: 50,
+                        title: '分类',
+                        sort: true
+                    },
+                    {
+                        field: 'isShow',
+                        minWidth: 10,
+                        title: '封禁',
+                        templet: '#showSwitch',
+                        sort: true
+                    },
+                    {
+                        field: 'isPublished',
+                        width: 80,
+                        title: '状态',
+                        templet: '#publishedStatus'
+                    },
+                    {
+                        field: 'createTime',
+                        minWidth: 20,
+                        title: '发布时间',
+                        templet: "<div>{{layui.util.toDateString(d.createTime, 'yyyy-MM-dd HH:mm:ss')}}</div>",
+                        sort: true
+                    },
+                    {
+                        title: '操作',
+                        minWidth: 120,
+                        toolbar: '#tableBar',
+                        align: "center"
+                    }
+                ]
+            ],
+            limits: [10, 20, 30, 50],
+            limit: 10,
+            page: true,
+            skin: 'line',
+            initSort: {
+                field: 'articleId',
+                type: 'asc'
+            }
+        });
+
+        // 监听搜索操作
+        form.on('submit(article-search-btn)', function (data) {
+            //TODO:使用AJAX向服务端查询结果,搜索成功后重设表格参数
+            table.reload('articleTable', {
+                page: {
+                    curr: 1,
+                },
+                where: data.field,
+                contentType: "application/x-www-form-urlencoded; charset=utf-8"
+            });
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(articleTableFilter)', function (obj) {
+            if (obj.event === 'add') { // 监听添加操作
+                // 跳转到写文章窗口
+                miniTab.openNewTabByIframe({
+                    href: "page/article/addArticle.html",
+                    title: "新建文章",
+                });
+            } else if (obj.event === 'delete') { // 监听删除操作
+                //TODO:加上鉴权
+                const checkStatus = table.checkStatus('articleTable')
+                    , data = checkStatus.data;
+                layer.confirm("确定要删除吗?", function (index) {
+                    for (let i = 0; i < data.length; i++) {
+                        $.ajax({
+                            url: articleDeleteUrl + '/' + data[i].articleId,
+                            dataType: 'json',
+                            method: 'PUT',
+                            success: function (result) {
+                                layer.msg(result.msg);
+                            },
+                            error: function (result) {
+                                layer.msg(result.msg);
+                            }
+                        })
+                    }
+                    table.reload('articleTable');
+                    layer.close(index);
+                });
+            }
+        });
+
+        table.on('tool(articleTableFilter)', function (obj) {
+            const data = obj.data;
+            if (obj.event === 'edit') {
+                //TODO:向服务端请求文章详细信息
+                const index = layer.open({
+                    title: '修改文章',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: './editArticle.html',
+                    success: function (layero, index) {
+                        let body = layer.getChildFrame('body', index);//少了这个是不能从父页面向子页面传值的
+                        //获取子页面的元素，进行数据渲染
+                        body.contents().find("#title").val(data.articleId);
+                        body.contents().find("#title2").val(data.authorId);
+                    },
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                layer.confirm('确定要删除吗', function (index) {
+                    //TODO:AJAX发送id给服务端删除，加上鉴权
+                    $.ajax({
+                        url: articleDeleteUrl + '/' + data.articleId,
+                        dataType: 'json',
+                        method: 'PUT',
+                        success: function (result) {
+                            layer.msg(result.msg);
+                            obj.del();
+                        },
+                        error: function (result) {
+                            layer.msg(result.msg);
+                        }
+                    });
+                });
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 package com.ugly.blog.controller.system;
 
 import com.ugly.blog.constant.PageConstant;
-import com.ugly.blog.controller.common.BaseController;
+import com.ugly.blog.controller.BaseController;
 import com.ugly.blog.domain.Category;
 import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.service.CategoryService;

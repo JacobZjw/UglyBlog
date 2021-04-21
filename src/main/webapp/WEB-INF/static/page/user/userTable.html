@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.6.4/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form action="" class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">昵称</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" name="nickname" type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" name="username" type="text">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" name="email" type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button class="layui-btn layui-btn-primary" lay-filter="data-search-btn" lay-submit
+                                    type="submit"><i class="layui-icon"></i> 搜 索
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script id="toolbar" type="text/html">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除</button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="userTable" lay-filter="userTableFilter"></table>
+
+        <script id="tableBar" type="text/html">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+
+
+<script src="../../api/baseApi.js"></script>
+<script charset="utf-8" src="../../lib/layui-v2.6.4/layui.js"></script>
+<script charset="utf-8" src="../../lib/jQuery-v3.6.0/jquery-3.6.0.min.js"></script>
+<script src="../../js/lay-config.js"></script>
+
+
+<script id="status" type="text/html">
+    <input type="checkbox" name="status" value="{{d.status}}" lay-skin="switch" lay-text="是|否"
+           lay-filter="roleSwitch" {{ d.status== 0 ? 'checked' : '' }}>
+</script>
+
+<script id="roleSwitch" type="text/html">
+    <input type="checkbox" name="role" value="{{d.role}}" lay-skin="switch" lay-text="是|否"
+           lay-filter="roleSwitch" {{ d.role== 0 ? 'checked' : '' }}>
+</script>
+
+
+<script>
+    layui.use(['form', 'table', 'miniTab'], function () {
+        const $ = layui.jquery, miniTab = layui.miniTab,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#userTable',
+            url: userListUrl,
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            request: {
+                pageName: 'pageIndex',//页码
+                limitName: 'pageSize'//每页大小
+            },
+            response: {
+                statusCode: 200 //规定成功的状态码，默认：0
+            },
+            cols: [[
+                {type: "checkbox", width: 50},
+                {field: 'userId', width: 80, title: 'ID', sort: true},
+                {field: 'username', width: 100, title: '用户名'},
+                {field: 'nickname', width: 100, title: '昵称'},
+                {field: 'email', title: '邮箱', minWidth: 100},
+                {field: 'articleNum', width: 90, title: '文章数', sort: true},
+                {field: 'role', width: 100, title: '管理员', templet: '#roleSwitch', sort: true},
+                {field: 'status', width: 80, title: '停用', templet: '#status', sort: true},
+                {
+                    field: 'createTime',
+                    minWidth: 20,
+                    title: '注册时间',
+                    templet: "<div>{{layui.util.toDateString(d.createTime, 'yyyy-MM-dd HH:mm:ss')}}</div>",
+                    sort: true
+                },
+                {title: '操作', minWidth: 120, toolbar: '#tableBar', align: "center"}
+            ]],
+            limits: [10, 20, 30, 50],
+            limit: 10,
+            page: true,
+            skin: 'line',
+            initSort: {
+                field: 'userId',
+                type: 'asc'
+            }
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            table.reload('userTable', {
+                page: {
+                    curr: 1,
+                },
+                where: data.field,
+                contentType: "application/x-www-form-urlencoded; charset=utf-8"
+            });
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(userTableFilter)', function (obj) {
+            if (obj.event === 'add') {  // 监听添加操作
+                // 跳转到写文章窗口
+                miniTab.openNewTabByIframe({
+                    href: "page/user/addUser.html",
+                    title: "新建用户",
+                });
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                let checkStatus = table.checkStatus('userTable')
+                    , data = checkStatus.data;
+                layer.confirm("确定要删除吗?", function (index) {
+                    for (let i = 0; i < data.length; i++) {
+                        $.ajax({
+                            url: userDeleteUrl + '/' + data[i].userId,
+                            dataType: 'json',
+                            method: 'PUT',
+                            success: function (result) {
+                                layer.msg(result.msg);
+                            },
+                            error: function (result) {
+                                layer.msg(result.msg);
+                            }
+                        })
+                    }
+                    table.reload('userTable');
+                    layer.close(index);
+                });
+            }
+        });
+
+        table.on('tool(userTableFilter)', function (obj) {
+            let data = obj.data;
+            if (obj.event === 'edit') {
+                let index = layer.open({
+                    title: '编辑用户',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: './editUser.html',
+                    success: function (layero, index) {
+                        let body = layer.getChildFrame('body', index);//少了这个是不能从父页面向子页面传值的
+                        //获取子页面的元素，进行数据渲染
+                        body.contents().find("#userId").val(data.userId);
+                        // body.contents().find("#userAvatar").val(data.avatar);
+                        // body.contents().find("#avatar").attr("src", data.avatar);
+                        // body.contents().find("#username").val(data.username);
+                        // body.contents().find("#nickname").val(data.nickname);
+                        // body.contents().find("#email").val(data.email);
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                layer.confirm('确定要删除吗', function (index) {
+                    //TODO:AJAX发送id给服务端删除，加上鉴权
+                    $.ajax({
+                        url: userDeleteUrl + '/' + data.userId,
+                        dataType: 'json',
+                        method: 'PUT',
+                        success: function (result) {
+                            layer.msg(result.msg);
+                            obj.del();
+                        },
+                        error: function (result) {
+                            layer.msg(result.msg);
+                        }
+                    });
+                });
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

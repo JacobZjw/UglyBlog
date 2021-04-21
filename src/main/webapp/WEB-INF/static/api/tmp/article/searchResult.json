@@ -1,0 +1,39 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 4,
+  "data": [
+    {
+      "id": 10001,
+      "username": "张三",
+      "articleTitle": "IDEA启动EDAS项目",
+      "createTime": "2018-11-26 05:05:05",
+      "viewCount": 2335,
+      "status": "草稿"
+    },
+    {
+      "id": 10002,
+      "username": "张三",
+      "articleTitle": "SpringBoot + mongodb 整合, 记录网站操作日志，常用查询操作",
+      "createTime": "2018-11-26 05:05:05",
+      "viewCount": 6745,
+      "status": "已发布"
+    },
+    {
+      "id": 10003,
+      "username": "张三",
+      "articleTitle": "Docker_入门？只要这篇就够了！（纯干货适合0基础小白）",
+      "createTime": "2018-11-26 05:05:05",
+      "viewCount": 6755,
+      "status": "已发布"
+    },
+    {
+      "id": 10004,
+      "username": "张三",
+      "articleTitle": "Docker_入门？只要这篇就够了！（纯干货适合0基础小白）",
+      "createTime": "2018-11-26 04:56:50",
+      "viewCount": 215,
+      "status": "已发布"
+    }
+  ]
+}

@@ -8,7 +8,9 @@
     <!--    设置Spring配置文件路径-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/Spring-context.xml</param-value>
+        <param-value>
+            classpath:spring/Spring-context.xml
+        </param-value>
     </context-param>
 
     <!--    监听器加载Spring配置文件-->
@@ -24,6 +26,17 @@
     <listener>
         <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
     </listener>
+
+    <!--    Spring Security过滤器链-->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!--    配置过滤器解决字符编码问题-->
     <filter>
@@ -43,17 +56,6 @@
         <filter-name>characterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-    <!--    解决跨域问题-->
-    <filter>
-        <filter-name>crossFilter</filter-name>
-        <filter-class>com.ugly.blog.config.CrossFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>crossFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
 
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>
@@ -120,7 +122,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>kaptchaServlet</servlet-name>
-        <url-pattern>/kaptcha.jpg</url-pattern>
+        <url-pattern>/captcha.jpg</url-pattern>
     </servlet-mapping>
 
 

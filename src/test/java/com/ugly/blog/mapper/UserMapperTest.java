@@ -44,6 +44,7 @@ public class UserMapperTest extends BaseTest {
 
     @Test
     public void getUserByNameOrEmail() {
+        System.out.println(userMapper.getByNameOrEmail("admin"));
         assertNotNull(userMapper.getByNameOrEmail("admin"));
         assertNotNull(userMapper.getByNameOrEmail("admin@admin.com"));
     }

@@ -63,6 +63,11 @@ public class User implements Serializable {
 
 
     /**
+     * 是否删除 1是 0否
+     */
+    private Integer isDelete;
+
+    /**
      * 最后一次登录IP地址
      */
     private String lastLoginIp;

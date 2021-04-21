@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.6.4/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
+    <link href="../../lib/font-awesome-v4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>操作</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <div class="layui-form-item layui-row">
+                    <form class="layui-form layui-form-pane">
+                        <div class="layui-col-md7">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">标签名</label>
+                                <div class="layui-input-inline">
+                                    <input autocomplete="off" class="layui-input" name="tagName" type="text">
+                                </div>
+                                <button class="layui-btn layui-btn-primary" lay-filter="data-add-btn" lay-submit
+                                        type="submit"><i class="fa fa-gg-circle"></i> 新
+                                    建
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form class="layui-form layui-form-pane">
+                        <div class="layui-col-md5">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">标签名</label>
+                                <div class="layui-input-inline">
+                                    <input autocomplete="off" class="layui-input" name="tagName" type="text">
+                                </div>
+                                <button class="layui-btn layui-btn-primary" lay-filter="data-search-btn" lay-submit
+                                        type="submit"><i class="layui-icon"></i> 搜 索
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </fieldset>
+
+        <script id="toolbar" type="text/html">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除</button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="tagTable" lay-filter="tagTableFilter"></table>
+
+        <script id="tableBar" type="text/html">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+
+<script src="../../api/baseApi.js"></script>
+
+<script charset="utf-8" src="../../lib/jQuery-v3.6.0/jquery-3.6.0.min.js"></script>
+<script charset="utf-8" src="../../lib/layui-v2.6.4/layui.js"></script>
+<script src="../../js/lay-config.js"></script>
+
+<script>
+    layui.use(['form', 'table'], function () {
+        const $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#tagTable',
+            url: tagListUrl,
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            request: {
+                pageName: 'pageIndex',//页码
+                limitName: 'pageSize'//每页大小
+            },
+            response: {
+                statusCode: 200 //规定成功的状态码，默认：0
+            },
+            cols: [
+                [{
+                    type: "checkbox",
+                    width: 50
+                },
+                    {
+                        field: 'tagId',
+                        width: 200,
+                        title: 'ID',
+                        sort: true
+                    },
+                    {
+                        field: 'tagName',
+                        minWidth: 200,
+                        title: '标签名',
+                        sort: true
+                    },
+                    {
+                        field: 'articleNum',
+                        width: 100,
+                        title: '文章数',
+                        sort: true
+                    },
+                    {
+                        title: '操作',
+                        minWidth: 120,
+                        toolbar: '#tableBar',
+                        align: "center"
+                    }
+                ]
+            ],
+            limits: [10, 20, 30, 50],
+            limit: 10,
+            page: true,
+            skin: 'line'
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            table.reload('tagTable', {
+                page: {
+                    curr: 1
+                },
+                where: data.field,
+                contentType: "application/x-www-form-urlencoded; charset=utf-8"
+            }, 'data');
+            return false;
+        });
+        form.on('submit(data-add-btn)', function (data) {
+            //执行新建操作
+            $.ajax({
+                url: tagUpdateUrl,
+                method: 'POST',
+                data: JSON.stringify(data.field),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (result) {
+                    table.reload('tagTable');
+                    layer.msg(result.msg);
+                },
+                error: function (result) {
+                    layer.msg(result.msg);
+                }
+            })
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(tagTableFilter)', function (obj) {
+            if (obj.event === 'add') { // 监听添加操作
+                const index = layer.open({
+                    title: '新建标签',
+                    type: 2,
+                    shadeClose: true,
+                    area: ['40%', '50%'],
+                    content: './editTag.html',
+                    success: function (layero, index) {
+                        const body = layer.getChildFrame('body', index);//少了这个是不能从父页面向子页面传值的
+                        //获取子页面的元素，进行数据渲染
+                        body.contents().find("button").text(" 添 加 ");
+                        body.contents().find("legend").text(" 新建标签 ");
+                    },
+
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (obj.event === 'delete') { // 监听删除操作
+                //TODO:加上鉴权
+                const checkStatus = table.checkStatus('categoryTable')
+                    , data = checkStatus.data;
+                layer.confirm("确定要删除吗?", function (index) {
+                    for (let i = 0; i < data.length; i++) {
+                        $.ajax({
+                            url: tagDeleteUrl + '/' + data[i].tagId,
+                            dataType: 'json',
+                            method: 'PUT',
+                            success: function (result) {
+                                layer.msg(result.msg);
+                            },
+                            error: function (result) {
+                                layer.msg(result.msg);
+                            }
+                        })
+                    }
+                    table.reload('tagTable');
+                    layer.close(index);
+                });
+            }
+        });
+
+
+        table.on('tool(tagTableFilter)', function (obj) {
+            const data = obj.data;
+            if (obj.event === 'edit') {
+                let index = layer.open({
+                    title: '编辑标签',
+                    type: 2,
+                    area: ['40%', '50%'],
+                    content: './editTag.html',
+                    success: function (layero, index) {
+                        const body = layer.getChildFrame('body', index);//少了这个是不能从父页面向子页面传值的
+                        //获取子页面的元素，进行数据渲染
+                        body.contents().find("#tagId").val(data.tagId);
+                        body.contents().find("#tagName").val(data.tagName);
+                    },
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                layer.confirm('确定要删除吗', function () {
+                    //TODO:AJAX发送id给服务端删除，加上鉴权
+                    $.ajax({
+                        url: tagDeleteUrl + '/' + data.tagId,
+                        dataType: 'json',
+                        method: 'PUT',
+                        success: function (result) {
+                            layer.msg(result.msg);
+                            obj.del();
+                        },
+                        error: function (result) {
+                            layer.msg(result.msg);
+                        }
+                    });
+                });
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

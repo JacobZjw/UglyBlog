@@ -12,18 +12,23 @@ public class UserConstant {
     /**
      * 正常状态
      */
-    public static final String NORMAL = "1";
+    public static final Integer USER_IS_ENABLED = 1;
 
     /**
      * 用户封禁状态
      */
-    public static final String USER_DISABLE = "0";
+    public static final Integer USER_IS_DISABLED = 0;
 
 
     /**
      * 用户删除状态
      */
-    public static final String USER_IS_DELETE = "1";
+    public static final Integer USER_IS_DELETE = 1;
+
+    /**
+     * 用户是管理员
+     */
+    public static final Integer USER_IS_ADMIN = 0;
 
 
     /**

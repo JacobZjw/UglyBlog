@@ -4,6 +4,7 @@ import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.ArticleTagRef;
 import com.ugly.blog.domain.Tag;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author JwZheng
  * @date 2021/4/6 16:09
  */
+@Repository
 public interface ArticleTagRefMapper {
 
     /**

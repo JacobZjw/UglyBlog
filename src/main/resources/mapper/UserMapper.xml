@@ -15,6 +15,7 @@
         <result column="create_time" property="createTime" javaType="date"/>
         <result column="status" property="status" javaType="integer"/>
         <result column="role" property="role" javaType="integer"/>
+        <result column="is_del" property="isDelete" javaType="integer"/>
         <association property="articleNum" column="user_id"
                      select="com.ugly.blog.mapper.ArticleMapper.getCountByUserId"/>
     </resultMap>
@@ -67,8 +68,9 @@
             <if test="lastLoginTime != null and lastLoginTime != ''">,`last_login_time` =
                 #{lastLoginTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="status != null">,`status` = #{status,jdbcType=INTEGER}</if>
-            <if test="role != null ">,`role` = #{role,jdbcType=INTEGER}</if>
+            <if test="status != null">,`status` = #{status,jdbcType=TINYINT}</if>
+            <if test="role != null ">,`role` = #{role,jdbcType=TINYINT}</if>
+            <if test="isDelete != null">,`is_del` = #{isDelete,jdbcType=TINYINT}</if>
         </trim>
 
         <where>`user_id`=#{userId,jdbcType=INTEGER}</where>
@@ -84,7 +86,8 @@
                `status`,
                `last_login_time`,
                `last_login_ip`,
-               `create_time`
+               `create_time`,
+               `is_del`
         FROM user
     </sql>
 

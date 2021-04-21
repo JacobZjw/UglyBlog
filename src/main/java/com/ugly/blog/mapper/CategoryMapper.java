@@ -2,6 +2,7 @@ package com.ugly.blog.mapper;
 
 import com.ugly.blog.domain.Category;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * @author JwZheng
  * @date 2021/4/2 19:19
  */
+@Repository
 public interface CategoryMapper {
 
     /**
