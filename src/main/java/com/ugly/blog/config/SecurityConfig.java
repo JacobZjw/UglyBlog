@@ -1,8 +1,9 @@
 package com.ugly.blog.config;
 
+import com.ugly.blog.constant.Constants;
 import com.ugly.blog.filter.JWTAuthenticationEntryPoint;
-import com.ugly.blog.filter.JWTAuthenticationFilter;
 import com.ugly.blog.filter.JWTAuthorizationFilter;
+import com.ugly.blog.filter.LoginFilter;
 import com.ugly.blog.handler.JWTAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,6 +49,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public UsernamePasswordAuthenticationFilter loginFilter() throws Exception {
+        LoginFilter filter = new LoginFilter();
+        filter.setAuthenticationManager(authenticationManager());
+        filter.setFilterProcessesUrl(Constants.LOGIN_URL);
+        return filter;
+    }
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
@@ -68,8 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 其他都放行了
                 .anyRequest().permitAll()
                 .and()
-                //添加自定义Filter
-                .addFilterAt(new JWTAuthenticationFilter(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
+                //添加自定义LoginFilter
+                .addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 授权异常处理
                 .exceptionHandling().authenticationEntryPoint(new JWTAuthenticationEntryPoint())
@@ -81,27 +91,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 关闭csrf
                 .csrf().disable();
-
-
-//        http.cors()
-//                .and()
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "/login").permitAll()
-//                // 指定路径下的资源需要验证了的用户才能访问
-//                .antMatchers("/api/system/**").authenticated()
-//                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("admin")
-//                // 其他都放行了
-//                .anyRequest().permitAll()
-//                .and()
-//                //添加自定义Filter
-//                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-//                .addFilter(new JWTAuthorizationFilter())
-//                // 不需要session（不创建会话）
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                // 授权异常处理
-//                .exceptionHandling().authenticationEntryPoint(new JWTAuthenticationEntryPoint())
-//                .accessDeniedHandler(new JWTAccessDeniedHandler());
     }
 }

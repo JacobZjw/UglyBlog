@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -22,6 +23,7 @@ import java.io.IOException;
  * @date 2021/4/19 18:01
  */
 @Slf4j
+@Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     @Override

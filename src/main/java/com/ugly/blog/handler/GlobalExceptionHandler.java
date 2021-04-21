@@ -6,6 +6,7 @@ import com.ugly.blog.exception.BaseException;
 import com.ugly.blog.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,7 +45,14 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public AjaxResult handleAuthorizationException(AccessDeniedException e) {
         log.error(e.getMessage());
-        return AjaxResult.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
+        return AjaxResult.error(HttpStatus.UNAUTHORIZED, "没有权限，请联系管理员授权");
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseBody
+    public AjaxResult handleAuthenticationException(AuthenticationException e){
+        log.error(e.getMessage());
+        return AjaxResult.error(HttpStatus.UNAUTHORIZED, "认证失败");
     }
 
 }

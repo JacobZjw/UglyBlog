@@ -55,7 +55,7 @@
                     <input type="text" name="code" lay-verify="required"
                            placeholder="验证码" autocomplete="off" class="layui-input"/>
                 </div>
-                <img src="/captcha.jpg" style="float: right; width:80px;height: 40px;"/>
+                <img id="validateCode" src="/captcha.jpg" style="float: right; width:80px;height: 40px;"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -73,25 +73,29 @@
 <script src="/lib/jQuery-v3.6.0/jquery-3.6.0.min.js"></script>
 
 <script>
+
+    $("#validateCode").click(function () {
+        $(this).attr('src', '/captcha.jpg?' + Math.floor(Math.random() * 100));
+    });
+
     layui.use('form', function () {
         const form = layui.form;
         //监听提交
         form.on('submit(submitBtn)', function (data) {
-            return true;
-            // $.ajax({
-            //     async: false, //同步，待请求完毕后再执行后面的代码
-            //     type: "POST",
-            //     url: '/loginVerify',
-            //     contentType: "application/json",
-            //     dataType: "json",
-            //     data: JSON.stringify(data.field),
-            //     success: function (res) {
-            //         layer.msg(res);
-            //     },
-            //     error: function () {
-            //         layer.msg("登陆失败，请重试");
-            //     }
-            // });
+            $.ajax({
+                async: false, //同步，待请求完毕后再执行后面的代码
+                type: "POST",
+                url: '/loginVerify',
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(data.field),
+                success: function (res) {
+                    layer.msg(res);
+                },
+                error: function () {
+                    layer.msg("登陆失败，请重试");
+                }
+            });
         });
     });
 </script>
