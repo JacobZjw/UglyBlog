@@ -1,6 +1,8 @@
 package com.ugly.blog.config;
 
+import com.alibaba.fastjson.JSON;
 import com.ugly.blog.constant.Constants;
+import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.filter.JWTAuthenticationEntryPoint;
 import com.ugly.blog.filter.JWTAuthorizationFilter;
 import com.ugly.blog.filter.LoginFilter;
@@ -8,7 +10,8 @@ import com.ugly.blog.handler.JWTAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,13 +23,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.io.PrintWriter;
+
 /**
  * @author JwZheng
  * @date 2021/4/17 13:43
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -43,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Override
     @Bean
+    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -55,6 +60,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setAuthenticationManager(authenticationManager());
         filter.setFilterProcessesUrl(Constants.LOGIN_URL);
         return filter;
+    }
+
+    /**
+     * 角色继承 admin继承自user
+     *
+     * @return RoleHierarchy
+     */
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy("ROLE_admin > ROLE_user");
+        return hierarchy;
     }
 
 
@@ -70,11 +87,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.headers()
+                .frameOptions()
+                .sameOrigin()
+                .and()
+                .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 // 指定路径下的资源需要验证了的用户才能访问
                 .antMatchers("/api/system/**").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("admin")
                 // 其他都放行了
                 .anyRequest().permitAll()
                 .and()
@@ -85,9 +105,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(new JWTAuthenticationEntryPoint())
                 .accessDeniedHandler(new JWTAccessDeniedHandler())
                 .and()
-                .formLogin().loginPage("/login")
                 // 登陆处理路径
+                .formLogin().loginPage("/login")
                 .loginProcessingUrl("/loginVerify").permitAll()
+                .and()
+                //注销登录
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler((req, resp, authentication) -> {
+                    resp.setContentType("application/json;charset=utf-8");
+                    PrintWriter out = resp.getWriter();
+                    out.write(JSON.toJSONString(AjaxResult.success("注销成功")));
+                    out.flush();
+                    out.close();
+                }).permitAll()
                 .and()
                 // 关闭csrf
                 .csrf().disable();

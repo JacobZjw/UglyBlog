@@ -1,7 +1,7 @@
 {
   "homeInfo": {
     "title": "首页",
-    "href": "page/welcome.html?t=1"
+    "href": "html/welcome.html"
   },
   "logoInfo": {
     "title": "UGLY BLOG",
@@ -17,7 +17,7 @@
       "child": [
         {
           "title": "主页",
-          "href": "page/welcome.html",
+          "href": "html/welcome.html",
           "icon": "fa fa-home",
           "target": "_self"
         },
@@ -29,25 +29,25 @@
           "child": [
             {
               "title": "全部文章",
-              "href": "page/article/articleTable.html",
+              "href": "html/article/articleTable.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             },
             {
               "title": "写文章",
-              "href": "page/article/addArticle.html",
+              "href": "html/article/addArticle.html",
               "icon": "fa fa-pencil-square-o",
               "target": "_self"
             },
             {
               "title": "分类管理",
-              "href": "page/category/categoryTable.html",
+              "href": "html/category/categoryTable.html",
               "icon": "fa fa-paperclip",
               "target": "_self"
             },
             {
               "title": "标签管理",
-              "href": "page/tag/tagTable.html",
+              "href": "html/tag/tagTable.html",
               "icon": "fa fa-tags",
               "target": "_self"
             }
@@ -55,65 +55,45 @@
         },
         {
           "title": "用户管理",
-          "href": "page/menu.html",
+          "href": "html/menu.html",
           "icon": "fa fa-user",
           "target": "_self",
           "child": [
             {
               "title": "全部用户",
-              "href": "page/user/userTable.html",
+              "href": "html/user/userTable.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             },
             {
               "title": "修改资料",
-              "href": "page/user/editUser.html",
+              "href": "html/user/editUser.html",
               "icon": "fa fa-list-alt",
-              "target": "_self"
-            }
-          ]
-        },
-        {
-          "title": "日志管理",
-          "href": "",
-          "icon": "fa fa-flag-o",
-          "target": "_self",
-          "child": [
-            {
-              "title": "登录日志",
-              "href": "page/login-1.html",
-              "icon": "fa fa-stumbleupon-circle",
-              "target": "_self"
-            },
-            {
-              "title": "操作日志",
-              "href": "page/login-2.html",
-              "icon": "fa fa-viacoin",
               "target": "_self"
             }
           ]
         },
         {
           "title": "网站监控",
-          "href": "page/setting.html",
+          "href": "html/setting.html",
           "icon": "fa fa-gears",
           "target": "_self",
           "child": [
             {
               "title": "在线用户",
-              "href": "page/login-2.html",
+              "href": "html/onlineUser.html",
               "icon": "fa fa-viacoin",
               "target": "_self"
             },
             {
               "title": "数据监控",
-              "href": "http://localhost:8080/druid/index.html",
+              "href": "/druid/index.html",
               "icon": "fa fa-viacoin",
               "target": "_self"
             },
             {
               "title": "服务监控",
-              "href": "page/login-2.html",
+              "href": "html/server.html",
               "icon": "fa fa-viacoin",
               "target": "_self"
             }
@@ -127,7 +107,7 @@
           "child": [
             {
               "title": "404页面",
-              "href": "page/404.html",
+              "href": "html/404.html",
               "icon": "fa fa-hourglass-end",
               "target": "_self"
             }

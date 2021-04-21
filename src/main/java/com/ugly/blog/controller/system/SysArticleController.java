@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class SysArticleController extends BaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult getTableDataByCondition(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
                                               @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
                                               Article article,
@@ -44,30 +46,35 @@ public class SysArticleController extends BaseController {
 
     @RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult getDetails(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.getFullInfoById(articleId));
     }
 
     @RequestMapping(value = "/delete/{articleId}", method = RequestMethod.PUT)
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult delete(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.delete(articleId));
     }
 
     @RequestMapping(value = "/show/{articleId}/switch", method = RequestMethod.PUT)
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult switchShowStatus(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.switchShowStatus(articleId));
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult insert(@RequestBody Article article) {
         return toAjax(articleService.insert(article));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult update(@RequestBody Article article) {
         System.out.println(article);
         return toAjax(articleService.update(article));

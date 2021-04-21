@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
+    @RolesAllowed("admin")
     public AjaxResult getTableDataByCondition(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
                                               @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
                                               User user) {
@@ -41,12 +43,14 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     @ResponseBody
+    @RolesAllowed("admin")
     public AjaxResult getDetails(@PathVariable("userId") Integer userId) {
         return toAjax(userService.getDetails(userId));
     }
 
     @RequestMapping(value = "/delete/{userId}", method = RequestMethod.PUT)
     @ResponseBody
+    @RolesAllowed("admin")
     public AjaxResult delete(@PathVariable("userId") Integer userId) {
         userService.checkUserAllow(userId);
         return toAjax(userService.delete(userId));
@@ -55,6 +59,7 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
+    @RolesAllowed("admin")
     public AjaxResult insert(@RequestBody User user) {
         if (StringUtils.isNotBlank(user.getUsername()) && UserConstant.NOT_UNIQUE.equals(userService.checkUsernameUnique(user.getUsername()))) {
             return AjaxResult.error("新增用户'" + user.getUsername() + "'失败，用户名已存在");
@@ -68,6 +73,7 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
+    @RolesAllowed("admin")
     public AjaxResult update(@RequestBody User user) {
         userService.checkUserAllow(user.getUserId());
         if (StringUtils.isNotBlank(user.getUsername()) && UserConstant.NOT_UNIQUE.equals(userService.checkUsernameUnique(user.getUsername()))) {
@@ -83,6 +89,7 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/role/{userId}/switch", method = RequestMethod.PUT)
     @ResponseBody
+    @RolesAllowed("admin")
     public AjaxResult switchRole(@PathVariable("userId") Integer userId) {
         userService.checkUserAllow(userId);
         return toAjax(userService.switchRole(userId));
@@ -90,6 +97,7 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/status/{userId}/switch", method = RequestMethod.PUT)
     @ResponseBody
+    @RolesAllowed("admin")
     public AjaxResult switchStatus(@PathVariable("userId") Integer userId) {
         userService.checkUserAllow(userId);
         return toAjax(userService.switchStatus(userId));

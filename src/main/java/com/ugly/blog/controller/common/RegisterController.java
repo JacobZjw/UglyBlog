@@ -25,7 +25,7 @@ public class RegisterController {
 
     @RequestMapping("/register")
     public String registerPage() {
-        return "register";
+        return "register2";
     }
 
     @RequestMapping("/denied")

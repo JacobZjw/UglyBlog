@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class SysCategoryController extends BaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult getList(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
                               @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
                               String categoryName) {
@@ -34,6 +36,7 @@ public class SysCategoryController extends BaseController {
 
     @RequestMapping(value = "/list/all", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult getList() {
         List<Category> list = categoryService.getCategoryList(null);
         return getDataTable(list);
@@ -41,18 +44,21 @@ public class SysCategoryController extends BaseController {
 
     @RequestMapping(value = "/delete/{categoryId}", method = RequestMethod.PUT, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult delete(@PathVariable("categoryId") Integer categoryId) {
         return toAjax(categoryService.deleteCategoryById(categoryId));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult update(@RequestBody Category category) {
         return toAjax(categoryService.updateOrInsertCategory(category));
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
+    @RolesAllowed("user")
     public AjaxResult insert(String categoryName) {
         return toAjax(categoryService.insertCategory(categoryName));
     }

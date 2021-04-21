@@ -26,7 +26,7 @@
     <fieldset class="layui-elem-field layui-field-title form-title">
         <legend>登录</legend>
     </fieldset>
-    <form class="layui-form" action="/loginVerify">
+    <form class="layui-form">
         <div class="layui-form-item">
             <label class="layui-form-label">账号</label>
             <div class="layui-input-block">
@@ -46,7 +46,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">记住我</label>
                 <div class="layui-input-inline" style="margin-right: 1px; width: 20px;">
-                    <input type="checkbox" name="rememberMe" lay-skin="switch"/>
+                    <input type="hidden" name="rememberMe" value="false">
+                    <input type="checkbox" name="rememberMe" lay-skin="switch" value="true"/>
                 </div>
             </div>
             <div class="layui-inline">
@@ -90,12 +91,14 @@
                 dataType: "json",
                 data: JSON.stringify(data.field),
                 success: function (res) {
-                    layer.msg(res);
+                    localStorage.setItem("Authorization",res.Authorization);
+                    layer.msg(res.msg);
                 },
-                error: function () {
-                    layer.msg("登陆失败，请重试");
+                error: function (res) {
+                    layer.msg(res.msg);
                 }
             });
+            return false;
         });
     });
 </script>

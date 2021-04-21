@@ -7,11 +7,11 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="telephone=no" name="format-detection">
-    <link href="images/favicon.ico" rel="icon">
-    <link href="lib/layui-v2.6.4/css/layui.css" media="all" rel="stylesheet">
-    <link href="css/layuimini.css" media="all" rel="stylesheet">
-    <link href="css/themes/default.css" media="all" rel="stylesheet">
-    <link href="lib/font-awesome-v4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="/images/favicon.ico" rel="icon">
+    <link href="/lib/layui-v2.6.4/css/layui.css" media="all" rel="stylesheet">
+    <link href="/css/layuimini.css" media="all" rel="stylesheet">
+    <link href="/css/themes/default.css" media="all" rel="stylesheet">
+    <link href="/lib/font-awesome-v4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -125,8 +125,8 @@
 
     </div>
 </div>
-<script charset="utf-8" src="lib/layui-v2.6.4/layui.js"></script>
-<script charset="utf-8" src="js/lay-config.js?v=2.0.0"></script>
+<script charset="utf-8" src="/lib/layui-v2.6.4/layui.js"></script>
+<script charset="utf-8" src="/js/lay-config.js?v=2.0.0"></script>
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery,
@@ -135,8 +135,8 @@
             miniTongji = layui.miniTongji;
 
         var options = {
-            iniUrl: "api/init.json",    // 初始化接口
-            clearUrl: "api/clear.json", // 缓存清理接口
+            iniUrl: "/api/init.json",    // 初始化接口
+            clearUrl: "/api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
             multiModule: true,          // 是否开启多模块

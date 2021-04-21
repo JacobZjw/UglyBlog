@@ -2,12 +2,8 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <meta content="webkit" name="renderer">
-    <meta content="*" http-equiv="Access-Control-Allow-Origin">
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
-    <link href="../../lib/editor.md-v1.5.0/css/editormd.min.css" rel="stylesheet"/>
-    <link href="../../lib/layui-v2.6.4/css/layui.css" rel="stylesheet"/>
+    <link href="/lib/editor.md-v1.5.0/css/editormd.min.css" rel="stylesheet"/>
+    <link href="/lib/layui-v2.6.4/css/layui.css" rel="stylesheet"/>
     <title>title</title>
 </head>
 <body>
@@ -23,7 +19,8 @@
 
                         <div class="layui-col-md8 layui-col-md-offset1 layui-col-xs6">
                             <input autocomplete="off" class="layui-input" id="title" name="title" placeholder="请输入文章标题"
-                                   required type="text">
+                                   required
+                                   type="text" value="1">
                         </div>
 
                         <div class="layui-col-md1 layui-col-md-offset1 layui-col-xs2 layui-col-xs-offset1">
@@ -33,7 +30,7 @@
 
                     <div class="layui-form-item layui-form-text layui-row">
                         <div class="layui-col-md12" id="test-editor">
-                            <textarea class="layui-textarea" id="content"></textarea>
+                            <textarea class="layui-textarea"></textarea>
                         </div>
                     </div>
                 </div>
@@ -44,11 +41,11 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">标题</label>
                         <div class="layui-input-block">
-                            <input autocomplete="off" class="layui-input" id="title2" lay-verify="required" name="title"
-                                   placeholder="请输入文章标题"
+                            <input autocomplete="off" class="layui-input" id="title2" name="title" placeholder="请输入"
                                    type="text">
                         </div>
                     </div>
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">摘要</label>
                         <div class="layui-input-block">
@@ -103,6 +100,7 @@
                         </div>
                     </div>
 
+
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <button class="layui-btn layui-btn-normal pre" type="button">上一步</button>
@@ -116,7 +114,6 @@
                     </div>
                 </form>
             </div>
-
             <div>
                 <div style="text-align: center;margin-top: 90px;">
                     <i class="layui-icon layui-circle"
@@ -136,23 +133,28 @@
 
 </div>
 
-<script src="../../api/baseApi.js"></script>
 
-<script src="../../lib/jQuery-v3.6.0/jquery-3.6.0.min.js"></script>
-<script src="../../lib/layui-v2.6.4/layui.js"></script>
-<script src="../../lib/editor.md-v1.5.0/editormd.min.js"></script>
-<script src="../../js/lay-config.js"></script>
+<script src="/api/baseApi.js"></script>
 
+<script src="/lib/jQuery-v3.6.0/jquery-3.6.0.min.js"></script>
+
+<script src="/lib/layui-v2.6.4/layui.js"></script>
+<script src="/js/lay-config.js"></script>
+
+<script src="/lib/editor.md-v1.5.0/editormd.min.js"></script>
 
 <script type="text/javascript">
+    const index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    $(window).bind('beforeunload', function () {
+        return '注意：您的数据可能没有保存';
+    });
+
     $(function () {
-        const userId = 1;
-        $(window).bind('beforeunload', function () {
-            return '注意：您的数据可能没有保存';
-        });
+        const articleId = $('#title').val();
+        const userId = $('#title2').val();
 
         layui.use(['form', 'step'], function () {
-            const form = layui.form, $ = layui.jquery, step = layui.step;
+            const $ = layui.jquery, form = layui.form, step = layui.step;
             step.render({
                 elem: '#stepForm',
                 filter: 'stepForm',
@@ -191,45 +193,77 @@
                 imageUpload: true,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL: "#", // 文件上传路径，返回值为图片加载的路径
+                //修改文章时加载
                 onload: function () {
-                    initTag();
-                    initCategory();
+
+                    $.ajax({
+                        url: articleEditUrl + '/' + articleId,
+                        dataType: 'json',
+                        async: false,
+                        success: function (article) {
+                            $('#title').val('').val(article.data.title);
+                            $('#title2').val('').val(article.data.title);
+
+                            $('#summary').val(article.data.summary);
+                            $('#isOriginal').val(article.data.isOriginal);
+                            editor.setMarkdown(article.data.contentMd);
+                            //TODO:选中文章标签和分类
+                            let list = [];
+                            $.each(article.data.tagList, function (i, item) {
+                                list.push(item['tagId']);
+                            });
+                            initTag(list);
+                            initCategory(article.data.categoryId);
+                        },
+                        error: function (result) {
+                            parent.layer.msg(result.msg);
+                            // parent.layer.close(index);
+                            parent.layer.msg('获取文章失败');
+                        }
+                    })
+
+
                 }
             });
 
-            form.on('submit(publish)', function (data) {
+
+            form.on('submit(publish)', function () {
                 //提交
                 let jsonObj = getDate();
                 jsonObj.isPublished = 1;
                 $.ajax({
-                    url: articleSaveUrl,
+                    url: articleUpdateUrl,
                     contentType: 'application/json',
                     method: 'POST',
                     dataType: 'JSON',
                     data: JSON.stringify(jsonObj),
-                    success: function () {
-                        step.next('#stepForm');
+                    success: function (result) {
+                        parent.layer.close(index);
+                        parent.layer.msg(result.msg + ',请手动刷新页面');
+                        parent.table.reload('articleTable');
                     },
                     error: function (result) {
-                        layer.msg(result.msg);
+                        parent.layer.msg(result.msg);
                     }
                 });
                 return false;
             });
 
-            form.on('submit(saveForm)', function (data) {
+            form.on('submit(saveForm)', function () {
                 //保存草稿
                 $.ajax({
-                    url: articleSaveUrl,
+                    url: articleUpdateUrl,
                     contentType: 'application/json',
                     method: 'POST',
                     dataType: 'JSON',
                     data: JSON.stringify(getDate()),
-                    success: function () {
-                        step.next('#stepForm');
+                    success: function (result) {
+                        parent.layer.close(index);
+                        parent.layer.msg(result.msg + ',请手动刷新页面');
+                        parent.table.reload('articleTable');
                     },
                     error: function (result) {
-                        layer.msg(result.msg);
+                        parent.layer.msg(result.msg);
                     }
                 });
                 return false;
@@ -246,7 +280,6 @@
                     return false;
                 }
             });
-
 
             $('.pre').click(function () {
                 step.pre('#stepForm');
@@ -265,7 +298,7 @@
 
             const getDate = function () {
                 //TODO:根据当前登录用户获取userId
-                let jsonObj = {'authorId': userId};
+                let jsonObj = {'authorId': userId, 'articleId': articleId};
                 let title = $('#title2').val();
                 jsonObj.title = title == null ? $('title').val() : title;
                 jsonObj.content = editor.getHTML();
@@ -289,7 +322,7 @@
                 return jsonObj;
             }
 
-            function initCategory() {
+            function initCategory(categoryId) {
                 $.ajax({
                     url: categoryListUrl + '/all',
                     dataType: 'json',
@@ -302,6 +335,7 @@
                                 .text(item["categoryName"])
                                 .appendTo($select);
                         });
+                        $select.val(categoryId);
                         //一定要重载模块
                         form.render('select');
                     },
@@ -311,19 +345,24 @@
                 });
             }
 
-            function initTag() {
+            function initTag(list) {
                 $.ajax({
                     url: tagListUrl + '/all',
                     dataType: 'json',
                     async: false,
                     success: function (result) {
                         let $checkbox = $("#tagList");
+                        console.log(list)
                         $.each(result.data, function (i, item) {
-                            $("<input type='checkbox' name='tagId' lay-filter='tagFilter' class='tag'>")
+                            let tmp = $("<input type='checkbox' name='tagId' lay-filter='tagFilter' class='tag'>")
                                 .val(item['tagId'])
-                                .attr('title', item["tagName"])
-                                .prependTo($checkbox);
+                                .attr('title', item["tagName"]);
+                            if (list.includes(item['tagId'])) {
+                                tmp.attr('checked', true);
+                            }
+                            tmp.prependTo($checkbox);
                         });
+
                         //一定要重载模块
                         form.render('checkbox');
                     },

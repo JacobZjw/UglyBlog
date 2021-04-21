@@ -23,6 +23,16 @@ public class LoginController extends BaseController {
 
     private final UserLoginService userLoginService;
 
+    @RequestMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+    @RequestMapping("/sys")
+    public String sys(){
+        return "index";
+    }
+
     @Autowired
     public LoginController(UserService userService, UserLoginService userLoginService) {
         this.userService = userService;
@@ -30,10 +40,6 @@ public class LoginController extends BaseController {
     }
 
 
-    @RequestMapping("/login")
-    public String loginPage() {
-        return "login";
-    }
 
 
     @RequestMapping(value = "/loginVerify", method = RequestMethod.POST)
