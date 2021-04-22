@@ -125,18 +125,27 @@
 
     </div>
 </div>
+<script src="/api/baseApi.js"></script>
+<script charset="utf-8" src="/lib/jQuery-v3.6.0/jquery-3.6.0.min.js"></script>
 <script charset="utf-8" src="/lib/layui-v2.6.4/layui.js"></script>
 <script charset="utf-8" src="/js/lay-config.js?v=2.0.0"></script>
+
 <script>
-    layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
-        var $ = layui.jquery,
+    $.ajaxSetup({
+        header: {Authorization: localStorage.getItem("Authorization")}
+    });
+
+    const token = localStorage.getItem("Authorization");
+
+    layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji', 'jquery'], function () {
+        const $ = layui.$,
             layer = layui.layer,
             miniAdmin = layui.miniAdmin,
             miniTongji = layui.miniTongji;
 
-        var options = {
-            iniUrl: "/api/init.json",    // 初始化接口
-            clearUrl: "/api/clear.json", // 缓存清理接口
+        const options = {
+            iniUrl: initUrl,    // 初始化接口
+            clearUrl: clearUrl, // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
             multiModule: true,          // 是否开启多模块
@@ -144,8 +153,15 @@
             loadingTime: 0,             // 初始化加载时间
             pageAnim: true,             // iframe窗口动画
             maxTabNum: 20,              // 最大的tab打开数量
+            token: token,
         };
+
+        miniAdmin.headers = {
+            "Authorization": token
+        }
+
         miniAdmin.render(options);
+
 
         // 百度统计代码，只统计指定域名
         miniTongji.render({

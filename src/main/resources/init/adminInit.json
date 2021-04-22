@@ -98,20 +98,6 @@
               "target": "_self"
             }
           ]
-        },
-        {
-          "title": "异常页面",
-          "href": "",
-          "icon": "fa fa-home",
-          "target": "_self",
-          "child": [
-            {
-              "title": "404页面",
-              "href": "html/404.html",
-              "icon": "fa fa-hourglass-end",
-              "target": "_self"
-            }
-          ]
         }
       ]
     }

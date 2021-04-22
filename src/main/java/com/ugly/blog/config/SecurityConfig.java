@@ -118,7 +118,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     out.write(JSON.toJSONString(AjaxResult.success("注销成功")));
                     out.flush();
                     out.close();
-                }).permitAll()
+                }).logoutSuccessUrl("/").permitAll()
                 .and()
                 // 关闭csrf
                 .csrf().disable();

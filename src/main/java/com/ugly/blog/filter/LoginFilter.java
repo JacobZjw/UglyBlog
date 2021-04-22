@@ -68,7 +68,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
-                                            Authentication authentication) {
+                                            Authentication authentication) throws IOException {
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         loginUser.setIsRememberMe(rememberMe.get());
         String token = TokenUtils.createToken(loginUser);
@@ -76,16 +76,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // Http Response Header 中返回 Token
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader(Constants.TOKEN_HEADER, token);
-
-
         AjaxResult result = AjaxResult.success("登录成功");
         result.put(Constants.TOKEN_HEADER, token);
-        try (PrintWriter writer = response.getWriter()) {
-            writer.write(JSON.toJSONString(result));
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        PrintWriter writer = response.getWriter();
+        writer.write(JSON.toJSONString(result));
+        writer.flush();
+
     }
 
 

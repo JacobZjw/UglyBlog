@@ -1,0 +1,51 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "html/welcome.html"
+  },
+  "logoInfo": {
+    "title": "UGLY BLOG",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "主页",
+          "href": "html/welcome.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "全部文章",
+          "href": "html/article/articleTable.html",
+          "icon": "fa fa-list-alt",
+          "target": "_self"
+        },
+        {
+          "title": "写文章",
+          "href": "html/article/addArticle.html",
+          "icon": "fa fa-pencil-square-o",
+          "target": "_self"
+        },
+        {
+          "title": "分类管理",
+          "href": "html/category/categoryTable.html",
+          "icon": "fa fa-paperclip",
+          "target": "_self"
+        },
+        {
+          "title": "标签管理",
+          "href": "html/tag/tagTable.html",
+          "icon": "fa fa-tags",
+          "target": "_self"
+        }
+      ]
+    }
+  ]
+}

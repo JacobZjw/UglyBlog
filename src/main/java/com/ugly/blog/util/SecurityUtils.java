@@ -1,8 +1,16 @@
 package com.ugly.blog.util;
 
+import com.ugly.blog.constant.HttpStatus;
+import com.ugly.blog.constant.UserConstant;
+import com.ugly.blog.dto.LoginUser;
+import com.ugly.blog.exception.CustomException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Collection;
 
 /**
  * @author JwZheng
@@ -19,14 +27,30 @@ public class SecurityUtils {
     }
 
     /**
-     * 是否为超级管理员
+     * 是否为管理员
      *
-     * @param userId 用户ID
+     * @param user 用户
      * @return 结果
      */
-    public static boolean isAdmin(Integer userId) {
-        return userId != null && 1 == userId;
+    public static boolean isAdmin(LoginUser user) {
+        if (Utils.isNull(user.getUser())) {
+            throw new CustomException(HttpStatus.ERROR, "无法获取用户信息");
+        }
+        return UserConstant.USER_IS_ADMIN.equals(user.getUser().getRole());
     }
+
+
+    /**
+     * 是否为管理员
+     *
+     * @return 结果
+     */
+    public static boolean isAdmin() {
+        Authentication auth = getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        return authorities.contains(new SimpleGrantedAuthority("ROLE_admin"));
+    }
+
 
     /**
      * 生成BCryptPasswordEncoder密码

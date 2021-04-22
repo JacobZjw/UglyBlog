@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 
 /**
  * 校验Token
+ *
  * @author JwZheng
  * @date 2021/4/19 19:43
  */
@@ -27,6 +28,7 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
         String msg = "认证失败，无法访问系统资源 ";
         AjaxResult error = AjaxResult.error(HttpStatus.UNAUTHORIZED, msg);
         response.setContentType("application/json; charset=UTF-8");
+        response.setStatus(HttpStatus.UNAUTHORIZED);
 
         PrintWriter writer = response.getWriter();
         writer.write(JSON.toJSONString(error));

@@ -93,6 +93,9 @@
                 success: function (res) {
                     localStorage.setItem("Authorization",res.Authorization);
                     layer.msg(res.msg);
+                    if (res.code === 200){
+                        window.location.href = "/sys";
+                    }
                 },
                 error: function (res) {
                     layer.msg(res.msg);

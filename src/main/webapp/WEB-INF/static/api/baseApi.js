@@ -1,4 +1,7 @@
 const baseUrl = "http://localhost:8080/";
+const initUrl = baseUrl + "api/system/init";
+const clearUrl = baseUrl + "api/system/clear";
+
 
 const categoryListUrl = baseUrl + "api/system/category/list";
 const categoryUpdateUrl = baseUrl + 'api/system/category/update';

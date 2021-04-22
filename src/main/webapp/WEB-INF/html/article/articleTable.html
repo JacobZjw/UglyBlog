@@ -78,6 +78,11 @@
 </script>
 
 <script>
+
+    $.ajaxSetup({
+        header:{Authorization:localStorage.getItem("Authorization")}
+    });
+
     layui.use(['form', 'table', 'miniTab', 'laypage', 'laytpl'], function () {
         const $ = layui.jquery,
             form = layui.form,
@@ -93,9 +98,6 @@
                     url: articleShowUrl + '/' + obj.value + '/switch',
                     dataType: 'json',
                     method: 'PUT',
-                    beforeSend: function (request) {
-                        request.setRequestHeader("Authorization", localStorage.getItem("Authorization"));
-                    },
                     success: function (result) {
                         layer.msg(result.msg);
                         table.reload('articleTable');
@@ -116,7 +118,7 @@
                 pageName: 'pageIndex',//页码
                 limitName: 'pageSize'//每页大小
             },
-            where: {
+            headers: {
                 "Authorization": localStorage.getItem("Authorization")
             },
             response: {

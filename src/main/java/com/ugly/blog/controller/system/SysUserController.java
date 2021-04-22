@@ -76,11 +76,6 @@ public class SysUserController extends BaseController {
     @RolesAllowed("admin")
     public AjaxResult update(@RequestBody User user) {
         userService.checkUserAllow(user.getUserId());
-        if (StringUtils.isNotBlank(user.getUsername()) && UserConstant.NOT_UNIQUE.equals(userService.checkUsernameUnique(user.getUsername()))) {
-            return AjaxResult.error("修改用户'" + user.getUsername() + "'失败，用户名已存在");
-        } else if (StringUtils.isNotBlank(user.getEmail()) && UserConstant.NOT_UNIQUE.equals(userService.checkEmailUnique(user.getEmail()))) {
-            return AjaxResult.error("修改用户'" + user.getUsername() + "'失败，邮箱已存在");
-        }
         if (StringUtils.isNotBlank(user.getPassword())) {
             user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         }

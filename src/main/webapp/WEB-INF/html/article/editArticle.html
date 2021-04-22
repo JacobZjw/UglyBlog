@@ -144,6 +144,11 @@
 <script src="/lib/editor.md-v1.5.0/editormd.min.js"></script>
 
 <script type="text/javascript">
+
+    $.ajaxSetup({
+        header:{Authorization:localStorage.getItem("Authorization")}
+    });
+
     const index = parent.layer.getFrameIndex(window.name); //获取窗口索引
     $(window).bind('beforeunload', function () {
         return '注意：您的数据可能没有保存';
