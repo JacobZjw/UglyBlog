@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 认证失败处理
+ * 认证失败处理，解决认证过的用户访问需要权限才能访问的资源时出现的异常
  *
  * @author JwZheng
  * @date 2021/4/25 15:33

@@ -1,7 +1,6 @@
 package com.ugly.blog.config;
 
 import com.ugly.blog.constant.Constants;
-import com.ugly.blog.filter.TokenFilter;
 import com.ugly.blog.filter.VerifyCodeFilter;
 import com.ugly.blog.handler.MyAuthenticationFailureHandler;
 import com.ugly.blog.handler.MyAuthenticationSuccessHandler;
@@ -24,6 +23,9 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+
+import javax.sql.DataSource;
 
 /**
  * @author JwZheng
@@ -35,12 +37,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final TokenFilter tokenFilter;
+    private final VerifyCodeFilter verifyCodeFilter;
+    private final DataSource dataSource;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, TokenFilter tokenFilter) {
+    public SecurityConfig(UserDetailsService userDetailsService, VerifyCodeFilter verifyCodeFilter, DataSource dataSource) {
         this.userDetailsService = userDetailsService;
-        this.tokenFilter = tokenFilter;
+        this.verifyCodeFilter = verifyCodeFilter;
+        this.dataSource = dataSource;
     }
 
     @Bean
@@ -65,6 +69,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
         hierarchy.setHierarchy("ROLE_admin > ROLE_user");
         return hierarchy;
+    }
+
+    @Bean
+    public JdbcTokenRepositoryImpl jdbcTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        return tokenRepository;
     }
 
     @Bean
@@ -94,15 +105,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-                addFilterBefore(new VerifyCodeFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
-
         http
                 .headers().frameOptions().sameOrigin()
                 .and()
-                .csrf().disable()
+                .csrf().disable();
+
+        http.
+                addFilterBefore(verifyCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+
+        http
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/api/system/**").authenticated()
@@ -117,6 +129,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutUrl("/logout")
                 .logoutSuccessUrl("/").permitAll()
                 .and()
-                .rememberMe();
+                .rememberMe()
+                .tokenRepository(jdbcTokenRepository());
     }
 }

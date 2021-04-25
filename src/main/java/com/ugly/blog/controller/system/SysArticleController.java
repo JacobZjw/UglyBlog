@@ -6,6 +6,7 @@ import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.User;
 import com.ugly.blog.dto.AjaxResult;
 import com.ugly.blog.service.ArticleService;
+import com.ugly.blog.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class SysArticleController extends BaseController {
                                               @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
                                               Article article,
                                               User user) {
-        if (article != null) {
+        if (Utils.isNotNull(article)) {
             article.setUser(user);
         }
         startPage(pageIndex, pageSize);

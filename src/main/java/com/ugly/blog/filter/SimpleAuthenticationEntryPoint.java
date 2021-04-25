@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 未认证处理，返回JSON给前端
+ * 未认证处理，解决匿名用户访问需要权限的资源时的异常，返回JSON给前端，暂时使用默认重定向到登录页
  *
  * @author JwZheng
  * @date 2021/4/19 19:43
  */
 public class SimpleAuthenticationEntryPoint implements AuthenticationEntryPoint {
     /**
-     * 当用户尝试访问需要权限才能的REST资源而不提供Token或者Token错误或者过期时，
+     * 当用户尝试访问需要权限才能访问的REST资源而不提供Token或者Token错误或者过期时，
      * 将调用此方法发送401响应以及错误信息
      */
     @Override

@@ -5,6 +5,7 @@ import com.ugly.blog.constant.Constants;
 import com.ugly.blog.constant.HttpStatus;
 import com.ugly.blog.dto.AjaxResult;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -22,6 +23,7 @@ import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
  * @author JwZheng
  * @date 2021/4/25 21:23
  */
+@Component
 public class VerifyCodeFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

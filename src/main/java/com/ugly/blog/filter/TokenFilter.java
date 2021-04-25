@@ -31,7 +31,9 @@ public class TokenFilter extends OncePerRequestFilter {
         String token = TokenUtils.getToken(request);
         if (Utils.isNotNull(token) && Utils.isNull(SecurityUtils.getAuthentication())) {
             UsernamePasswordAuthenticationToken authenticationToken = TokenUtils.getAuthentication(token);
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            if(Utils.isNotNull(authenticationToken)){
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            }
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
         chain.doFilter(request, response);

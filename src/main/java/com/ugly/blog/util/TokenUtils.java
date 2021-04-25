@@ -90,8 +90,11 @@ public class TokenUtils {
 
     public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
         Claims claims = parseToken(token);
-        List<SimpleGrantedAuthority> authorities = getAuthorities(claims);
         String userName = claims.getSubject();
+        if (StringUtils.isEmpty(userName)) {
+            return null;
+        }
+        List<SimpleGrantedAuthority> authorities = getAuthorities(claims);
         return new UsernamePasswordAuthenticationToken(userName, token, authorities);
     }
 

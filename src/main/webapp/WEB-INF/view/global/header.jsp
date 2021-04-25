@@ -27,13 +27,8 @@
                 </li>
                 <li class="layui-nav-item">
                     <a href="<c:url value="/sys"/>">后台管理</a>
-<%--                    <dl class="layui-nav-child">--%>
-<%--                        <dd><a href="/login">登录</a></dd>--%>
-<%--                        <dd><a href="/register">注册</a></dd>--%>
-<%--                    </dl>--%>
                 </li>
             </ul>
         </div>
     </div>
 </header>
-
