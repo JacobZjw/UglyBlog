@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 校验Token
+ * 未认证处理，返回JSON给前端
  *
  * @author JwZheng
  * @date 2021/4/19 19:43
  */
-public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class SimpleAuthenticationEntryPoint implements AuthenticationEntryPoint {
     /**
      * 当用户尝试访问需要权限才能的REST资源而不提供Token或者Token错误或者过期时，
      * 将调用此方法发送401响应以及错误信息

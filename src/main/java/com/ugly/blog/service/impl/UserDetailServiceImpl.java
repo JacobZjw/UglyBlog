@@ -21,8 +21,8 @@ import java.util.List;
  * @author JwZheng
  * @date 2021/4/17 14:03
  */
-@Service
 @Slf4j
+@Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
     private final UserService userService;

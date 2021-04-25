@@ -46,8 +46,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">记住我</label>
                 <div class="layui-input-inline" style="margin-right: 1px; width: 20px;">
-                    <input type="hidden" name="rememberMe" value="false">
-                    <input type="checkbox" name="rememberMe" lay-skin="switch" value="true"/>
+                    <input type="hidden" name="remember-me" value="false">
+                    <input type="checkbox" name="remember-me" lay-skin="switch" value="true"/>
                 </div>
             </div>
             <div class="layui-inline">
@@ -79,6 +79,7 @@
         $(this).attr('src', '/captcha.jpg?' + Math.floor(Math.random() * 100));
     });
 
+
     layui.use('form', function () {
         const form = layui.form;
         //监听提交
@@ -87,19 +88,18 @@
                 async: false, //同步，待请求完毕后再执行后面的代码
                 type: "POST",
                 url: '/loginVerify',
-                contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify(data.field),
-                success: function (res) {
-                    localStorage.setItem("Authorization",res.Authorization);
-                    layer.msg(res.msg);
-                    if (res.code === 200){
-                        window.location.href = "/sys";
+                data: data.field,
+                complete: function (XMLHttpRequest, status) {
+                    let json = XMLHttpRequest.responseJSON;
+                    if (json.code !== 200) {
+                        layer.msg(json.msg);
+                        window.location.reload();
+                        return false;
                     }
+                    localStorage.setItem("Authorization",json.Authorization);
+                    window.location.href = "/sys";
                 },
-                error: function (res) {
-                    layer.msg(res.msg);
-                }
             });
             return false;
         });

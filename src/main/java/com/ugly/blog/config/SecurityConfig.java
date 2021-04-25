@@ -1,12 +1,11 @@
 package com.ugly.blog.config;
 
-import com.alibaba.fastjson.JSON;
 import com.ugly.blog.constant.Constants;
-import com.ugly.blog.dto.AjaxResult;
-import com.ugly.blog.filter.JWTAuthenticationEntryPoint;
-import com.ugly.blog.filter.JWTAuthorizationFilter;
-import com.ugly.blog.filter.LoginFilter;
-import com.ugly.blog.handler.JWTAccessDeniedHandler;
+import com.ugly.blog.filter.TokenFilter;
+import com.ugly.blog.filter.VerifyCodeFilter;
+import com.ugly.blog.handler.MyAuthenticationFailureHandler;
+import com.ugly.blog.handler.MyAuthenticationSuccessHandler;
+import com.ugly.blog.handler.SimpleAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +20,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.io.PrintWriter;
 
 /**
  * @author JwZheng
@@ -35,12 +35,13 @@ import java.io.PrintWriter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
+    private final TokenFilter tokenFilter;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService, TokenFilter tokenFilter) {
         this.userDetailsService = userDetailsService;
+        this.tokenFilter = tokenFilter;
     }
-
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -52,14 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public UsernamePasswordAuthenticationFilter loginFilter() throws Exception {
-        LoginFilter filter = new LoginFilter();
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setFilterProcessesUrl(Constants.LOGIN_URL);
-        return filter;
     }
 
     /**
@@ -74,6 +67,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return hierarchy;
     }
 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new SimpleAccessDeniedHandler();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new MyAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new MyAuthenticationFailureHandler();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -87,40 +94,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.headers()
-                .frameOptions()
-                .sameOrigin()
+        http.
+                addFilterBefore(new VerifyCodeFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+
+        http
+                .headers().frameOptions().sameOrigin()
                 .and()
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                // 指定路径下的资源需要验证了的用户才能访问
                 .antMatchers("/api/system/**").authenticated()
-                // 其他都放行了
-                .anyRequest().permitAll()
+                .antMatchers("/sys/**").authenticated()
+                .anyRequest().permitAll();
+
+        http
+                .formLogin().loginPage("/login").loginProcessingUrl(Constants.LOGIN_PROCESSING_URL).permitAll()
+                .successHandler(authenticationSuccessHandler())
+                .failureHandler(authenticationFailureHandler())
                 .and()
-                //添加自定义LoginFilter
-                .addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-                // 授权异常处理
-                .exceptionHandling().authenticationEntryPoint(new JWTAuthenticationEntryPoint())
-                .accessDeniedHandler(new JWTAccessDeniedHandler())
+                .logout().logoutUrl("/logout")
+                .logoutSuccessUrl("/").permitAll()
                 .and()
-                // 登陆处理路径
-                .formLogin().loginPage("/login")
-                .loginProcessingUrl("/loginVerify").permitAll()
-                .and()
-                //注销登录
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessHandler((req, resp, authentication) -> {
-                    resp.setContentType("application/json;charset=utf-8");
-                    PrintWriter out = resp.getWriter();
-                    out.write(JSON.toJSONString(AjaxResult.success("注销成功")));
-                    out.flush();
-                    out.close();
-                }).logoutSuccessUrl("/").permitAll()
-                .and()
-                // 关闭csrf
-                .csrf().disable();
+                .rememberMe();
     }
 }

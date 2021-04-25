@@ -24,7 +24,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class JWTAuthorizationFilter extends OncePerRequestFilter {
+public class TokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {

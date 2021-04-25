@@ -27,5 +27,5 @@ public class Constants {
     public static final String TOKEN_TYPE = "JWT";
 
 
-    public static final String LOGIN_URL = "/loginVerify";
+    public static final String LOGIN_PROCESSING_URL = "/loginVerify";
 }

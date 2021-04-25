@@ -31,7 +31,8 @@ public class TokenUtils {
 
     public static String createToken(LoginUser loginUser) {
 
-        long expiration = loginUser.getIsRememberMe() ? Constants.EXPIRATION_REMEMBER : Constants.EXPIRATION;
+//        long expiration = loginUser.getIsRememberMe() ? Constants.EXPIRATION_REMEMBER : Constants.EXPIRATION;
+        long expiration = Constants.EXPIRATION;
 
         String token = Jwts.builder().setHeaderParam("type", Constants.TOKEN_TYPE)
                 .claim(Constants.ROLE_CLAIMS, String.join(",", getRoles(loginUser.getAuthorities())))

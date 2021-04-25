@@ -70,7 +70,7 @@
                             <hr>
                         </dd>
                         <dd>
-                            <a class="login-out" href="javascript:">退出登录</a>
+                            <a class="login-out" href="/logout">退出登录</a>
                         </dd>
                     </dl>
                 </li>
@@ -161,23 +161,6 @@
         }
 
         miniAdmin.render(options);
-
-
-        // 百度统计代码，只统计指定域名
-        miniTongji.render({
-            specific: true,
-            domains: [
-                '99php.cn',
-                'layuimini.99php.cn',
-                'layuimini-onepage.99php.cn',
-            ],
-        });
-
-        $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
-                window.location = 'page/login-3.html';
-            });
-        });
     });
 </script>
 </body>
