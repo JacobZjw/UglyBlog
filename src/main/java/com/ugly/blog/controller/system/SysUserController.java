@@ -1,10 +1,12 @@
 package com.ugly.blog.controller.system;
 
+import com.ugly.blog.annotation.CheckAuthority;
 import com.ugly.blog.constant.PageConstant;
 import com.ugly.blog.constant.UserConstant;
 import com.ugly.blog.controller.BaseController;
 import com.ugly.blog.domain.User;
 import com.ugly.blog.dto.AjaxResult;
+import com.ugly.blog.enums.CheckType;
 import com.ugly.blog.service.UserService;
 import com.ugly.blog.util.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,23 +45,26 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    @RolesAllowed("admin")
+    @RolesAllowed("user")
+    @CheckAuthority(type = CheckType.USER)
     public AjaxResult getDetails(@PathVariable("userId") Integer userId) {
+        if (userId == 0) {
+            userId = SecurityUtils.getCurUserId();
+        }
         return toAjax(userService.getDetails(userId));
     }
 
     @RequestMapping(value = "/delete/{userId}", method = RequestMethod.PUT)
     @ResponseBody
     @RolesAllowed("admin")
+    @CheckAuthority(type = CheckType.USER)
     public AjaxResult delete(@PathVariable("userId") Integer userId) {
-        userService.checkUserAllow(userId);
         return toAjax(userService.delete(userId));
     }
 
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
-    @RolesAllowed("admin")
     public AjaxResult insert(@RequestBody User user) {
         if (StringUtils.isNotBlank(user.getUsername()) && UserConstant.NOT_UNIQUE.equals(userService.checkUsernameUnique(user.getUsername()))) {
             return AjaxResult.error("新增用户'" + user.getUsername() + "'失败，用户名已存在");
@@ -73,9 +78,9 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    @RolesAllowed("admin")
+    @RolesAllowed("user")
+    @CheckAuthority(type = CheckType.USER)
     public AjaxResult update(@RequestBody User user) {
-        userService.checkUserAllow(user.getUserId());
         if (StringUtils.isNotBlank(user.getPassword())) {
             user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         }
@@ -85,16 +90,16 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "/role/{userId}/switch", method = RequestMethod.PUT)
     @ResponseBody
     @RolesAllowed("admin")
+    @CheckAuthority(type = CheckType.USER)
     public AjaxResult switchRole(@PathVariable("userId") Integer userId) {
-        userService.checkUserAllow(userId);
         return toAjax(userService.switchRole(userId));
     }
 
     @RequestMapping(value = "/status/{userId}/switch", method = RequestMethod.PUT)
     @ResponseBody
     @RolesAllowed("admin")
+    @CheckAuthority(type = CheckType.USER)
     public AjaxResult switchStatus(@PathVariable("userId") Integer userId) {
-        userService.checkUserAllow(userId);
         return toAjax(userService.switchStatus(userId));
     }
 

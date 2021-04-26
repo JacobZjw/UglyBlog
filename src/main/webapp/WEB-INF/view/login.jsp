@@ -94,7 +94,6 @@
                     let json = XMLHttpRequest.responseJSON;
                     if (json.code !== 200) {
                         layer.msg(json.msg);
-                        window.location.reload();
                         return false;
                     }
                     localStorage.setItem("Authorization",json.Authorization);

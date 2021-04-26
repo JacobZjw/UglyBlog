@@ -143,11 +143,11 @@
             <if test="title != null and title != '' ">
                 OR a.title LIKE concat('%',#{title},'%')
             </if>
-            <if test="authorId != null and authorId != '' ">
-                OR a.user_id = #{authorId}
-            </if>
             <if test="user != null and user.username != null and user.username != '' ">
                 OR u.use_name LIKE concat('%',#{user.username},'%')
+            </if>
+            <if test="authorId != null and authorId != '' ">
+                AND a.user_id = #{authorId}
             </if>
         </where>
     </select>
@@ -156,6 +156,12 @@
         SELECT COUNT(article_id)
         FROM article
         WHERE user_id = #{userId}
+    </select>
+
+    <select id="getAuthorId" resultType="java.lang.Integer">
+        SELECT user_id
+        FROM article
+        WHERE article_id = #{articleId};
     </select>
 
 

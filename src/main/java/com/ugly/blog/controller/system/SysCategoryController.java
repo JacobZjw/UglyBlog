@@ -20,12 +20,17 @@ import java.util.List;
 @RequestMapping("api/system/category")
 public class SysCategoryController extends BaseController {
 
+
+    private final CategoryService categoryService;
+
     @Autowired
-    private CategoryService categoryService;
+    public SysCategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    @RolesAllowed("user")
+    @RolesAllowed("admin")
     public AjaxResult getList(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
                               @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
                               String categoryName) {
@@ -36,7 +41,7 @@ public class SysCategoryController extends BaseController {
 
     @RequestMapping(value = "/list/all", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    @RolesAllowed("user")
+    @RolesAllowed("admin")
     public AjaxResult getList() {
         List<Category> list = categoryService.getCategoryList(null);
         return getDataTable(list);
@@ -44,14 +49,14 @@ public class SysCategoryController extends BaseController {
 
     @RequestMapping(value = "/delete/{categoryId}", method = RequestMethod.PUT, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    @RolesAllowed("user")
+    @RolesAllowed("admin")
     public AjaxResult delete(@PathVariable("categoryId") Integer categoryId) {
         return toAjax(categoryService.deleteCategoryById(categoryId));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    @RolesAllowed("user")
+    @RolesAllowed("admin")
     public AjaxResult update(@RequestBody Category category) {
         return toAjax(categoryService.updateOrInsertCategory(category));
     }

@@ -1,11 +1,14 @@
 package com.ugly.blog.controller.system;
 
+import com.ugly.blog.annotation.CheckAuthority;
 import com.ugly.blog.constant.PageConstant;
 import com.ugly.blog.controller.BaseController;
 import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.User;
 import com.ugly.blog.dto.AjaxResult;
+import com.ugly.blog.enums.CheckType;
 import com.ugly.blog.service.ArticleService;
+import com.ugly.blog.util.SecurityUtils;
 import com.ugly.blog.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,9 +39,13 @@ public class SysArticleController extends BaseController {
                                               @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
                                               Article article,
                                               User user) {
-        if (Utils.isNotNull(article)) {
-            article.setUser(user);
+        if (Utils.isNull(article)) {
+            article = new Article();
         }
+        if (!SecurityUtils.isAdmin()) {
+            article.setAuthorId(SecurityUtils.getCurUserId());
+        }
+        article.setUser(user);
         startPage(pageIndex, pageSize);
         List<Article> list = articleService.getListByCondition(article);
         return getDataTable(list);
@@ -48,6 +55,7 @@ public class SysArticleController extends BaseController {
     @RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
     @ResponseBody
     @RolesAllowed("user")
+    @CheckAuthority(type = CheckType.ARTICLE)
     public AjaxResult getDetails(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.getFullInfoById(articleId));
     }
@@ -55,6 +63,7 @@ public class SysArticleController extends BaseController {
     @RequestMapping(value = "/delete/{articleId}", method = RequestMethod.PUT)
     @ResponseBody
     @RolesAllowed("user")
+    @CheckAuthority(type = CheckType.ARTICLE)
     public AjaxResult delete(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.delete(articleId));
     }
@@ -62,6 +71,7 @@ public class SysArticleController extends BaseController {
     @RequestMapping(value = "/show/{articleId}/switch", method = RequestMethod.PUT)
     @ResponseBody
     @RolesAllowed("user")
+    @CheckAuthority(type = CheckType.ARTICLE)
     public AjaxResult switchShowStatus(@PathVariable("articleId") Integer articleId) {
         return toAjax(articleService.switchShowStatus(articleId));
     }
@@ -77,7 +87,7 @@ public class SysArticleController extends BaseController {
     @ResponseBody
     @RolesAllowed("user")
     public AjaxResult update(@RequestBody Article article) {
-        System.out.println(article);
+        articleService.checkAuthority(article.getArticleId());
         return toAjax(articleService.update(article));
     }
 

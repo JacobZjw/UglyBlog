@@ -1,6 +1,7 @@
 package com.ugly.blog.config;
 
 
+import cn.hutool.extra.spring.EnableSpringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 @Component
 @ComponentScan(basePackages = "com.ugly.blog", excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Controller.class))
 @PropertySource(value = {"classpath:application.properties"}, ignoreResourceNotFound = false)
+@EnableSpringUtil
 public class AppConfig {
 
 

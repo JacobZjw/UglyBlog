@@ -55,16 +55,16 @@
                     <a data-check-screen="full" href="javascript:"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:">admin</a>
+                    <a href="javascript:" id="nickname">admin</a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a data-icon="fa fa-gears" data-title="基本资料" href="javascript:"
-                               layuimini-content-href="page/user/editUser.html">基本资料<span
+                               layuimini-content-href="html/user/editUser.html">基本资料<span
                                     class="layui-badge-dot"></span></a>
                         </dd>
                         <dd>
                             <a data-icon="fa fa-gears" data-title="修改密码" href="javascript:"
-                               layuimini-content-href="page/user/editUser.html">修改密码</a>
+                               layuimini-content-href="html/user/editUser.html">修改密码</a>
                         </dd>
                         <dd>
                             <hr>
@@ -131,8 +131,10 @@
 <script charset="utf-8" src="/js/lay-config.js?v=2.0.0"></script>
 
 <script>
-    $.ajaxSetup({
-        header: {Authorization: localStorage.getItem("Authorization")}
+    $(function () {
+        $.getJSON(nicknameUrl, function (data) {
+            $("#nickname").text(data.nickname);
+        });
     });
 
     const token = localStorage.getItem("Authorization");
@@ -140,8 +142,7 @@
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji', 'jquery'], function () {
         const $ = layui.$,
             layer = layui.layer,
-            miniAdmin = layui.miniAdmin,
-            miniTongji = layui.miniTongji;
+            miniAdmin = layui.miniAdmin;
 
         const options = {
             iniUrl: initUrl,    // 初始化接口

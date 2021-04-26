@@ -6,7 +6,10 @@ import com.ugly.blog.domain.User;
 import com.ugly.blog.exception.CustomException;
 import com.ugly.blog.mapper.UserMapper;
 import com.ugly.blog.service.UserService;
+import com.ugly.blog.util.SecurityUtils;
+import com.ugly.blog.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,9 +61,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void checkUserAllow(Integer userId) {
-        if (userId != null && userId == 1) {
+    public void checkAuthority(Integer userId) {
+        if (Utils.isNull(userId)) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "参数异常");
+        }
+        if (userId.equals(1)) {
             throw new CustomException(HttpStatus.FORBIDDEN, "不允许操作超级管理员账户");
+        }
+        if (!userId.equals(SecurityUtils.getCurUserId()) && !SecurityUtils.isAdmin()) {
+            throw new AccessDeniedException("没有权限");
         }
     }
 
@@ -90,11 +99,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return 0;
         }
-        if (user.getRole() == 0) {
-            user.setRole(1);
-        } else {
-            user.setRole(0);
-        }
+        user.setRole(1 - user.getRole());
         return userMapper.update(user);
     }
 
@@ -104,11 +109,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return 0;
         }
-        if (user.getStatus() == 0) {
-            user.setStatus(1);
-        } else {
-            user.setStatus(0);
-        }
+        user.setStatus(1 - user.getStatus());
         return userMapper.update(user);
     }
 }

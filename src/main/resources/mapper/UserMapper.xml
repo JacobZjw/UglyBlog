@@ -30,7 +30,7 @@
         <if test="email != null and email != '' ">`email`,</if>
         <if test="avatar != null and avatar != '' ">`avatar`,</if>
         <if test="lastLoginIp != null and lastLoginIp != '' ">`last_login_ip`,</if>
-        <if test="lastLoginTime != null and lastLoginTime != '' ">`last_login_time`,</if>
+        <if test="lastLoginTime != null">`last_login_time`,</if>
         <if test="status != null ">`status`,</if>
         <if test="role != null ">`role`</if>
         )
@@ -41,7 +41,7 @@
         <if test="email != null and email != '' ">#{email},</if>
         <if test="avatar != null and avatar != '' ">#{avatar},</if>
         <if test="lastLoginIp != null and lastLoginIp != '' ">#{lastLoginIp},</if>
-        <if test="lastLoginTime != null and lastLoginTime != '' ">#{lastLoginTime},</if>
+        <if test="lastLoginTime != null">#{lastLoginTime},</if>
         <if test="status != null ">#{status},</if>
         <if test="role != null ">#{role}</if>
         )
@@ -65,7 +65,7 @@
             <if test="avatar != null and avatar != ''">,`avatar` = #{avatar,jdbcType=VARCHAR}</if>
             <if test="lastLoginIp != null and lastLoginIp != ''">,`last_login_ip` = #{lastLoginIp,jdbcType=VARCHAR}
             </if>
-            <if test="lastLoginTime != null and lastLoginTime != ''">,`last_login_time` =
+            <if test="lastLoginTime != null">,`last_login_time` =
                 #{lastLoginTime,jdbcType=TIMESTAMP}
             </if>
             <if test="status != null">,`status` = #{status,jdbcType=TINYINT}</if>

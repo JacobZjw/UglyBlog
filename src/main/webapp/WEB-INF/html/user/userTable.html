@@ -53,6 +53,7 @@
             </div>
         </script>
 
+
         <table class="layui-hide" id="userTable" lay-filter="userTableFilter"></table>
 
         <script id="tableBar" type="text/html">
@@ -71,12 +72,12 @@
 
 
 <script id="status" type="text/html">
-    <input type="checkbox" name="status" value="{{d.status}}" lay-skin="switch" lay-text="是|否"
-           lay-filter="roleSwitch" {{ d.status== 0 ? 'checked' : '' }}>
+    <input type="checkbox" name="status" value="{{d.status}}" lay-skin="switch" lay-text="是|否" userId="{{ d.userId }}"
+           lay-filter="statusSwitch" {{ d.status== 0 ? 'checked' : '' }}>
 </script>
 
 <script id="roleSwitch" type="text/html">
-    <input type="checkbox" name="role" value="{{d.role}}" lay-skin="switch" lay-text="是|否"
+    <input type="checkbox" name="role" value="{{d.role}}" lay-skin="switch" lay-text="是|否" userId="{{ d.userId }}"
            lay-filter="roleSwitch" {{ d.role== 0 ? 'checked' : '' }}>
 </script>
 
@@ -174,6 +175,46 @@
                     layer.close(index);
                 });
             }
+        });
+
+        form.on('switch(roleSwitch)', function (obj) {
+            const info = obj.elem.checked ? '设为管理员？' : '设为普通用户？';
+            const userId = $(this).attr("userId")
+            layer.confirm(info, function (index) {
+                $.ajax({
+                    url: userSwitchRoleUrl + '/' + userId + '/switch',
+                    dataType: 'json',
+                    method: 'PUT',
+                    success: function (result) {
+                        layer.msg(result.msg);
+                        table.reload('userTable');
+                    },
+                    error: function (result) {
+                        layer.msg(result.msg);
+                    }
+                })
+                layer.close(index);
+            });
+        });
+
+        form.on('switch(statusSwitch)', function (obj) {
+            const info = obj.elem.checked ? '封禁用户？' : '解除封禁用户？';
+            const userId = $(this).attr("userId")
+            layer.confirm(info, function (index) {
+                $.ajax({
+                    url: userSwitchStatusUrl + '/' + userId + '/switch',
+                    dataType: 'json',
+                    method: 'PUT',
+                    success: function (result) {
+                        layer.msg(result.msg);
+                        table.reload('userTable');
+                    },
+                    error: function (result) {
+                        layer.msg(result.msg);
+                    }
+                })
+                layer.close(index);
+            });
         });
 
         table.on('tool(userTableFilter)', function (obj) {

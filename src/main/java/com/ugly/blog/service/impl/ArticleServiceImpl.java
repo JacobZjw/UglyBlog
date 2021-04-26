@@ -8,7 +8,9 @@ import com.ugly.blog.mapper.ArticleMapper;
 import com.ugly.blog.mapper.ArticleTagRefMapper;
 import com.ugly.blog.mapper.UserMapper;
 import com.ugly.blog.service.ArticleService;
+import com.ugly.blog.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -102,6 +104,18 @@ public class ArticleServiceImpl implements ArticleService {
             a.setTagList(atrMapper.getTagListByArticleId(a.getArticleId()));
         }
         return list;
+    }
+
+    @Override
+    public Integer getAuthorId(Integer articleId) {
+        return articleMapper.getAuthorId(articleId);
+    }
+
+    @Override
+    public void checkAuthority(Integer articleId) throws AccessDeniedException {
+        if (!getAuthorId(articleId).equals(SecurityUtils.getCurUserId()) && !SecurityUtils.isAdmin()) {
+            throw new AccessDeniedException("没有权限");
+        }
     }
 
     @Override

@@ -48,7 +48,7 @@
     <form class="layui-form layui-form-pane">
         <div class="layui-form-item">
             <div class="layui-input-inline">
-                <input id="userId" name="userId" type="hidden">
+                <input id="userId" name="userId" type="hidden" value="0">
                 <input id="userAvatar" name="avatar" type="hidden">
             </div>
         </div>
@@ -111,10 +111,8 @@
 <script src="/js/lay-config.js"></script>
 
 <script>
-    const index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-
     $(function () {
-        const userId = $("#userId").val();
+        let userId = $("#userId").val();
         $.ajax({
             url: userDetailUrl + "/" + userId,
             dataType: 'JSON',
@@ -129,10 +127,11 @@
             },
             error: function () {
                 layer.msg("获取数据失败", 2);
-                parent.layer.msg("获取数据失败", 2);
+                // parent.layer.msg("获取数据失败", 2);
             }
         });
     })
+
     layui.use(['form', 'upload'], function () {
         const form = layui.form,
             layer = layui.layer,
@@ -165,7 +164,10 @@
             }
         });
 
-        //监听提交
+        // if (parent!=null){
+        //     const index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        // }
+
         form.on('submit(saveBtn)', function (data) {
             if ($('input[name=password]').val() !== $('input[name=rePassword]').val()) {
                 layer.msg("两次输入密码不一致");
@@ -178,11 +180,11 @@
                 data: JSON.stringify(data.field),
                 contentType: 'application/json',
                 success: function (result) {
-                    parent.layer.close(index);
-                    parent.layer.msg(result.msg);
+                    // parent.layer.close(index);
+                    // parent.layer.msg(result.msg);
                 },
                 error: function (result) {
-                    parent.layer.msg(result.msg);
+                    // parent.layer.msg(result.msg);
                 }
             });
             return false;

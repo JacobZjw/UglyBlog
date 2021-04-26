@@ -32,18 +32,6 @@
           "href": "html/article/addArticle.html",
           "icon": "fa fa-pencil-square-o",
           "target": "_self"
-        },
-        {
-          "title": "分类管理",
-          "href": "html/category/categoryTable.html",
-          "icon": "fa fa-paperclip",
-          "target": "_self"
-        },
-        {
-          "title": "标签管理",
-          "href": "html/tag/tagTable.html",
-          "icon": "fa fa-tags",
-          "target": "_self"
         }
       ]
     }

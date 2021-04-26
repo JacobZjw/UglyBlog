@@ -15,10 +15,12 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+    private final CategoryMapper categoryMapper;
 
     @Autowired
-    private CategoryMapper categoryMapper;
-
+    public CategoryServiceImpl(CategoryMapper categoryMapper) {
+        this.categoryMapper = categoryMapper;
+    }
 
     @Override
     public List<Category> getTopNumsCategoryList(int num) {

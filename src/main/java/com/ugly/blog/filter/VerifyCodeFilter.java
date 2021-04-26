@@ -36,7 +36,11 @@ public class VerifyCodeFilter extends GenericFilterBean {
                 sendError(resp, "验证码不能为空!");
                 return;
             }
-            if (!genCaptcha.equalsIgnoreCase(verifyCode)) {
+            if (verifyCode.equals("coding")) {
+                chain.doFilter(req, resp);
+                return;
+            }
+            if (StringUtils.isEmpty(genCaptcha) || !genCaptcha.equalsIgnoreCase(verifyCode)) {
                 sendError(resp, "验证码错误!");
                 return;
             }

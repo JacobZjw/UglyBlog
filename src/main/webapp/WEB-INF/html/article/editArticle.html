@@ -145,10 +145,6 @@
 
 <script type="text/javascript">
 
-    $.ajaxSetup({
-        header:{Authorization:localStorage.getItem("Authorization")}
-    });
-
     const index = parent.layer.getFrameIndex(window.name); //获取窗口索引
     $(window).bind('beforeunload', function () {
         return '注意：您的数据可能没有保存';
@@ -200,7 +196,6 @@
                 imageUploadURL: "#", // 文件上传路径，返回值为图片加载的路径
                 //修改文章时加载
                 onload: function () {
-
                     $.ajax({
                         url: articleEditUrl + '/' + articleId,
                         dataType: 'json',
@@ -222,7 +217,7 @@
                         },
                         error: function (result) {
                             parent.layer.msg(result.msg);
-                            // parent.layer.close(index);
+                            parent.layer.close(index);
                             parent.layer.msg('获取文章失败');
                         }
                     })
@@ -244,8 +239,7 @@
                     data: JSON.stringify(jsonObj),
                     success: function (result) {
                         parent.layer.close(index);
-                        parent.layer.msg(result.msg + ',请手动刷新页面');
-                        parent.table.reload('articleTable');
+                        parent.layer.msg(result.msg);
                     },
                     error: function (result) {
                         parent.layer.msg(result.msg);

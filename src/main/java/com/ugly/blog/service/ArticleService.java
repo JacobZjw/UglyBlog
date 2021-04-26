@@ -1,6 +1,7 @@
 package com.ugly.blog.service;
 
 import com.ugly.blog.domain.Article;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 
@@ -88,6 +89,19 @@ public interface ArticleService {
      */
     List<Article> getListByCondition(Article article);
 
+    /**
+     * 根据文章ID获取作者ID
+     *
+     * @param articleId 文章ID
+     * @return 作者ID
+     */
+    Integer getAuthorId(Integer articleId);
+
+    /**
+     * 校验是否有权限操作
+     * @param articleId 文章ID
+     */
+    void checkAuthority(Integer articleId) throws AccessDeniedException;
 
     /**
      * 获取文章总数

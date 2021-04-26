@@ -53,11 +53,10 @@ public interface UserService {
     String checkEmailUnique(String email);
 
     /**
-     * 校验是否有权限操作超级管理员信息
-     *
+     * 校验是否有权限操作
      * @param userId 用户ID
      */
-    void checkUserAllow(Integer userId);
+    void checkAuthority(Integer userId);
 
     /**
      * 修改用户信息

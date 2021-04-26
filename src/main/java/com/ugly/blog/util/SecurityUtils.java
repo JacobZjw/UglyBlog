@@ -1,5 +1,6 @@
 package com.ugly.blog.util;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.ugly.blog.constant.HttpStatus;
 import com.ugly.blog.constant.UserConstant;
 import com.ugly.blog.dto.LoginUser;
@@ -8,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
@@ -16,8 +18,7 @@ import java.util.Collection;
  * @author JwZheng
  * @date 2021/4/14 16:28
  */
-public class SecurityUtils {
-
+public final class SecurityUtils {
 
     /**
      * 获取Authentication
@@ -39,7 +40,14 @@ public class SecurityUtils {
         return UserConstant.USER_IS_ADMIN.equals(user.getUser().getRole());
     }
 
+    public static LoginUser getCurUser(){
+        UserDetailsService userDetailsService = SpringUtil.getBean(UserDetailsService.class);
+        return (LoginUser) userDetailsService.loadUserByUsername(getAuthentication().getName());
+    }
 
+    public static Integer getCurUserId(){
+        return getCurUser().getId();
+    }
     /**
      * 是否为管理员
      *

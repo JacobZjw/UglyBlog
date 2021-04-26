@@ -131,4 +131,11 @@ public interface ArticleMapper {
      * @return 结果
      */
     int insert(Article article);
+
+    /**
+     * 根据文章ID获取作者ID
+     * @param articleId 文章ID
+     * @return
+     */
+    Integer getAuthorId(Integer articleId);
 }

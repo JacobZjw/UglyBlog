@@ -221,7 +221,7 @@
             if (obj.event === 'add') { // 监听添加操作
                 // 跳转到写文章窗口
                 miniTab.openNewTabByIframe({
-                    href: "page/article/addArticle.html",
+                    href: "html/article/addArticle.html",
                     title: "新建文章",
                 });
             } else if (obj.event === 'delete') { // 监听删除操作
@@ -266,6 +266,9 @@
                         body.contents().find("#title").val(data.articleId);
                         body.contents().find("#title2").val(data.authorId);
                     },
+                    end:function () {
+                        table.reload('articleTable');
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

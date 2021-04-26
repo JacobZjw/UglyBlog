@@ -20,12 +20,16 @@ import java.util.List;
 @RequestMapping("api/system/tag")
 public class SysTagController extends BaseController {
 
+    private final TagService tagService;
+
     @Autowired
-    private TagService tagService;
+    public SysTagController(TagService tagService) {
+        this.tagService = tagService;
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    @RolesAllowed("user")
+    @RolesAllowed("admin")
     public AjaxResult getList(@RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_INDEX) Integer pageIndex,
                               @RequestParam(required = false, defaultValue = PageConstant.DEFAULT_PAGE_SIZE) Integer pageSize,
                               String tagName) {
@@ -36,7 +40,7 @@ public class SysTagController extends BaseController {
 
     @RequestMapping(value = "/list/all", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    @RolesAllowed("user")
+    @RolesAllowed("admin")
     public AjaxResult getList() {
         List<Tag> list = tagService.getTagList(null);
         return getDataTable(list);
@@ -44,14 +48,14 @@ public class SysTagController extends BaseController {
 
     @RequestMapping(value = "/delete/{tagId}", method = RequestMethod.PUT, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    @RolesAllowed("user")
+    @RolesAllowed("admin")
     public AjaxResult delete(@PathVariable("tagId") Integer tagId) {
         return toAjax(tagService.deleteTagById(tagId));
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    @RolesAllowed("user")
+    @RolesAllowed("admin")
     public AjaxResult update(@RequestBody Tag tag) {
         return toAjax(tagService.updateOrInsertTag(tag));
     }

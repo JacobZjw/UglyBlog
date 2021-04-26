@@ -1,17 +1,11 @@
 package com.ugly.blog.controller.system;
 
-import com.ugly.blog.constant.Constants;
 import com.ugly.blog.controller.BaseController;
 import com.ugly.blog.dto.AjaxResult;
-import com.ugly.blog.dto.LoginBody;
-import com.ugly.blog.service.UserLoginService;
-import com.ugly.blog.service.UserService;
 import com.ugly.blog.util.JsonResourceUtils;
 import com.ugly.blog.util.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.security.RolesAllowed;
@@ -22,17 +16,6 @@ import javax.annotation.security.RolesAllowed;
  */
 @Controller
 public class SysIndexController extends BaseController {
-
-    private final UserService userService;
-
-    private final UserLoginService userLoginService;
-
-
-    @Autowired
-    public SysIndexController(UserService userService, UserLoginService userLoginService) {
-        this.userService = userService;
-        this.userLoginService = userLoginService;
-    }
 
     @RequestMapping("/login")
     public String login() {
@@ -49,6 +32,24 @@ public class SysIndexController extends BaseController {
         return "index";
     }
 
+    @RequestMapping("/api/system/nickname")
+    @ResponseBody
+    public AjaxResult getCurUsername(){
+        String nickname = SecurityUtils.getCurUser().getUser().getNickname();
+        AjaxResult success = AjaxResult.success();
+        success.put("nickname",nickname);
+        return success;
+    }
+
+
+    @RequestMapping("/api/system/id")
+    @ResponseBody
+    public AjaxResult getCurUserId(){
+        Integer id = SecurityUtils.getCurUser().getId();
+        AjaxResult success = AjaxResult.success();
+        success.put("userId",id);
+        return success;
+    }
 
     @RequestMapping("/api/system/init")
     @ResponseBody
@@ -65,15 +66,5 @@ public class SysIndexController extends BaseController {
     @ResponseBody
     public AjaxResult clear() {
         return AjaxResult.success();
-    }
-
-
-    @RequestMapping(value = "/loginVerify", method = RequestMethod.POST)
-    @ResponseBody
-    public AjaxResult loginVerify(LoginBody loginBody) {
-        AjaxResult ajax = AjaxResult.success();
-        String token = userLoginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode());
-        ajax.put(Constants.TOKEN_HEADER, token);
-        return ajax;
     }
 }
