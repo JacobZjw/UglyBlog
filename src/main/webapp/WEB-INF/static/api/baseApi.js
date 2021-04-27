@@ -1,9 +1,14 @@
 const baseUrl = "http://localhost:8080/";
 const initUrl = baseUrl + "api/system/init";
 const clearUrl = baseUrl + "api/system/clear";
-const nicknameUrl = baseUrl+"api/system/nickname";
-const userIdUrl = baseUrl+"api/system/id";
+const nicknameUrl = baseUrl + "api/system/nickname";
+const userIdUrl = baseUrl + "api/system/id";
 
+
+const noticeListUrl = baseUrl + "api/system/notice/list"
+const noticeSimpleListUrl = baseUrl + "api/system/notice/list/simple"
+const noticeDeleteUrl = baseUrl + "api/system/notice/delete";
+const noticeUpdateOrInsertUrl = baseUrl + "api/system/notice/updateOrInsert";
 
 const categoryListUrl = baseUrl + "api/system/category/list";
 const categoryUpdateUrl = baseUrl + 'api/system/category/update';

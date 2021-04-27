@@ -28,4 +28,7 @@ public class Constants {
 
 
     public static final String LOGIN_PROCESSING_URL = "/loginVerify";
+
+    public static final Integer NOTICE_IS_DEL = 1;
+    public static final Integer NOTICE_IS_NOT_DEL = 0;
 }

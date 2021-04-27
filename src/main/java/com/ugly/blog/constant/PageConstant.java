@@ -7,4 +7,6 @@ package com.ugly.blog.constant;
 public class PageConstant {
     public static final String DEFAULT_PAGE_INDEX = "1";
     public static final String DEFAULT_PAGE_SIZE = "10";
+
+    public static final Integer NOTICE_NUM = 10;
 }

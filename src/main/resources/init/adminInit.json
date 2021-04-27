@@ -74,15 +74,15 @@
           ]
         },
         {
-          "title": "网站监控",
+          "title": "网站管理",
           "href": "",
           "icon": "fa fa-gears",
           "target": "_self",
           "child": [
             {
-              "title": "在线用户",
-              "href": "html/onlineUser.html",
-              "icon": "fa fa-viacoin",
+              "title": "公告管理",
+              "href": "html/notice/noticeTable.html",
+              "icon": "fa fa-list-alt",
               "target": "_self"
             },
             {
