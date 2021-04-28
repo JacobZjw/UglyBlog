@@ -1,19 +1,32 @@
 $(function() {
 	$("body").delegate(".search-icon", "click", function() {
-		// $(".search-result").hide().empty();
-		$(".search-result").hide();
-
-		$("#search-word").val("");
-		/**使用AJAX向服务端查询**/
+		$(".search-result").empty();
+		let categoryName = $("#search-word").val();
+		if (categoryName !== null && categoryName !== '') {
+			$.ajax({
+				url: '/category/search',
+				dataType: 'JSON',
+				data: "categoryName=" + categoryName,
+				success: function (result) {
+					let $result = $('.search-result');
+					for (const category of result.data) {
+						let $tmp = $(`<li><a href=` + '/category/' + category.categoryId + `/>` + category.categoryName + `</a></li>`);
+						$result.append($tmp);
+					}
+				}
+			});
+		}
 	});
-	$('#search-word').focus(function() {
-		$(".search-result").css('display', 'block');
-	}).blur(function() {
-		$(".search-result").css('display', 'none');
+
+	$(".category-card-header").delegate("label","focus click",function () {
+		$(".search-result").css('visibility', 'visible');
+	})
+	$(".category-card-header").delegate("li","blur",function () {
+		$(".search-result").css('visibility', 'hidden');
 	});
 
 	$(window).scroll(function(event) {
-		var winPos = $(window).scrollTop();
+		let winPos = $(window).scrollTop();
 		if (winPos > 600) {
 			$('.side-bar').addClass('fixed');
 			$('.category-card').css('display', 'none');

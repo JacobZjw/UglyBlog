@@ -74,8 +74,9 @@
 	padding-left: 15px;
 	padding-bottom: 5px;
 	padding-right: 15px;
-	z-index: 3;
-	display: none;
+	z-index: 10;
+	/*display: none;*/
+	visibility:hidden;
 	background-color: #fff;
 	max-height: 280px;
 	overflow-y: auto;

@@ -111,6 +111,18 @@ public interface ArticleService {
     int getTotalCount();
 
     /**
+     * 获取总浏览量
+     * @return 总浏览量
+     */
+    int getTotalView();
+
+    /**
+     * 获取总评论数
+     * @return 总评论数
+     */
+    int getTotalComment();
+
+    /**
      * 获取下一篇文章的id和标题
      *
      * @param articleId 当前文章的ID

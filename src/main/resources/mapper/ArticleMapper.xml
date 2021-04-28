@@ -164,6 +164,17 @@
         WHERE article_id = #{articleId};
     </select>
 
+    <select id="getTotalView" resultType="java.lang.Integer">
+        SELECT SUM(click)
+        FROM article
+    </select>
+
+    <select id="getTotalComment" resultType="java.lang.Integer">
+        SELECT SUM(comment)
+        FROM article
+    </select>
+
+
 
     <insert id="insert" useGeneratedKeys="true" parameterType="com.ugly.blog.domain.Article"
             keyColumn="article_id" keyProperty="articleId">

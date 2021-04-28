@@ -16,11 +16,7 @@
                 <input type="text" id="search-word" placeholder="输入关键字搜索"/>
                 <span class="layui-icon layui-icon-search search-icon"></span>
             </label>
-            <ul class="search-result">
-                <li><a href="#">Javaaaaaaaaaaaa</a></li>
-                <li><a href="#">Javaaaaaaaaaaaaa</a></li>
-                <li><a href="#">Javaaaaaaaaaaaaaaaa</a></li>
-            </ul>
+            <ul class="search-result"></ul>
         </div>
 
         <div class="layui-card-body category-card-body">
@@ -56,6 +52,4 @@
             </ul>
         </div>
     </aside>
-
-
 </div>

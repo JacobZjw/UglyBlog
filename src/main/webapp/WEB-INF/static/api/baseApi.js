@@ -3,6 +3,7 @@ const initUrl = baseUrl + "api/system/init";
 const clearUrl = baseUrl + "api/system/clear";
 const nicknameUrl = baseUrl + "api/system/nickname";
 const userIdUrl = baseUrl + "api/system/id";
+const sysInfoUrl = baseUrl + "api/system/info";
 
 
 const noticeListUrl = baseUrl + "api/system/notice/list"

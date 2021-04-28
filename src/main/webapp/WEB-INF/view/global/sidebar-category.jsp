@@ -15,9 +15,6 @@
                 <span class="layui-icon layui-icon-search search-icon"></span>
             </label>
             <ul class="search-result">
-                <li><a href="#">Javaaaaaaaaaaaa</a></li>
-                <li><a href="#">Javaaaaaaaaaaaaa</a></li>
-                <li><a href="#">Javaaaaaaaaaaaaaaaa</a></li>
             </ul>
         </div>
 

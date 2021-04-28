@@ -92,6 +92,13 @@ public interface UserService {
 
 
     /**
+     * 获取用户总数
+     * @return 用户总数
+     */
+    int getUserCount();
+
+
+    /**
      * 切换角色
      *
      * @param userId 用户ID

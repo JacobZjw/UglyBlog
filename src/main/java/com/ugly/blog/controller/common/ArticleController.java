@@ -41,7 +41,6 @@ public class ArticleController {
     @RequestMapping(value = "/article/{articleId}", method = RequestMethod.GET)
     public String getArticle(@PathVariable("articleId") Integer articleId, Model model) {
         Article article = articleService.getFullInfoById(articleId);
-        //TODO:may by can use aop
         articleService.addViewCount(articleId);
         model.addAttribute("article", article);
 

@@ -142,4 +142,11 @@
     </select>
 
 
+    <select id="getTotalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user
+        WHERE is_del != 1
+    </select>
+
+
 </mapper>

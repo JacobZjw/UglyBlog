@@ -167,10 +167,10 @@
                                                 <div class="panel-body">
                                                     <div class="panel-title">
                                                         <span class="label pull-right layui-bg-blue">实时</span>
-                                                        <h5>用户统计</h5>
+                                                        <h5>全站用户总数</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
+                                                        <h1 class="no-margins" id="userCount">1234</h1>
                                                         <!-- <small>当前分类总记录数</small> -->
                                                     </div>
                                                 </div>
@@ -181,10 +181,10 @@
                                                 <div class="panel-body">
                                                     <div class="panel-title">
                                                         <span class="label pull-right layui-bg-cyan">实时</span>
-                                                        <h5>文章统计</h5>
+                                                        <h5>全站文章总数</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
+                                                        <h1 class="no-margins" id="articleCount">1234</h1>
                                                         <!-- <small>当前分类总记录数</small> -->
                                                     </div>
                                                 </div>
@@ -195,10 +195,10 @@
                                                 <div class="panel-body">
                                                     <div class="panel-title">
                                                         <span class="label pull-right layui-bg-orange">实时</span>
-                                                        <h5>浏览统计</h5>
+                                                        <h5>全站总浏览量</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
+                                                        <h1 class="no-margins" id="viewCount">1234</h1>
                                                         <!-- <small>当前分类总记录数</small> -->
                                                     </div>
                                                 </div>
@@ -209,10 +209,10 @@
                                                 <div class="panel-body">
                                                     <div class="panel-title">
                                                         <span class="label pull-right layui-bg-green">实时</span>
-                                                        <h5>评论数统计</h5>
+                                                        <h5>全站总评论数</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
+                                                        <h1 class="no-margins" id="commentCount">1234</h1>
                                                         <!-- <small>当前分类总记录数</small> -->
                                                     </div>
                                                 </div>
@@ -338,6 +338,16 @@
                     $noticeCard.append($div);
                 }
             });
+
+            $.getJSON(sysInfoUrl,function (result) {
+                if (result.code !== 200) {
+                    layer.msg("统计栏初始化失败")
+                }
+                $("#userCount").text(result.userCount);
+                $("#articleCount").text(result.articleCount);
+                $("#viewCount").text(result.viewCount);
+                $("#commentCount").text(result.commentCount);
+            })
         });
 
         /**

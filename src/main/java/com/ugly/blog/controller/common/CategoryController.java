@@ -1,5 +1,6 @@
 package com.ugly.blog.controller.common;
 
+import com.github.pagehelper.PageHelper;
 import com.ugly.blog.constant.PageConstant;
 import com.ugly.blog.domain.Article;
 import com.ugly.blog.domain.Category;
@@ -64,6 +65,14 @@ public class CategoryController {
     public AjaxResult getCategoryName(@PathVariable("categoryId") Integer categoryId) {
         Category category = categoryService.getCategoryById(categoryId);
         return category == null ? AjaxResult.error("Category Not Found") : AjaxResult.success("Success!", category.getCategoryName());
+    }
+
+    @RequestMapping(value = "category/search", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResult searchCategory(String categoryName) {
+        PageHelper.startPage(1, 5);
+        List<Category> list = categoryService.getCategoryList(categoryName);
+        return AjaxResult.success(list);
     }
 
 }

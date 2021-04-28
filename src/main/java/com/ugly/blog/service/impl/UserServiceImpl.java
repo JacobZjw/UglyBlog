@@ -94,6 +94,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int getUserCount() {
+        return userMapper.getTotalCount();
+    }
+
+    @Override
     public int switchRole(Integer userId) {
         User user = getDetails(userId);
         if (user == null) {

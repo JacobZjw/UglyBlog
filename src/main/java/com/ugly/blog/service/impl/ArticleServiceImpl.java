@@ -124,6 +124,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public int getTotalView() {
+        return articleMapper.getTotalView();
+    }
+
+    @Override
+    public int getTotalComment() {
+        return articleMapper.getTotalComment();
+    }
+
+    @Override
     public Article getNextArticle(Integer articleId) {
         return articleMapper.getNextArticle(articleId);
     }

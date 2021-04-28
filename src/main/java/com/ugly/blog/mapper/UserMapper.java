@@ -46,6 +46,12 @@ public interface UserMapper {
     int update(User user);
 
     /**
+     * 获取用户总数
+     * @return 用户总数
+     */
+    int getTotalCount();
+
+    /**
      * 根据ID查询用户信息
      *
      * @param userId 用户ID

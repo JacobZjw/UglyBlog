@@ -83,7 +83,7 @@
                             <a href="${fullPath}">${fullPath}</a>
                         </p>
                         <p class="f-toe fc-black">
-                            非特殊说明，本文版权归 <a href="#" style="color: #1E9FFF">${article.user.username}</a> 所有，转载请注明出处.
+                            非特殊说明，本文版权归 <a href="#" style="color: #1E9FFF">${article.user.nickname}</a> 所有，转载请注明出处.
                         </p>
                     </div>
 

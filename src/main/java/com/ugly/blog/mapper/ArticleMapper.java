@@ -55,6 +55,19 @@ public interface ArticleMapper {
     int getTotalCount();
 
     /**
+     * 获取总浏览量
+     * @return 总浏览量
+     */
+    int getTotalView();
+
+
+    /**
+     * 获取总评论数
+     * @return 总评论数
+     */
+    int getTotalComment();
+
+    /**
      * 通过用户ID查询文章总数
      *
      * @param userId 用户ID
