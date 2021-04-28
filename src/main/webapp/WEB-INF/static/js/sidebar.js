@@ -20,8 +20,7 @@ $(function() {
 
 	$(".category-card-header").delegate("label","focus click",function () {
 		$(".search-result").css('visibility', 'visible');
-	})
-	$(".category-card-header").delegate("li","blur",function () {
+	}).delegate("li","blur",function () {
 		$(".search-result").css('visibility', 'hidden');
 	});
 

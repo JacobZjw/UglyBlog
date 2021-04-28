@@ -10,12 +10,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>UglyBlog-Login</title>
+    <title>登录-UglyBlog</title>
     <link rel="stylesheet" href="/lib/layui-v2.6.4/css/layui.css" media="all">
     <link rel="stylesheet" type="text/css" href="/css/registerAndLogin.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="/css/global.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="/lib/font-awesome-v4.7.0/css/font-awesome.min.css"/>
-    <title>登录</title>
 </head>
 <body>
 <div class="header-logo">

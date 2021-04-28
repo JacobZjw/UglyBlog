@@ -12,14 +12,14 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>layui</title>
+    <title>分类-UglyBlog</title>
     <link rel="stylesheet" type="text/css" href="/lib/layui-v2.6.4/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="/lib/font-awesome-v4.7.0/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" type="text/css" href="/css/blog.css"/>
     <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
     <link rel="stylesheet" type="text/css" href="/css/header.css"/>
     <link rel="stylesheet" type="text/css" href="/css/sidebar.css"/>
     <link rel="stylesheet" type="text/css" href="/css/global.css"/>
-
 </head>
 
 <body>
@@ -50,9 +50,8 @@
 </div>
 
 <jsp:include page="global/footer.jsp"/>
-
+<script src="/lib/jQuery-v3.6.0/jquery-3.6.0.min.js"></script>
 <script src="/lib/layui-v2.6.4/layui.js" type="text/javascript" charset="UTF-8"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
 <script src="/js/sidebar.js" type="text/javascript"></script>
 <script>
     $(function () {

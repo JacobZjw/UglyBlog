@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/css/registerAndLogin.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="/css/global.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="/lib/font-awesome-v4.7.0/css/font-awesome.min.css" media="all"/>
-    <title>注册</title>
+    <title>注册-UglyBlog</title>
 </head>
 <body>
 <div class="header-logo">

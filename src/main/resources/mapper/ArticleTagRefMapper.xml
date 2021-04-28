@@ -53,7 +53,7 @@
 
     <select id="getArticleListByTagList" resultMap="com.ugly.blog.mapper.ArticleMapper.articleMap" parameterType="list">
         SELECT a.article_id,a.title,a.click,a.comment,a.create_time,
-        a.summary,a.user_id
+        a.summary,a.user_id,a.update_time
         FROM article_tags at
         INNER JOIN article a ON at.article_id = a.article_id
         WHERE tag_id IN
@@ -80,7 +80,8 @@
                a.create_time,
                a.summary,
                a.user_id,
-               a.is_original
+               a.is_original,
+               a.update_time
         FROM article_tags at
                  INNER JOIN article a ON at.article_id = a.article_id
         WHERE at.tag_id = #{tagId}

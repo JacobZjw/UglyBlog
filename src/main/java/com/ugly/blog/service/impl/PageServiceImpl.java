@@ -7,6 +7,7 @@ import com.ugly.blog.mapper.ArticleCategoryRefMapper;
 import com.ugly.blog.mapper.ArticleMapper;
 import com.ugly.blog.mapper.ArticleTagRefMapper;
 import com.ugly.blog.service.ArticleService;
+import com.ugly.blog.service.CategoryService;
 import com.ugly.blog.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,16 @@ public class PageServiceImpl implements PageService {
 
     private final ArticleService articleService;
 
+    private final CategoryService categoryService;
+
     private final ArticleTagRefMapper articleTagRefMapper;
     private final ArticleCategoryRefMapper articleCategoryRefMapper;
 
     @Autowired
-    public PageServiceImpl(ArticleMapper articleMapper, ArticleService articleService, ArticleTagRefMapper articleTagRefMapper, ArticleCategoryRefMapper articleCategoryRefMapper) {
+    public PageServiceImpl(ArticleMapper articleMapper, ArticleService articleService, CategoryService categoryService, ArticleTagRefMapper articleTagRefMapper, ArticleCategoryRefMapper articleCategoryRefMapper) {
         this.articleMapper = articleMapper;
         this.articleService = articleService;
+        this.categoryService = categoryService;
         this.articleTagRefMapper = articleTagRefMapper;
         this.articleCategoryRefMapper = articleCategoryRefMapper;
     }
@@ -68,7 +72,12 @@ public class PageServiceImpl implements PageService {
         int totalCount = articleTagRefMapper.getCountByTagId(tagId);
         Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
         int begin = (page.getPageNo() - 1) * pageSize;
-        page.setItems(articleTagRefMapper.getArticleListByTagId(begin, pageSize, tagId));
+        List<Article> list = articleTagRefMapper.getArticleListByTagId(begin, pageSize, tagId);
+        for (Article article : list) {
+            article.setTagList(articleTagRefMapper.getTagListByArticleId(article.getArticleId()));
+            article.setCategory(articleCategoryRefMapper.getCategoryByArticleId(article.getArticleId()));
+        }
+        page.setItems(list);
         return page;
     }
 
@@ -77,7 +86,12 @@ public class PageServiceImpl implements PageService {
         int totalCount = articleCategoryRefMapper.getCountByCategory(categoryId);
         Page<Article> page = addDataToPage(pageNo, pageSize, totalCount);
         int begin = (page.getPageNo() - 1) * pageSize;
-        page.setItems(articleCategoryRefMapper.getPageByCategory(begin, pageSize, categoryId));
+        List<Article> list = articleCategoryRefMapper.getPageByCategory(begin, pageSize, categoryId);
+        for (Article article : list) {
+            article.setTagList(articleTagRefMapper.getTagListByArticleId(article.getArticleId()));
+            article.setCategory(categoryService.getCategoryById(categoryId));
+        }
+        page.setItems(list);
         return page;
     }
 

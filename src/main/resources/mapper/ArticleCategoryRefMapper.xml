@@ -39,7 +39,8 @@
                a.create_time,
                a.summary,
                a.user_id,
-               a.is_original
+               a.is_original,
+               a.update_time
         FROM article_category ac
                  INNER JOIN article a ON ac.article_id = a.article_id
         WHERE ac.category_id = #{categoryId}

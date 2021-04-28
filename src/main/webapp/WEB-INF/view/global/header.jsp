@@ -23,7 +23,7 @@
                     <a href="javascript:">博客</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="">关于</a>
+                    <a href="javascript:">关于</a>
                 </li>
                 <li class="layui-nav-item">
                     <a href="<c:url value="/sys"/>">后台管理</a>

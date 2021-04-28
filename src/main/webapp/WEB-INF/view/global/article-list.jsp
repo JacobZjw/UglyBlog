@@ -17,15 +17,29 @@
             <fmt:formatDate value="${article.createTime}" pattern="dd" var="day"/>
 
             <section class="article-item">
-                <h5 class="title">
-                    <c:if test="${article.isOriginal == 1}">
-                        <span class="fc-red">【转载】</span>
-                    </c:if>
-                    <c:if test="${article.isOriginal != 1}">
-                        <span class="fc-blue">【原创】</span>
-                    </c:if>
-                    <a href="/article/${article.articleId}">${article.title}</a>
-                </h5>
+                <aside class="article-info" style="line-height:1.5; 	border-bottom: 1px solid #e8e9e7;">
+                    <fmt:formatDate value="${article.updateTime}" dateStyle="medium" timeStyle="medium"
+                                    var="updateTime"/>
+
+                    <h5 class="title" style="border-bottom: none;">
+                        <c:if test="${article.isOriginal == 1}">
+                            <span class="fc-red">【转载】</span>
+                        </c:if>
+                        <c:if test="${article.isOriginal != 1}">
+                            <span class="fc-blue">【原创】</span>
+                        </c:if>
+                        <a href="/article/${article.articleId}">${article.title}</a>
+                    </h5>
+                    <small>
+                        作者：<a href="javascript:void(0)" target="_blank" class="fc-link"
+                              style="color: #01AAED">${article.user.nickname}</a>
+                    </small>
+                    <small class="ml10">阅读数: <i class="readcount">${article.clickCount}</i></small>
+                    <small class="ml10">更新于: <label>${updateTime}</label></small>
+                    <small class="ml10">分类: <a style="color: #01AAED"
+                            href="/category/${article.category.categoryId}">${article.category.categoryName}</a></small>
+                </aside>
+
                 <div class="time">
                     <span class="day">${day}</span>
                     <span class="month fs-18">${month}<span
@@ -34,24 +48,16 @@
                 </div>
                 <div class="content">${article.summary}</div>
                 <div class="read-more">
-                    <a href="/article/${article.articleId}" class="fc-black f-fwb">继续阅读</a>
+                    <a href="/article/${article.articleId}" class="fc-black f-fwb" style="font-size: 18px;font-weight:500;font-family: mono">继续阅读</a>
                 </div>
 
                 <aside class="f-oh footer">
                     <div class="f-fl tags">
-                        <span class="fa fa-tags fs-16"></span>
-                        <a class="tag">ASP.NET MVC</a>
-                    </div>
-                    <div class="f-fr">
-									<span class="read">
-                                        <i class="fa fa-eye fs-16"></i>
-                                        <i class="num">${article.clickCount}</i>
-                                    </span>
-                        <span class="ml20">
-											<i class="fa fa-comments fs-16"></i>
-											<a href="javascript:void(0)"
-                                               class="num fc-grey">${article.commentCount}</a>
-                                    </span>
+                        <c:forEach items="${article.tagList}" var="tag">
+                            <span class="fa fa-tags fs-16">
+                                <a class="tag" href="/tag/${tag.tagId}">${tag.tagName}</a>
+                            </span>
+                        </c:forEach>
                     </div>
                 </aside>
             </section>
